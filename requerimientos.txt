@@ -2,143 +2,116 @@ Requerimientos - Funcionales
 	Super usuario:
 	R1.1: El sistema requiere tener un super usuario el cual debe tener las caracteristicas de:
 		* Unico (solo 1 existente)
-		* Nombre de usuario
-		* Contraseña
+		* Correo
+		* Contraseña (debe tener 6-10 debe contener al menos 1 mayuscula, 1 minuscula, 1 número)
 	Y tener permisos hacia los perfiles de administrador para:
-		* Crear
-		* Consultar (listar, ver detalles)
-			# Nombre
-			# Contraseña
-			# ...
+		* Consultar (listar, ver sus datos)
 		* Modificar
-		* Eliminar
+			# Nombres
+			# Apellidos
+		* Desactivar
+	R1.2: El super usuario podrá visualizar la lista de solicitudes pendientes de activación de usuario administrador donde podrá aceptar o rechazar.
 	
-	R1.2: Al momento de crear un usuario administrador este posee los datos de: 
-		* DNI
-		* Nombres
-		* Apellidos
-		* Dirección
-		* Teléfono
-		* Ciudad
+	R1.3: El super usuario tendrá forma de recuperar su contraseña por medio de un enlace, lo cual será un sistema que le solicita DNI recibirá al buzón de su correo un vinculo para realizar un cambio de contraseña
+	
+	R1.4: El super usuario puede modificar sus datos de 
+		* contraseña
 		* Correo
-		* Contraseña
-		* Edad
-		* Genero
-	Pero minimamente debe contener los datos de:
-		* DNI
-		* Nombre
-		* Correo
-		* contraseña.
-	El correo es validado (formato correcto) antes de su creación [es probable que tenga que ir DNI con su verificación de]
+	Para realizar estos cambios debe indicar su contraseña actual
 	
-	R1.3: Cuando un usuario administrador solicite inscribirse el sistema debe confirmar los datos consultando en la base de datos la información subida por el usuario y se le notificará al super usuario de su pendiente activación
-	
-	R1.4: El super usuario podrá visualizar la lista de solicitud donde podrá aceptar o rechazar de los usuarios administradores resultantes por el requerimiento 1.3
-	
-	R1.5: El super usuario tendrá forma de recuperar su contraseña, lo cual será un sistema que le solicita el usuario y email y asi si coincide recibirá al buzón un vinculo para realizar un cambio de contraseña
-	
-	R1.6: El super usuario puede modificar su contraseña, donde en dicho proceso requerirá indicar su contraseña actual
+	R1.5: El super usuario puede crear, modificar, eliminar intereses (estos se usan para los usuarios egresados y la creación de noticias, eventos, actividad que crena administradores)
 	
 	Administradores:
 	R2.1: Los usuarios administradores tienen permisos en los usuarios egresados para:
-		* Crear
 		* Modificar
+			# Nombres
+			# Apellidos
 		* Visualizar
-		* Eliminar 
-		* Desactivar (ban (?))
+		* Desactivar
+		* Activar
 	
-	R2.2: Los datos que se pueden ingresar para la creación de un usuario egresado son: 
-		* Nombres
-		* Apellidos
-		* Pais 
-		* DNI
-		* Correo
-		* Contraseña
-		* Intereses
-		* Edad
-		* Genero 
-		
-	y "confirmar para el manejo de datos sencibles". Minimanente debe contener los datos de:
-		* Nombre
-		* Correo
-		* Contraseña
-		* Pais
-	El correo es validado (formato correcto) antes de su creación [es probable que tenga que ir DNI con su verificación]
-	
-	R2.3: El usuario administrador en el modulo de noticias posee la facultad de: 
-		* Agregar
+	R2.2: El usuario administrador en el modulo de noticias posee la facultad de: 
+		* Agregar (al agregar debe indicar los intereses relacionados, al menos 1)
 		* Modificar contenido de: 
 			# Audio
 			# Imagenes
-			# Videos o otros archivos
+			# Videos o otros archivos (El contenido multimedia subido por el administrador se mostrarán en una sección de noticias o actividades para los usuarios egresados y administradores)
 	
-	R2.4: El contenido multimedia subido por el administrador se mostrarán en una sección de noticias o actividades para los usuarios egresados
-	
-	R2.5: El administrador puede modificar sus propios datos y visualizarlos como.
-		* DNI
-		* Nombres
-		* Apellidos
-		* Dirección (*)
-		* Teléfono (*)
-		* Ciudad (*)
-		* Correo (*)
-		* Contraseña (esta no se puede visualizar)
-		* Edad
-		* Genero
+	R2.3: El administrador a sus datos puede de:
+		solo Visualizarlos:
+			* DNI
+			* Nombres
+			* Apellidos
+		Visualizar y Editar
+			* Departamento (donde vive)
+			* Ciudad (una vez que se eliga el departamento de forma automatica debe listar las ciudades correspondientes a este, cargado de forma automatica, donde vive)
+			* Dirección
+			* Teléfono
+			* Correo - El correo es validado (formato correcto) es validado antes de su creación
+			* Contraseña (esta no se puede visualizar)
 		
-	R2.6: Cuando un usuario egresado solicite inscribirse el sistema debe confirmar los datos consultando en la base de datos de la información subida por el usuario y se le notificará a los administradores de su pendiente activación
+	R2.4: Cuando un usuario egresado solicite inscribirse, el sistema debe confirmar los datos consultando en la base de datos de la información subida por el usuario y se le notificará a los administradores de su pendiente activación
 	
-	R2.7: El administrador podrá visualizar la lista de solicitud donde podrá aceptar o rechazar de los usuarios egresados resultantes por el requerimiento 2.6
+	R2.5: El administrador podrá visualizar la lista de solicitud donde podrá aceptar o rechazar de los usuarios egresados resultantes por el requerimiento 2.4
 	
-	R2.8: Para inscribirse en el sistema como usuario administrador primero debe de hacer una solicitud con los siguientes datos:
+	R2.6: Una vez que un usuario administrador que se ha inscrito en el sistema y su solicitud es aceptada por el super usuario será Activado y recibirá un correo con una notificación y una contraseña generada
+	
+	R2.7: Para inscribirse en el sistema como usuario administrador primero debe de hacer una solicitud con los siguientes datos:
 		* Nombres
 		* Apellidos
 		* DNI
 		* Correo
-	Esta solicitud queda pendiente para que la cuenta sea Aceptada y activada o rechazada y borrada, la cual puede ser vista y tratada por el super usuario
+	Esta solicitud queda pendiente para que la cuenta sea Aceptada o rechazada, la cual puede ser vista y tratada por el super usuario
 	
-	R2.9: Una vez que un usuario administrador que se ha inscrito en el sistema su solicitud es aceptada por el super usuario será Activado y recibirá un correo con una notificación y una contraseña generada
-	
-	R2.10: Cuando el usuario administrador ingresa por primera vez se le solicitará diligenciar la información faltante con respecto a lo que indica el requerimiento 1.2 lo cual seria:
+	R2.8: Cuando el usuario administrador ingresa por primera vez se le solicitará diligenciar la información faltante con respecto a lo que indica el requerimiento 2.3 lo cual seria:
+		* Departamento (donde vive)
+		* Ciudad (una vez que se eliga el departamento de forma automatica debe listar las ciudades correspondientes a este, cargado de forma automatica, donde vive)
 		* Dirección
 		* Teléfono
 		* Ciudad
 		* Contraseña (una nueva)
-	
-	R2.11: Al incribirse el usuario el email debe ser validado (formato correcto) y debe ser unico para cada DNI es decir puede existir un Administrador con un email y puede existir un usuario con su mismo DNI podrá tener el mismo Email o otro; pero no podrán existir 2 usuarios egresados (diferente DNI) con un mismo email.
+		tiene que diligenciar todos los datos para poder continuar, si no los completa cada nuevo login le solicitará ello.
 	
 	
 	Usuarios Egresados:
 	R3.1: Para inscribirse en el sistema como usuario egresado primero debe de hacer una solicitud con los siguientes datos:
-		* Nombres
-		* Apellidos
-		* Programa (donde egreso)
-		* Año de egreso
 		* DNI
-		* Correo
-	Esta solicitud queda pendiente para que la cuenta sea Aceptada y activada o rechazada y borrada por un usuario administrador
-	
-	R3.2: Una vez que un usuario egresado que se ha inscrito en el sistema su solicitud es aceptada por un usuario administrador este es Activado y recibirá un correo con una notificación y una contraseña generada
-	
-	R3.3: Cuando el usuario ingresa por primera vez se le solicitará la información requerida para completar us registro con los datos del requerimiento 2.2 con la misma restricción y una nueva contraseña lo cual es:
-		* Pais 
-		* Contraseña
-		* Intereses
-		* Edad
-		* Genero 
-		
-	R3.4: Al incribirse el usuario el email debe ser validado (formato correcto) y debe ser unico para cada DNI es decir puede existir un Administrador con un email y puede existir un usuario con su mismo DNI podrá tener el mismo Email o otro; pero no podrán existir 2 usuarios egresados (diferente DNI) con un mismo email.
-	
-	R3.5: Cada usuario egresado puede editar sus datos de:
 		* Nombres
 		* Apellidos
+		* Programa (donde egreso, dados de una lista)
+		* Correo
+	Esta solicitud queda pendiente para que la cuenta sea Aceptada y activada o rechazada y borrada por un usuario administrador, solo permitirá enviarlo si se valida el DNI con el programa indicado (debe coincidir)
+	
+	R3.2: Una vez que un usuario egresado que se ha inscrito en el sistema y su solicitud es aceptada por un usuario administrador este es Activado y recibirá un correo con una notificación y una contraseña generada
+	
+	R3.3: Cuando el usuario ingresa por primera vez se le solicitará la información requerida para completar su registro con los siguientes datos
+	
+	Estos son obligatorios
+		* Pais 
+		* Contraseña (nueva)
+		* Intereses
+		* Fecha de nacimiento
+		* Genero 
+	estos son opcionales
+		* Dirección Residencia
+		* Dirección trabajo
+		* Ocupación actual
+		* Telefono
+		* Foto 
+		* Indicar si su perfil es publico o no (es decir permitir que otros usuarios vean su info o no)
+	Si no se tienen los datos obligatorios no le permitirá continuar	
+	
+	R3.4: Cada usuario egresado puede ver todos sus datos, pero solo puede editar:
 		* Correo
 		* Contraseña
 		* Intereses
-		
-	[Verificar cuales si son editables]
+		* Foto
+		* Dirección Residencia
+		* Dirección trabajo
+		* Ocupación actual
+		* Telefono 
 	
-	R3.6: El usuario egresado debe tener una sección circulo de amigos.
+	R3.6: El usuario egresado debe tener una sección circulo de amigos (lista de amigos).
 	
 	R3.7: El usuario debe poder desactivar su cuenta para con ello impedir su acceso al sistema (verificar funcionamiento).
 	
@@ -146,20 +119,26 @@ Requerimientos - Funcionales
 	
 	R3.9: Los usuarios egresados podrán suscribirse a las noticias y eventos para asi obtener notificación via email en cualquier cambio de la noticia o evento (de cada cambio).
 	
-	Inicio de sesión:
-	R4.1: Todo usuario debe ingresar al sistema con Correo electronico y contraseña [deberia ser con usuario ya que el correo puede repetirse en un caso especifico]
+	R3.10: Un usuario en estado desactivado puede ingresar al sistema pero no puede interactuar solo ver.
 	
-	R4.2: El usuario debe estar logueado para poder modificar sus datos (de por si la vista solo se ve al tener un login previo)
+	R3.11: El sistema le sugerirá amigos que contengan datos similares como interes [¿Cada que inicia sesión o como?]
 	
-	R4.3: Cuando un usuario administrador inicia sesión se debe redirigir a la lista de sus actividades (menu principal)
+	Inicio de sesión/registro:
+	R4.1: Todo usuario debe ingresar al sistema con Correo electronico y contraseña, ademas debe indicar el tipo de usuario sea Super Usuario, Administrador y usuario egresado
 	
-	R4.4: Cuando un usuario egresado inicia sesión debe redirigirlo a menu de opciones de usuario, el cual contiene acceso a modulo de noticias, editar perfil, circulo de amigos.
+	R4.2: Cuando un usuario administrador inicia sesión se debe redirigir a la lista de sus actividades, y debe tener donde acceder a su perfil
 	
-	R4.5: En la vista de login debe estar la opción de recuperar contraseña mediante el correo electronico
+	R4.3: Cuando un usuario egresado inicia sesión debe redirigirlo a menu de opciones de usuario, el cual contiene acceso a modulo de noticias, perfil, circulo de amigos.
 	
-	R4.6: El Super usuario debe redirigirlo a la lista de administradores existentes y la lista de solicitudes de activación de administrador
+	R4.4: En la vista de login debe estar la opción de recuperar contraseña mediante el correo electronico (se recupera según el tipo de cuenta indicado)
+	
+	R4.5: El Super usuario debe redirigirlo a la lista de administradores existentes y la lista de solicitudes de activación de administrador
+	
+	R4.6: Debe haber un Captcha antes del login, solicitud de inscripción y olvidaste contraseña?
+	
+	R4.7: Al incribirse el usuario el email debe ser validado (formato correcto) y debe ser unico para cada DNI es decir puede existir un Administrador con un email y puede existir un usuario con su mismo DNI podrá tener el mismo Email o otro; pero no podrán existir 2 usuarios egresados (cada uno con un DNI diferente) con un mismo email.
 	
 	Aplicativo - web
 	R5.1: Todo usuario en el sistema debe poder visualizar listas de activiades, noticias
 	
-	R5.2: Los usuarios administrador deben poder agregar, editar y eliminar las listas de actividades propias de ellos mismos
+	R5.2: Los usuarios administrador deben poder agregar actividades y noticias indicando los intereses uqe le relaciona ademas de editar y eliminar las actividades y noticias que han publicado
