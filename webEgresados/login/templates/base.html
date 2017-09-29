@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<title>{% block title %} Document {% endblock %}</title>
+</head>
+<body>
+
+	{% block header %}
+	<h4>Este es el bloque del header base</h4>
+	{% endblock %}
+
+	{% block content %}
+	<h5>Este es el contenido del archivo base</h5>
+	{% endblock %}
+
+	{% block footer %}
+	<h5>Soy el footer del base</h5>
+	{% endblock %}
+
+{% block login %}
+	{% if user.is_authenticated %}
+    	<a href="{% url 'logout' %}">Logout</a>
+	{% else %}
+	    <a href="/login/?next={{ request.path }}">Login</a>
+	{% endif %}
+{% endblock %}
+	
+</body>
+</html>
