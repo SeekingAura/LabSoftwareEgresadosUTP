@@ -22,6 +22,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
 	#url(r'^login/', include('login.urls')),
 	url(r'^usuario/', include('login.urls', namespace="usuario")),
+	#django elements
 	url(r'^login/', login, {'template_name':'login.html'}, name='login'),
     url(r'^logout/', logout_then_login, name='logout'),
 	url(r'^reset/password_reset', password_reset, {'template_name':'password_reset_form.html', 'email_template_name':'password_reset_email.html'}, name='password_reset'),
