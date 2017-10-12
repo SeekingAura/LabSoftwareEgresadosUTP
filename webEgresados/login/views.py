@@ -12,7 +12,7 @@ from django.contrib.auth.decorators import login_required
 
 class RegistroUsuario(CreateView):
 	model = User
-	template_name = "login/templates/registrar.html"
+	template_name = "usuarios/registroAdmin.html"
 	form_class = RegistroForm
 	success_url = reverse_lazy("usuario:bienvenido")
 
@@ -21,5 +21,5 @@ def Bienvenido(request):
 	return render_to_response('bienvenido.html',{})
 
 
-#def index(request):
-    #return HttpResponse("aqui estoy en index del login")
+def index(request):
+    return render(request, 'usuarios/main.html', {})
