@@ -16,4 +16,4 @@ class RegistroForm(UserCreationForm):
 				'username': 'Nombre de usuario',
 				'first_name':'Nombre',
 				'last_name':'Apellidos',
-				'email':'Correo',		}
+				'email':'Correo',}
