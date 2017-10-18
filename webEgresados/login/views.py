@@ -6,15 +6,26 @@ from django.views.generic import CreateView
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth import logout
 from django.http import HttpResponseRedirect
-from .forms import RegistroForm
+from .forms import registroAdmin, registroEgresado
 from django.contrib.auth.decorators import login_required
 
+def registro(request, type):
+	context = {
+		'type': type,
+	}
+	if(type=="admin"):
+		form = registroAdmin()
+		context['form'] = form
+	else:
+		form = registroEgresado()
+		context['form'] = form
 
-class RegistroUsuario(CreateView):
-	model = User
-	template_name = "usuarios/registroAdmin.html"
-	form_class = RegistroForm
-	success_url = reverse_lazy("usuario:bienvenido")
+	if(request.POST):
+		pass
+	else:
+		return render(request,'usuarios/registro.html', context)
+
+
 
 @login_required
 def Bienvenido(request):	
