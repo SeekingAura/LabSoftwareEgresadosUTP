@@ -2,7 +2,17 @@ from django.contrib.auth.models import User
 from django.db import models
 from usuarioAdminEgresado import models as UserAdminEgreModel
 
+import re
+from django.core.exceptions import ValidationError
 
+def numeric_validator(value):
+	result=re.match('[0-9]*', str(value))
+	#print("el valor de value[0] es %s -" % (value[0]))
+	if result is not None:	
+		if len(result.group(0))!=len(str(value)):
+			raise ValidationError('este campo debe ser solamente númerico')
+	else:
+		raise ValidationError('este campo debe ser solamente númerico')
 
 class UsuariosEgresado(models.Model):
 	userEgre=models.ForeignKey(UserAdminEgreModel.UsuariosAdminEgresado)
@@ -26,12 +36,12 @@ class UsuariosEgresado(models.Model):
 	#models.FloatField()
 	
 class AmigosEgresado(models.Model):
-	DNI=models.CharField(max_length=30)
+	userEgre=models.ForeignKey(UsuariosEgresado)
 	amigoDNI=models.CharField(max_length=30)
 	estado=models.CharField(max_length=10)
-	userEgre=models.ForeignKey(UsuariosEgresado)
+	
 	
 class InteresesEgresado(models.Model):
-	DNI=models.CharField(max_length=30)
-	interesID=models.CharField(max_length=30)
 	userEgre=models.ForeignKey(UsuariosEgresado)
+	interesID=models.CharField(max_length=30, validators=[numeric_validator])
+	
