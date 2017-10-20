@@ -33,4 +33,4 @@ def Bienvenido(request):
 
 
 def index(request):
-    return render(request, 'usuarios/main.html', {})
+    return render(request, 'index/index.html', {})
