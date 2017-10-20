@@ -4,13 +4,41 @@ from django.views.generic import CreateView
 from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import render, redirect, render_to_response
 from django.http import HttpResponse
+from django.template import loader
 
 
 from django.contrib.auth import logout
 from django.http import HttpResponseRedirect
 from .forms import RegistroForm
 from django.contrib.auth.decorators import login_required
+from django.core.validators import EmailValidator, ValidationError
 
+def is_email(value):
+	try:
+		EmailValidator()(value)
+	except ValidationError:
+		return False
+	else:
+		return True
+
+	
+	
+def registro(request):
+	template=loader.get_template("registrar.html")
+	if request.method == 'POST':
+		form=RegistroForm(data=request.POST)
+		if form.is_valid() and is_email(request.POST.get("username")):
+			print(request.POST.get("username"))
+			user=User.objects.create(username=request.POST.get("username"), email=request.POST.get("username"))
+			user.set_password(request.POST.get("password"))
+			
+			print("creando usuario")
+			user.save()
+			
+	ctx={}
+	return(HttpResponse(template.render(ctx,request)))
+	
+	
 
 class RegistroUsuario(CreateView):
 	model = User
@@ -24,4 +52,4 @@ def Bienvenido(request):
 
 
 #def index(request):
-    #return HttpResponse("aqui estoy en index del login")
+	#return HttpResponse("aqui estoy en index del login")

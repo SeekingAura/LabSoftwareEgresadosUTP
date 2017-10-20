@@ -7,16 +7,26 @@ from django.contrib.auth.forms import UserCreationForm
 
 from django.utils.translation import ugettext_lazy as _
 
+from django.forms import ModelForm
 
+
+class RegistroForm(ModelForm):
+	class Meta:
+		model=User
+		fields=["username", "password"]
+
+
+
+"""
 class RegistroForm(UserCreationForm):
-	username = forms.EmailField(label=_("usuario"))
-	email = forms.EmailField(label=_("E-mail"))
+	username = forms.EmailField(label=_("usuario (Email)"))
+	#email = forms.EmailField(label=_("usuario (Email)"))
 
 	class Meta:
 		model = User
-		fields = ("username", "email")
-
-
+		fields = ["username"]
+"""
+	
 """
 class RegistroForm(forms.Form):
 	username=forms.CharField(max_length=30)
