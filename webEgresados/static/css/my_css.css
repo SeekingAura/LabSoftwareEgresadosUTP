@@ -2,3 +2,44 @@
 	width: 100%;
 	height: 100%;
 }
+#nav-index{
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-wrap: wrap;
+	flex-wrap: wrap;
+	padding-left: 0;
+	margin-bottom: 0;
+	list-style: none;
+	list-style-type: none;
+	list-style-image: none;
+	list-style-position: outside;
+}
+#logo-utp{
+	width: 15%;
+	height: 15%;	
+}
+
+#div-logo-utp{
+	height: 15%;	
+}
+
+#carouselExampleControls{
+	height: 80%;
+}
+
+#a-index:link{
+	text-decoration: none;
+}
+
+#a-index{
+	color: #FFFFFF;
+}
+
+#a-index:hover{
+	text-decoration-color: white;
+}
+
+#img-nav-index{
+	width: 20px;
+	height: 20px;
+}

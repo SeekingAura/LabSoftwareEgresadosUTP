@@ -10,15 +10,18 @@
 </head>
 <body>
 	<div class="container">
-		
-		<img src="{% static 'images/logo.png' %}" class="img-fluid mx-auto" alt="Responsive image">
-		
+		<hr>
+		<div id="div-logo-utp">
+			<img src="{% static 'images/Logo_UTP.png' %}" class="img-fluid mx-auto" alt="Responsive image" id="logo-utp">
+		</div>
+		<hr>
 		<!-- Nav -->
 		{% include 'index/partials/nav_index.html' %}
 		<!-- end Nav -->
-
+		<hr>
 		{% include 'index/partials/carousel.html' %}
 	</div>
+	<hr>
 
 	<script type="text/javascript">
 		$('.carousel').carousel()
