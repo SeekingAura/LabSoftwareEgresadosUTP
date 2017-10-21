@@ -4,15 +4,16 @@
 
 {% block content %}
 	<h1>Registro de usuario</h1>
-
+	
 	<form method="POST">
 		{% csrf_token %}
-		<input type="email" name="username" required="true">
-		<input type="password" name="password" required="true">
-		
+		<table>
+			{{ form.as_table }}
+		</table>
 		
 		
 		<input type="submit" value="Registrar">
 
 	</form>
+	
 {% endblock %}

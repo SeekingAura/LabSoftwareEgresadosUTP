@@ -4,3 +4,5 @@ from usuarioAdminEgresado import models as userAdminEgreModel
 # Create your models here.
 class UsuarioAdministrador(models.Model):
 	userEgre=models.ForeignKey(userAdminEgreModel.UsuariosAdminEgresado)
+	def __str__ (self):
+		return str(self.userEgre)

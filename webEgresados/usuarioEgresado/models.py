@@ -17,12 +17,12 @@ def numeric_validator(value):
 class UsuariosEgresado(models.Model):
 	userEgre=models.ForeignKey(UserAdminEgreModel.UsuariosAdminEgresado)
 	
-	pais=models.CharField(max_length=30)
-	direccionTrabajo=models.CharField(max_length=100)
-	fechaNacimiento=models.DateField()
-	genero=models.CharField(max_length=6)
+	pais=models.CharField(max_length=30, blank=True)
+	direccionTrabajo=models.CharField(max_length=100, blank=True)
+	fechaNacimiento=models.DateField(blank=True)
+	genero=models.CharField(max_length=6, blank=True)
 	programa=models.CharField(max_length=100)
-	ocupacion=models.CharField(max_length=100)
+	ocupacion=models.CharField(max_length=100, blank=True)
 	
 	
 	
