@@ -9,7 +9,7 @@ from django.template import loader
 
 from django.contrib.auth import logout
 from django.http import HttpResponseRedirect
-from .forms import registroAdministrador, registroEgresado
+from .forms import registroAdministrador, registroEgresado, loginForm
 from django.contrib.auth.decorators import login_required
 from django.core.validators import EmailValidator, ValidationError
 from django.contrib import messages
@@ -17,10 +17,13 @@ from django.contrib import messages
 from usuarioAdminEgresado.models import UsuariosAdminEgresado
 from usuarioAdministrador.models import UsuarioAdministrador
 from usuarioEgresado.models import UsuariosEgresado
-
+from django.contrib.auth import authenticate, login
 
 #Entry.objects.get(pk=1)#hacer querys antes de esto
 
+
+def determinarTipoUser(username):
+	print("")
 	
 
 def registro(request, type):
@@ -34,31 +37,13 @@ def registro(request, type):
 		form = registroEgresado()
 		context['form'] = form
 		
-	if(request.method == 'GET'):
-		print("haciendo get")
-		#messages.error(request, "Error!")
-		if(type=="admin"):
-			#form.run_validators(request.GET)
-			form=registroAdministrador(data=request.GET)
-			print("toma de datos admin", form.is_valid(), request.GET, request.GET.get("username"))
-			
-		elif(type=="egresado"):
-			form=registroEgresado(data=request.GET)
-		else:
-			raise ValidationError('type {} no reconocible al registrar'.format(type))
-		if(form.is_valid()):
-			user=User.objects.create(username=request.GET.get("username"), email=request.GET.get("username"))
-			user.set_password(request.GET.get("password"))
-			print("formulario es valido, valores {}, {}, {}",format(request.GET.get("username"), request.GET.get("password"), request.GET.get("first_name")))
-	
 	
 	if(request.method == 'POST'):
 		
 		if(type=="admin"):
-			#form.run_validators(request.GET)
 			form=registroAdministrador(data=request.POST)
 			context['form'] = form
-			print("toma de datos admin", form.is_valid(), request.POST, request.POST.get("username"))
+			#print("toma de datos admin", form.is_valid(), request.POST, request.POST.get("username"))
 		
 		if(form.is_valid()):
 			print("es valido, creando user")
@@ -76,27 +61,61 @@ def registro(request, type):
 			#
 			userAdmin=UsuarioAdministrador.objects.create(userEgre=userAdminEgre)
 			userAdmin.save()
-			
+			if(type=="admin"):
+				form = registroAdministrador()
+				context['form'] = form
+			else:
+				form = registroEgresado()
+				context['form'] = form
+			messages.success(request, 'registro completado con exito')
 			
 		
-	else:
-		return render(request,'usuarios/registro.html', context)
 	
 	return render(request,'usuarios/registro.html', context)
-"""
-class RegistroUsuario(CreateView):
-	model = User
-	template_name = "registrar.html"
-	form_class = RegistroForm
-	success_url = reverse_lazy("login")
-"""
 
-@login_required
-def Bienvenido(request):	
-	return render_to_response('bienvenido.html',{})
+def login_view(request):
+	context={}
+	form=loginForm()
+	context['form'] = form
+	#print("formulario entrante", form)
+	#print("request login")
+	if(request.method == 'POST'):
+		form=loginForm(data=request.POST)
+		context['form'] = form
+		if(form.is_valid()):
+			user = form.login(request)
+			#print("usuario entra", user)
+			if user:
+				login(request, user)
+				return HttpResponseRedirect("bienvenido")
+	return render(request,'login.html', context)
 
+	
+	
+@login_required(login_url="usuario:login")
+def Bienvenido(request):
+	
+	username = None
+	context={'username': username,}
+	if request.user.is_authenticated():
+		print("usuario logeado", request.user)
+		#User.objects.get(username=request.user.username)
+		username = request.user.first_name
+		context['username']=username
+		
+		print("usuario logeado", username)
+	return render_to_response('bienvenido.html',context)
+
+	
+def logout_view(request):
+	logout(request)
+	print("Trate de LOGOUT")
+	return redirect("usuario:login")# Redirect to a success page.
+	#return HttpResponseRedirect("login")
+	
+	
 def index(request):
-    return render(request, 'index/index.html', {})
+	return render(request, 'index/index.html', {})
 
 #def index(request):
 	#return HttpResponse("aqui estoy en index del login")

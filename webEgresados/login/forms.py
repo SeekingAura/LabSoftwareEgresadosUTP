@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from usuarioAdminEgresado.models import UsuariosAdminEgresado
 
 from django.contrib.auth.forms import UserCreationForm
-
+from django.contrib.auth import authenticate, login
 
 
 from django.forms import ModelForm
@@ -46,6 +46,19 @@ def verify_alredyExistDNI(DNI):
 	if(existe):
 		raise ValidationError('ya existe este DNI')
 		
+def verify_StateAccount(username):
+	user=None
+	try:
+		user=User.objects.get(username=username)
+		user=UsuariosAdminEgresado.objects.get(user_id=user.id)
+	except:
+		user=None
+	if(user is not None):
+		if(user.estadoCuenta!="Activada"):
+			raise ValidationError('Su cuenta no está activa, consulte con un admin sobre su asunto')
+	else:
+		raise ValidationError('Cuenta no encontrada')
+
 		
 class registroAdministrador(forms.Form):
 	
@@ -63,6 +76,8 @@ class registroAdministrador(forms.Form):
 		password2 = self.cleaned_data.get('passwordConfimation')
 		if password1 != password2:
 			raise forms.ValidationError(('las contraseñas no coinciden'), code='invalid') 
+		#else:
+		#	 self.full_clean()
 		return password2
 	
 		
@@ -83,6 +98,27 @@ class registroEgresado(forms.Form):
 		return password2
 
 
+class loginForm(forms.Form):
+	username = forms.EmailField(label="usuario (Email)",required=True)
+	password=forms.CharField(max_length=32, widget=forms.PasswordInput(), label="Contraseña", required=True)
+	def clean(self):
+		username = self.cleaned_data.get('username')
+		password = self.cleaned_data.get('password')
+		user = authenticate(username=username, password=password)
+		
+		if not user or not user.is_active:
+			raise forms.ValidationError("Usuario o contraseña invalidos")
+		elif(user):
+			verify_StateAccount(username)
+			
+		return self.cleaned_data
+
+	def login(self, request):
+		username = self.cleaned_data.get('username')
+		password = self.cleaned_data.get('password')
+		user = authenticate(username=username, password=password)
+		return user
+		
 """
 class RegistroForm(UserCreationForm):
 	username = forms.EmailField(label=_("usuario (Email)"))

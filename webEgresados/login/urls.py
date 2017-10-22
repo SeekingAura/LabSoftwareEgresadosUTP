@@ -1,12 +1,11 @@
 from django.conf.urls import url
-from django.contrib.auth.views import login
-from .views import *
-#from . import views
+from .views import Bienvenido, login_view, logout_view, registro
 
 urlpatterns = [
-    #url(r'^$', views.index, name='index'),
-	#url(r'^registrar', registro, name="registrar"),
 	url(r'^bienvenido', Bienvenido, name="bienvenido"),
 	url(r'^registrar/(?P<type>\w+)/$', registro, name="registrar"),
-	url(r'^login', login, {'template_name':'login.html'},name="login"),
+	url(r'^login', login_view, name="login"),
+	url(r'^logout/', logout_view, name='logout'),
+	
+	
 ]

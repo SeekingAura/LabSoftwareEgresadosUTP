@@ -137,7 +137,50 @@ STATICFILES_DIRS = [
 ]
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static')
-LOGIN_REDIRECT_URL = reverse_lazy("usuario:bienvenido")
-LOGOUT_REDIRECT_URL = reverse_lazy("usuario:login")
+MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
+#For email
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+EMAIL_USE_TLS = True
+
+EMAIL_HOST = 'smtp.gmail.com'
+
+EMAIL_HOST_USER = 'carlox216@utp.edu.co'
+
+
+EMAIL_HOST_PASSWORD = '97032609604cm'
+
+EMAIL_PORT = 587
+#Must generate specific password for your app in [gmail settings][1]
+#This did the trick
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER#For email
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+EMAIL_USE_TLS = True
+
+EMAIL_HOST = 'smtp.gmail.com'
+
+EMAIL_HOST_USER = 'carlox216@utp.edu.co'
+
+
+EMAIL_HOST_PASSWORD = '97032609604cm'
+
+EMAIL_PORT = 587
+DEFAULT_FROM_EMAIL = "Egresados UTP"
+#Must generate specific password for your app in [gmail settings][1]
+#This did the trick
+
+#EMAIL_HOST = 'smtp.gmail.com'
+#EMAIL_HOST_USER = 'carlox216@utp.edu.co'
+#EMAIL_HOST_PASSWORD = '97032609604cm'
+#EMAIL_PORT = 587
+#EMAIL_USE_TLS = True
+#EMAIL_HOST = 'smtp.gmail.com'
+#EMAIL_HOST_USER = 'carlox216@utp.edu.co'
+#EMAIL_HOST_PASSWORD = '97032609604cm'
+#EMAIL_PORT = 587
+#EMAIL_USE_TLS = True
+#LOGIN_REDIRECT_URL = reverse_lazy("usuario:bienvenido")
+#LOGOUT_REDIRECT_URL = reverse_lazy("usuario:login")
 
 
