@@ -16,14 +16,36 @@ from django.contrib import messages
 
 from usuarioAdminEgresado.models import UsuariosAdminEgresado
 from usuarioAdministrador.models import UsuarioAdministrador
-from usuarioEgresado.models import UsuariosEgresado
+from usuarioEgresado.models import UsuarioEgresado
 from django.contrib.auth import authenticate, login
 
 #Entry.objects.get(pk=1)#hacer querys antes de esto
 
 
 def determinarTipoUser(username):
-	print("")
+	user=User.objects.get(username=username)
+	user=UsuariosAdminEgresado.objects.get(user_id=user.id)
+	try:
+		userAdmin=UsuarioAdministrador.objects.get(userAdminEgre_id=user.DNI)
+	except:
+		userAdmin=None
+	
+	try:
+		userEgre=UsuarioEgresado.objects.get(userAdminEgre_id=user.DNI)
+	except:
+		userEgre=None
+	
+	if(userAdmin is not None and userEgre is not None):
+		return ["egresado", "administrador"]
+	elif(userAdmin is not None):
+		return ["administrador"]
+	elif(userEgre is not None):
+		return["egresado"]
+	elif(userAdmin is None and userEgre is None):
+		print("ERROR - No se ha logrado determinar el tipo de usuario")
+		return []
+	
+	#user=
 	
 
 def registro(request, type):
@@ -33,7 +55,7 @@ def registro(request, type):
 	if(type=="admin"):
 		form = registroAdministrador()
 		context['form'] = form
-	else:
+	elif(type=="egresado"):
 		form = registroEgresado()
 		context['form'] = form
 		
@@ -43,11 +65,12 @@ def registro(request, type):
 		if(type=="admin"):
 			form=registroAdministrador(data=request.POST)
 			context['form'] = form
-			#print("toma de datos admin", form.is_valid(), request.POST, request.POST.get("username"))
-		
+		elif(type=="egresado"):
+			form=registroEgresado(data=request.POST)
+			context['form'] = form
 		if(form.is_valid()):
 			print("es valido, creando user")
-			user=User.objects.create(username=request.POST.get("username"), email=request.POST.get("username"),first_name=request.POST.get("first_name"), last_name=request.POST.get("last_name"))
+			user=User.objects.create(username=str(request.POST.get("username")).lower(), email=str(request.POST.get("username")).lower(),first_name=str(request.POST.get("first_name")).title(), last_name=str(request.POST.get("last_name")).title())
 			
 			user.set_password(request.POST.get("password"))
 			
@@ -59,12 +82,14 @@ def registro(request, type):
 			userAdminEgre.save()
 			
 			#
-			userAdmin=UsuarioAdministrador.objects.create(userEgre=userAdminEgre)
-			userAdmin.save()
 			if(type=="admin"):
+				userAdmin=UsuarioAdministrador.objects.create(userAdminEgre=userAdminEgre)
+				userAdmin.save()
 				form = registroAdministrador()
 				context['form'] = form
-			else:
+			elif(type=="egresado"):
+				userEgre=UsuarioEgresado.objects.create(userAdminEgre=userAdminEgre, programa=request.POST.get("programa"))
+				userEgre.save()
 				form = registroEgresado()
 				context['form'] = form
 			messages.success(request, 'registro completado con exito')
@@ -77,16 +102,20 @@ def login_view(request):
 	context={}
 	form=loginForm()
 	context['form'] = form
-	#print("formulario entrante", form)
-	#print("request login")
 	if(request.method == 'POST'):
 		form=loginForm(data=request.POST)
 		context['form'] = form
 		if(form.is_valid()):
 			user = form.login(request)
-			#print("usuario entra", user)
 			if user:
 				login(request, user)
+				tipoUser=determinarTipoUser(user)
+				if(len(tipoUser)==2):
+					print("este usuario es Admin y Egresado")
+				elif(tipoUser[0]=="administrador"):
+					print("este usuario es Admin")
+				elif(tipoUser[0]=="egresado"):
+					print("este usuario es egresado")
 				return HttpResponseRedirect("bienvenido")
 	return render(request,'login.html', context)
 
@@ -96,14 +125,22 @@ def login_view(request):
 def Bienvenido(request):
 	
 	username = None
-	context={'username': username,}
+	context={'username': username, 'tipoUser' : None}
 	if request.user.is_authenticated():
-		print("usuario logeado", request.user)
-		#User.objects.get(username=request.user.username)
 		username = request.user.first_name
 		context['username']=username
+		tipoUser=determinarTipoUser(request.user)
+		if(len(tipoUser)==2):
+			print("este usuario es Admin y Egresado")
+			context['tipoUser']="Administrador y/o Egresado"
+		elif(tipoUser[0]=="administrador"):
+			print("este usuario es Admin")
+			context['tipoUser']="Administrador"
+		elif(tipoUser[0]=="egresado"):
+			print("este usuario es egresado")
+			context['tipoUser']="Egresado"
 		
-		print("usuario logeado", username)
+		
 	return render_to_response('bienvenido.html',context)
 
 	

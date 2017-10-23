@@ -14,16 +14,17 @@ def numeric_validator(value):
 	else:
 		raise ValidationError('este campo debe ser solamente númerico')
 
-class UsuariosEgresado(models.Model):
-	userEgre=models.ForeignKey(UserAdminEgreModel.UsuariosAdminEgresado)
+class UsuarioEgresado(models.Model):
+	userAdminEgre=models.ForeignKey(UserAdminEgreModel.UsuariosAdminEgresado)
 	
 	pais=models.CharField(max_length=30, blank=True)
 	direccionTrabajo=models.CharField(max_length=100, blank=True)
-	fechaNacimiento=models.DateField(blank=True)
+	fechaNacimiento=models.DateField(blank=True, null=True)
 	genero=models.CharField(max_length=6, blank=True)
 	programa=models.CharField(max_length=100)
 	ocupacion=models.CharField(max_length=100, blank=True)
-	
+	def __str__ (self):
+		return str(self.userAdminEgre)
 	
 	
 	
@@ -34,14 +35,14 @@ class UsuariosEgresado(models.Model):
 	
 	#models.IntegerField()
 	#models.FloatField()
-	
+
 class AmigosEgresado(models.Model):
-	userEgre=models.ForeignKey(UsuariosEgresado)
+	userEgre=models.ForeignKey(UsuarioEgresado)
 	amigoDNI=models.CharField(max_length=30)
 	estado=models.CharField(max_length=10)
 	
 	
 class InteresesEgresado(models.Model):
-	userEgre=models.ForeignKey(UsuariosEgresado)
+	userEgre=models.ForeignKey(UsuarioEgresado)
 	interesID=models.CharField(max_length=30, validators=[numeric_validator])
 	

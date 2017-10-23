@@ -1,4 +1,4 @@
 from django.contrib import admin
-from .models import UsuariosEgresado
-admin.site.register (UsuariosEgresado)
+from .models import UsuarioEgresado
+admin.site.register (UsuarioEgresado)
 # Register your models here.

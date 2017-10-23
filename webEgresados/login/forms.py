@@ -84,8 +84,8 @@ class registroAdministrador(forms.Form):
 class registroEgresado(forms.Form):
 	DNI=forms.CharField(max_length=32, label="Número de identificación", validators=[numeric_validator, verify_alredyExistDNI], required=True)
 	username = forms.EmailField(label="usuario (Email)",required=True, validators=[verify_alredyExistEmail])
-	nombres=forms.CharField(max_length=32, label="Nombres", required=True)
-	apellidos=forms.CharField(max_length=32, label="Apellidos", required=True)
+	first_name=forms.CharField(max_length=32, label="Nombres", required=True)
+	last_name=forms.CharField(max_length=32, label="Apellidos", required=True)
 	password=forms.CharField(max_length=32, widget=forms.PasswordInput(), label="Contraseña", required=True)
 	passwordConfimation=forms.CharField(max_length=32, widget=forms.PasswordInput(), label="Contraseña (Confirmación)", required=True)
 	programa = forms.CharField(max_length=50, label="Programa academico", required=True)
@@ -102,7 +102,7 @@ class loginForm(forms.Form):
 	username = forms.EmailField(label="usuario (Email)",required=True)
 	password=forms.CharField(max_length=32, widget=forms.PasswordInput(), label="Contraseña", required=True)
 	def clean(self):
-		username = self.cleaned_data.get('username')
+		username = str(self.cleaned_data.get('username')).lower()
 		password = self.cleaned_data.get('password')
 		user = authenticate(username=username, password=password)
 		
