@@ -17,17 +17,16 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from django.contrib.auth.views import login, logout_then_login, password_reset 
 from django.contrib.auth.views import password_reset_done, password_reset_confirm, password_reset_complete
+from login.views import index
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-	#url(r'^login/', include('login.urls')),
+	url(r'^$', index, name="index"),
 	url(r'^usuario/', include('login.urls', namespace="usuario")),
-	url(r'^login/', login, {'template_name':'login.html'}, name='login'),
-    url(r'^logout/', logout_then_login, name='logout'),
+    #url(r'^logout/', logout_then_login, name='logout'),
 	url(r'^reset/password_reset', password_reset, {'template_name':'password_reset_form.html', 'email_template_name':'password_reset_email.html'}, name='password_reset'),
     url(r'^reset/password_reset_done',password_reset_done,{'template_name':'password_reset_done.html'},name="password_reset_done"),
     #otro proceso de reset
 	url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$', password_reset_confirm, {'template_name': 'password_reset_confirm.html'}, name='password_reset_confirm'),
     url(r'^reset/done', password_reset_complete, {'template_name':'password_reset_complete.html'}, name='password_reset_complete'),
 ]
-

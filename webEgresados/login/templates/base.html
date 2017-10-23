@@ -20,9 +20,9 @@
 
 {% block login %}
 	{% if user.is_authenticated %}
-    	<a href="{% url 'logout' %}">Logout</a>
+    	<a href="{% url 'usuario:logout' %}">Logout</a>
 	{% else %}
-	    <a href="/login/?next={{ request.path }}">Login</a>
+	    <h4>No hay usuario Authenticated</h4>
 	{% endif %}
 {% endblock %}
 	
