@@ -1,3 +1,63 @@
-#nav{
-	margin:10%;
+{% load staticfiles %}
+
+#img-carousel {
+	width: 100%;
+	height: 100%;
+}
+#nav-index{
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-wrap: wrap;
+	flex-wrap: wrap;
+	padding-left: 0;
+	margin-bottom: 0;
+	list-style: none;
+	list-style-type: none;
+	list-style-image: none;
+	list-style-position: outside;
+}
+
+
+#carouselExampleControls{
+	height: 80%;
+}
+
+#a-index:link{
+	text-decoration: none;
+}
+
+#a-index, #text-color{
+	color: #52d3aa;
+}
+
+#a-index-title{
+	color: #1fa67b;
+}
+
+#a-index:hover{
+	text-decoration-color: white;
+}
+
+#img-nav-index{
+	width: 20px;
+	height: 20px;
+}
+
+#font-login{
+	font-size: 18px;
+	text-align: center;
+	font-weight: bold;
+	padding-bottom: 20px;
+	color: #1fa67b;
+	font-family: inherit;
+}
+
+#btn-login, #btn-registro{
+	background-color: #1fa67b;
+	color: white;
+	font-family: inherit;
+}
+
+#a-login{
+	font-family: inherit;	
 }

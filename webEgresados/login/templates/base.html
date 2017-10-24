@@ -1,10 +1,19 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
 	<meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/my_css.css' %}">
+
+	<link rel="stylesheet" type="text/css" href="">
 	<title>{% block title %} Document {% endblock %}</title>
 </head>
 <body>
+
+	<div class="container">
+
+	{% include 'index/partials/nav_index.html' %}
 
 	{% block header %}
 	<h4>Este es el bloque del header base</h4>
@@ -18,13 +27,8 @@
 	<h5>Soy el footer del base</h5>
 	{% endblock %}
 
-{% block login %}
-	{% if user.is_authenticated %}
-    	<a href="{% url 'usuario:logout' %}">Logout</a>
-	{% else %}
-	    <h4>No hay usuario Authenticated</h4>
-	{% endif %}
-{% endblock %}
-	
+	</div>
+
+	<script src='{% static 'bootstrap/js/bootstrap.js' %}'></script>
 </body>
 </html>

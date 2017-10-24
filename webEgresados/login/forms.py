@@ -62,12 +62,17 @@ def verify_StateAccount(username):
 		
 class registroAdministrador(forms.Form):
 	
-	DNI=forms.CharField(max_length=32, label="Número de identificación", validators=[numeric_validator, verify_alredyExistDNI], required=True)
-	username = forms.EmailField(label="usuario (Email)",required=True, validators=[verify_alredyExistEmail])
-	first_name=forms.CharField(max_length=32, label="Nombres", required=True)
-	last_name=forms.CharField(max_length=32, label="Apellidos", required=True)
-	password=forms.CharField(max_length=32, widget=forms.PasswordInput(), label="Contraseña", required=True)
-	passwordConfimation=forms.CharField(max_length=32, widget=forms.PasswordInput(), label="Contraseña (Confirmación)", required=True)
+	DNI=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'DNI',
+		'required':'true','maxlength':'32', 'label':'Número de identificación'}), 
+		validators=[numeric_validator, verify_alredyExistDNI])
+	username = forms.EmailField(widget=forms.EmailInput(attrs={'class':'form-control','placeholder':'correo electrónico',
+		'required':'true', 'label':'Correo electrónico'}), validators=[verify_alredyExistEmail])
+	first_name=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Nombres',
+		'required':'true', 'label':'Nombres', 'maxlength':'32',}))
+	last_name=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Apellidos',
+		'required':'true', 'label':'Apellidos', 'maxlength':'32',}))
+	password=forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control','placeholder':'contraseña','maxlength':'32', 'required':'true'}))
+	passwordConfimation=forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control','placeholder':'repita contraseña','maxlength':'32', 'required':'true'}))
 		
 		
 	
@@ -82,13 +87,18 @@ class registroAdministrador(forms.Form):
 	
 		
 class registroEgresado(forms.Form):
-	DNI=forms.CharField(max_length=32, label="Número de identificación", validators=[numeric_validator, verify_alredyExistDNI], required=True)
-	username = forms.EmailField(label="usuario (Email)",required=True, validators=[verify_alredyExistEmail])
-	first_name=forms.CharField(max_length=32, label="Nombres", required=True)
-	last_name=forms.CharField(max_length=32, label="Apellidos", required=True)
-	password=forms.CharField(max_length=32, widget=forms.PasswordInput(), label="Contraseña", required=True)
-	passwordConfimation=forms.CharField(max_length=32, widget=forms.PasswordInput(), label="Contraseña (Confirmación)", required=True)
-	programa = forms.CharField(max_length=50, label="Programa academico", required=True)
+	DNI=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'DNI',
+		'required':'true','maxlength':'32', 'label':'Número de identificación'}), validators=[numeric_validator, verify_alredyExistDNI])
+	username = forms.EmailField(widget=forms.EmailInput(attrs={'class':'form-control','placeholder':'correo electrónico',
+		'required':'true', 'label':'Correo electrónico'}), validators=[verify_alredyExistEmail])
+	first_name=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Nombres',
+		'required':'true', 'label':'Nombres', 'maxlength':'32',}))
+	last_name=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Apellidos',
+		'required':'true', 'label':'Apellidos', 'maxlength':'32',}))
+	password=forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control','placeholder':'contraseña','maxlength':'32', 'required':'true'}))
+	passwordConfimation=forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control','placeholder':'repita contraseña','maxlength':'32', 'required':'true'}))
+	programa = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'DNI',
+		'required':'true','maxlength':'32', 'label':'Programa académico'}))
 	
 	def clean(self):
 		password1 = self.cleaned_data.get('password')
@@ -99,8 +109,8 @@ class registroEgresado(forms.Form):
 
 
 class loginForm(forms.Form):
-	username = forms.EmailField(label="usuario (Email)",required=True)
-	password=forms.CharField(max_length=32, widget=forms.PasswordInput(), label="Contraseña", required=True)
+	username = forms.EmailField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'correo electronico','required':'true'}))
+	password=forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control','placeholder':'contraseña','maxlength':'32', 'required':'true'}))
 	def clean(self):
 		username = str(self.cleaned_data.get('username')).lower()
 		password = self.cleaned_data.get('password')

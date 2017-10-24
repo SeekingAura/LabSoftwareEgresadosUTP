@@ -3,20 +3,25 @@
 <html>
 <head>
 	<link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/my_css.css' %}">
 	<link rel="stylesheet" type="text/css" href="{% static 'bootstrap/js/bootstrap.js' %}">
+
 	<title>Plataforma Egresados UTP! - Bienvenido</title>
 </head>
 <body>
 	<div class="container">
-		
-		<img src="{% static 'images/logo.png' %}" class="img-fluid mx-auto" alt="Responsive image">
-		
+		<hr>
+		<div id="div-logo-utp">
+			<img src="{% static 'images/Logo_UTP.png' %}" class="img-fluid mx-auto" alt="Responsive image" id="logo-utp">
+		</div>
+		<hr>
 		<!-- Nav -->
 		{% include 'index/partials/nav_index.html' %}
 		<!-- end Nav -->
-
+		<hr>
 		{% include 'index/partials/carousel.html' %}
 	</div>
+	<hr>
 
 	<script type="text/javascript">
 		$('.carousel').carousel()
