@@ -23,36 +23,7 @@
                     <input type="submit" class="btn btn-primary" style="width:100%" value="Iniciar sesión" id="btn-login">
             </div>
             </form>
-
-		<!-- /////////////////////////////////////////////////////////////////////////// -->
-		<!--
-		<form method="POST">
-			{% csrf_token %}
-
-		<div class="row">
-			<div class="mx-auto">
-				<div class="form-group mx-auto">
-					<label class="sr-only">email</label>
-					<input name="email" id="email" class="form-control mx-auto" placeholder="tucorreo@ejemplo.com" type="email">
-				</div>	
-			</div>
-		</div>
-		<div class="row">
-			<div class="mx-auto">
-				<div class="form-group mx-auto">
-		            <label for="key" class="sr-only">Contraseña</label>
-		            <input name="key" id="key" class="form-control" placeholder="contraseña" type="password">
-		        </div>
-			</div>
-		</div>
-		<div class="row">
-			<div class="mx-auto">
-				<input id="btn-login" class="btn btn-custom btn-lg btn-block" value="Iniciar sesión" type="submit">	
-			</div>
-		</div>
-		</form>
-
-		<div class="row">
+        <div class="row">
 		<div class="mx-auto">
 			<a href="{% url 'password_reset' %}" id="a-login">Olvidé mi contraseña</a>	
 		</div>
@@ -62,10 +33,8 @@
 			<div class="mx-auto">
 				<a href="{% url 'usuario:registrar' type='egresado' %}" id="a-login">Registrarme</a>	
 			</div>
+		</div>		
 		</div>
-		</div>
-		-->
-		
 	</div>
 	{% endblock %}
 
