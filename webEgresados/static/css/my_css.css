@@ -16,14 +16,7 @@
 	list-style-image: none;
 	list-style-position: outside;
 }
-#logo-utp{
-	width: 15%;
-	height: 15%;	
-}
 
-#div-logo-utp{
-	height: 15%;	
-}
 
 #carouselExampleControls{
 	height: 80%;
@@ -34,7 +27,11 @@
 }
 
 #a-index{
-	color: #FFFFFF;
+	color: #52d3aa;
+}
+
+#a-index-title{
+	color: #1fa67b;
 }
 
 #a-index:hover{
@@ -55,7 +52,7 @@
 	font-family: inherit;
 }
 
-#btn-login{
+#btn-login, #btn-registro{
 	background-color: #1fa67b;
 	color: white;
 	font-family: inherit;

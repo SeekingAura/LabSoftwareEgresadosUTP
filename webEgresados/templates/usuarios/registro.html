@@ -1,8 +1,9 @@
 {% extends 'usuarios/main.html' %}
-
+{% load bootstrap %}
 {% block title %}Registro como {{type}}{% endblock %}
 
 {% block content %}
+	{% include 'index/partials/nav_index.html' %}
 	{% if type == "admin" %}
 		{% include 'usuarios/partials/nav_admin.html' %}
 	{% else %}
@@ -16,10 +17,8 @@
 		<div class="col-lg-8 mx-auto">
 			<form method="POST">
 				{%csrf_token%}
-				<table>
-					{{form.as_table}}
-				</table>
-			    <input type="submit" name="input" class="btn btn-primary" value="Registrar">
+				{{ form|bootstrap }}
+                <input type="submit" class="btn btn-primary" style="width:100%" value="Registrarse" id="btn-registro">
 
 			</form>
 		</div>
