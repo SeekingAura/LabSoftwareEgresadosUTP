@@ -46,6 +46,21 @@
 	height: 20px;
 }
 
-#font-index{
-	color: black;
+#font-login{
+	font-size: 18px;
+	text-align: center;
+	font-weight: bold;
+	padding-bottom: 20px;
+	color: #1fa67b;
+	font-family: inherit;
+}
+
+#btn-login{
+	background-color: #1fa67b;
+	color: white;
+	font-family: inherit;
+}
+
+#a-login{
+	font-family: inherit;	
 }

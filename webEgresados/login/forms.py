@@ -99,8 +99,8 @@ class registroEgresado(forms.Form):
 
 
 class loginForm(forms.Form):
-	username = forms.EmailField(label="usuario (Email)",required=True)
-	password=forms.CharField(max_length=32, widget=forms.PasswordInput(), label="Contraseña", required=True)
+	username = forms.EmailField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'correo electronico','required':'true'}))
+	password=forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control','placeholder':'contraseña','max_length':'32', 'required':'true'}))
 	def clean(self):
 		username = str(self.cleaned_data.get('username')).lower()
 		password = self.cleaned_data.get('password')

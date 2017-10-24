@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 	'usuarioEgresado',
 	'usuarioAdministrador',
 	'usuarioAdminEgresado',
+    'bootstrapform',
 ]
 
 MIDDLEWARE = [
