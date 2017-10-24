@@ -1,8 +1,9 @@
-<ul class="nav justify-content-center">
-  <li class="nav-item">
-    <a class="nav-link" href="#">Iniciar Sesión</a>
+{% load staticfiles %}
+<ul class="bg-secondary" id="nav-index">
+  <li class="nav-item mx-auto">
+    <img src="{% static 'Entypo+/Entypo+/login.svg' %}" id="img-nav-index"><a class="nav-link" href="#" id="a-index">INICIAR SESIÓN</a>
   </li>
-  <li class="nav-item">
-    <a class="nav-link" href="#">Registrarse</a>
+  <li class="nav-item mx-auto">
+    <img src="{% static 'Entypo+/Entypo+/add-user.svg' %}" id="img-nav-index"><a class="nav-link" href="{% url 'usuario:registrar' type="egresado" %}" id="a-index">REGISTRARSE</a>
   </li>
 </ul>

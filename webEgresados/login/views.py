@@ -152,7 +152,7 @@ def logout_view(request):
 	
 	
 def index(request):
-	return render(request, 'index/index.html', {})
+	return render(request, 'index/oxygen/index.html', {})
 
 #def index(request):
 	#return HttpResponse("aqui estoy en index del login")
