@@ -4,11 +4,13 @@
 
 {% block content %}
 
-<h1>Bievenido/a {{ tipoUser }}</h1>
-	
+<h1>Bievenido/a {{ tipoUser }} </h1>
+
+
+{% for user in listUser %}
+    <p>{{ user.first_name }}</p>
+	<a href="{% url 'usuario:login' %}" value="aceptado" user=user>Aceptar</a>
+	<a href="{% url 'usuario:login' %}" value="denegado" user=user>Denegado</a> btn-primary">Rechazar</a>
+{% endfor %}
 {% endblock %}
 
-{% block login %}
-<h4>Logeado como {{ username }}<h4>
-<a href="{% url 'usuario:logout' %}">Logout</a>
-{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'usuarios/main.html' %}
+
+{% block title %}Aceptar solicitudes de registro{% endblock %}
+
+{% block content %}
+
+	<!-- Debe recibir los usuarios en una lista -->
+	
+		<table>
+			<thead>
+				<th>Nombres</th>
+				<th>Apellidos</th>
+				<th>Accion</th>
+			</thead>
+			<tbody>
+			{% for usuario in listaUsuarios %}
+			<tr>
+				  <td>{{ usuario.first_name }}</td>
+				  <td>{{ usuario.last_name }}</td>
+				  <td>
+					  <a href="{% url 'solicitud' user=usuario.id value="Aceptar"%}" class="btn btn-warning">Aceptar</a>
+					  
+					  <a href="{% url 'solicitud' user=usuario.id value="Rechazado"%}" class="btn btn-danger">Rechazar</a>
+				  </td>
+			</tr>
+			{% endfor %}
+		</tbody>
+		</table>
+
+{% endblock %}

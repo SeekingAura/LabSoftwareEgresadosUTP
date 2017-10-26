@@ -14,6 +14,10 @@ def numeric_validator(value):
 	else:
 		raise ValidationError('este campo debe ser solamente númerico')
 
+		
+def getProgramas():
+		return [("ingenieria de sistemas", "Ingenieria de sistemas"), ("ingenieria industrial", "Ingenieria industrial"), ("ingenieria Mecanica", "Ingenieria Mecanica")]
+		
 class UsuarioEgresado(models.Model):
 	userAdminEgre=models.ForeignKey(UserAdminEgreModel.UsuariosAdminEgresado)
 	
@@ -21,7 +25,11 @@ class UsuarioEgresado(models.Model):
 	direccionTrabajo=models.CharField(max_length=100, blank=True)
 	fechaNacimiento=models.DateField(blank=True, null=True)
 	genero=models.CharField(max_length=6, blank=True)
-	programa=models.CharField(max_length=100)
+	
+	
+	
+	programa=models.CharField(max_length=100, choices=getProgramas())
+	
 	ocupacion=models.CharField(max_length=100, blank=True)
 	def __str__ (self):
 		return str(self.userAdminEgre)

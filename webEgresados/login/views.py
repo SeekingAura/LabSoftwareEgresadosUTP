@@ -72,12 +72,12 @@ def registro(request, type):
 			print("es valido, creando user")
 			user=User.objects.create(username=str(request.POST.get("username")).lower(), email=str(request.POST.get("username")).lower(),first_name=str(request.POST.get("first_name")).title(), last_name=str(request.POST.get("last_name")).title())
 			
-			user.set_password(request.POST.get("password"))
-			
+			#user.set_password(request.POST.get("password"))
+			user.set_password("123")
 			user.save()
 			
 			#
-			userAdminEgre=UsuariosAdminEgresado.objects.create(user=user, DNI=request.POST.get("DNI"), estadoCuenta="Pendiente")
+			userAdminEgre=UsuariosAdminEgresado.objects.create(user=user, DNI=request.POST.get("DNI"), estadoCuenta="pendiente")
 			
 			userAdminEgre.save()
 			
@@ -125,7 +125,7 @@ def login_view(request):
 def Bienvenido(request):
 	
 	username = None
-	context={'username': username, 'tipoUser' : None}
+	context={'username': username, 'tipoUser' : None, 'user' : request.user}
 	if request.user.is_authenticated():
 		username = request.user.first_name
 		context['username']=username
@@ -139,7 +139,8 @@ def Bienvenido(request):
 		elif(tipoUser[0]=="egresado"):
 			print("este usuario es egresado")
 			context['tipoUser']="Egresado"
-		
+		print(UsuariosAdminEgresado.objects.all().filter(estadoCuenta="pendiente"))
+		#for i in rang
 		
 	return render_to_response('bienvenido.html',context)
 

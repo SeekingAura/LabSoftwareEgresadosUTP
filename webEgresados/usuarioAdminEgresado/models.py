@@ -33,7 +33,7 @@ class UsuariosAdminEgresado(models.Model):
 	ciudad=models.CharField(max_length=30, blank=True)
 	direccion=models.CharField(max_length=100, blank=True)
 	telefono=models.CharField(max_length=15, validators=[numeric_validator], blank=True)
-	estadoCuenta=models.CharField(max_length=15)
+	estadoCuenta=models.CharField(max_length=15, choices=[("activada", "Activada"), ("pendiente", "Pendiente"), ("cerrada", "Cerrada")])
 	#override
 	def __str__ (self):
 		return str(self.DNI)

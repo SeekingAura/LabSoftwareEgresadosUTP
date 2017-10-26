@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'bootstrapform',
 ]
 
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -83,8 +84,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
 		'NAME': 'djangoschema',
-        'USER': 'german',
-        'PASSWORD': '1ng3s0ft',
+        'USER': 'root',
+        'PASSWORD': '9924',
 		'HOST': 'localhost',
 		'PORT': '3306',
 		'OPTIONS': {
@@ -154,34 +155,4 @@ EMAIL_HOST_PASSWORD = '97032609604cm'
 EMAIL_PORT = 587
 #Must generate specific password for your app in [gmail settings][1]
 #This did the trick
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER#For email
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-
-EMAIL_USE_TLS = True
-
-EMAIL_HOST = 'smtp.gmail.com'
-
-EMAIL_HOST_USER = 'carlox216@utp.edu.co'
-
-
-EMAIL_HOST_PASSWORD = '97032609604cm'
-
-EMAIL_PORT = 587
 DEFAULT_FROM_EMAIL = "Egresados UTP"
-#Must generate specific password for your app in [gmail settings][1]
-#This did the trick
-
-#EMAIL_HOST = 'smtp.gmail.com'
-#EMAIL_HOST_USER = 'carlox216@utp.edu.co'
-#EMAIL_HOST_PASSWORD = '97032609604cm'
-#EMAIL_PORT = 587
-#EMAIL_USE_TLS = True
-#EMAIL_HOST = 'smtp.gmail.com'
-#EMAIL_HOST_USER = 'carlox216@utp.edu.co'
-#EMAIL_HOST_PASSWORD = '97032609604cm'
-#EMAIL_PORT = 587
-#EMAIL_USE_TLS = True
-#LOGIN_REDIRECT_URL = reverse_lazy("usuario:bienvenido")
-#LOGOUT_REDIRECT_URL = reverse_lazy("usuario:login")
-
-
