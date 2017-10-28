@@ -10,12 +10,15 @@ from django.forms import ModelForm
 from django.core.validators import EmailValidator
 import re
 from django.core.exceptions import ValidationError
+from django.contrib import messages
+
 
 def numeric_validator(value):
 	result=re.match('[0-9]*', str(value))
 	if result is not None:	
 		
 		if len(result.group(0))!=len(str(value)):
+			
 			raise ValidationError('este campo debe ser solamente númerico')
 	else:
 		
@@ -30,7 +33,6 @@ def name_validator(value):
 			guion=True
 		else:
 			guion=False
-	print("entra valor", str(value) , str(value.replace("-", "")))
 	valueInput=value.replace("-", "")
 	espacio=False
 	for i in str(valueInput):
@@ -40,19 +42,16 @@ def name_validator(value):
 			espacio=True
 		else:
 			espacio=False
-	
+	valueInput=value.replace(" ", "")
 	testValue=""
 	for enum,i in enumerate(str(valueInput)):
-		print(enum, len(str(valueInput)))
 		if(i==" "):
-			print(testValue)
 			if(testValue.isalpha()):
 				testValue=""
 			else:
 				raise ValidationError('este campo debe ser solamente alfabetico')
 		if(enum==len(str(valueInput))-1):
 			testValue+=i
-			print(testValue)
 			if(testValue.isalpha()):
 				testValue=""
 			else:
@@ -141,7 +140,9 @@ class registroEgresado(forms.Form):
 	
 	programa = forms.CharField(widget=forms.Select(attrs={'class':'form-control','placeholder':'DNI',
 		'required':'true','maxlength':'32'}, choices=getProgramas()), label="Programa Academico")
-	
+	def clean(self):
+		if(not self.is_valid()):
+			raise forms.ValidationError("Hay errores en los campos")
 	"""
 	password=forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control','placeholder':'contraseña','maxlength':'32', 'required':'true'}), label="Contraseña")
 	passwordConfimation=forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control','placeholder':'repita contraseña','maxlength':'32', 'required':'true'}), label="Confirmar contraseña")
