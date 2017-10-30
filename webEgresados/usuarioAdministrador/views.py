@@ -46,25 +46,40 @@ def determinarTipoUser(username):
 		print("ERROR - No se ha logrado determinar el tipo de usuario")
 		return []
 
+def redirectAdmin(user):
+	tipoUser=determinarTipoUser(user)
+	if(len(tipoUser)==2):
+		print("este usuario es Admin y Egresado")
+	elif(tipoUser[0]=="administrador"):
+		print("este usuario es Admin")
+	elif(tipoUser[0]=="egresado"):
+		print("este usuario es egresado")
+		return redirect("usuarioEgre:index")
+	return None
+		
 @login_required(login_url="usuario:login")
 def index(request):
-	
+	redirectValue=redirectAdmin(request.user)
+	if(redirectValue is not None):#caso para redireccionar si entra usuario que no es admin
+		return redirectValue
 	username = None
-	context={'username': username, 'tipoUser' : None, 'user' : request.user}
+	context={'username': username, 'tipoUser' : "Administrador", 'user' : request.user}
 	if request.user.is_authenticated():
 		username = request.user.first_name
 		context['username']=username
-		tipoUser=determinarTipoUser(request.user)
-		if(len(tipoUser)==2):
-			print("este usuario es Admin y Egresado")
-			context['tipoUser']="Administrador y/o Egresado"
-		elif(tipoUser[0]=="administrador"):
-			print("este usuario es Admin")
-			context['tipoUser']="Administrador"
-		elif(tipoUser[0]=="egresado"):
-			print("este usuario es egresado")
-			context['tipoUser']="Egresado"
-		print(UsuariosAdminEgresado.objects.all().filter(estadoCuenta="pendiente"))
-		#for i in rang
-		
-	return render_to_response('admin/index.html',context)
+		solicPendientes=UsuariosAdminEgresado.objects.all().filter(estadoCuenta="pendiente")
+		print(solicPendientes)
+		listSoli=[]
+		for i in solicPendientes:
+			listSoli.append([i.DNI, i.user_id])
+		listSoliEgre=[]
+		for i in listSoli:
+			try:
+				tempEgre=UsuarioEgresado.objects.get(userAdminEgre_id=i[0])
+				tempUser=User.objects.get(id=i[1])
+				listSoliEgre.append([tempUser, tempEgre, i[0]])
+			except:
+				continue
+		print("solo los egresados pendientes", listSoliEgre)
+		context['listSolicitudes']=listSoliEgre
+	return render_to_response('administrador/index.html',context)

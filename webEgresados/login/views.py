@@ -118,8 +118,11 @@ def login_view(request):
 					print("este usuario es Admin y Egresado")
 				elif(tipoUser[0]=="administrador"):
 					print("este usuario es Admin")
+					return redirect("usuarioAdmin:index")
 				elif(tipoUser[0]=="egresado"):
 					print("este usuario es egresado")
+					return redirect("usuarioEgre:index")
+				
 				return HttpResponseRedirect("bienvenido")
 	return render(request,'login/login.html', context)
 

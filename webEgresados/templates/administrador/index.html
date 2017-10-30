@@ -1,16 +1,43 @@
-{% extends 'login/base.html' %}
+{% extends 'usuarios/main.html' %}
 
-{% block title %}Index{% endblock %}
+{% block title %}Aceptar solicitudes de registro{% endblock %}
 
 {% block content %}
 
 <h1>Bievenido/a {{ tipoUser }} {{ user.first_name }}</h1>
 
+<h2>Lista de solicitudes pendiente</h2>
 
-{% for user in listUser %}
-    <p>{{ user.first_name }}</p>
-	<a href="{% url 'usuario:login' %}" value="aceptado" user=user>Aceptar</a>
-	<a href="{% url 'usuario:login' %}" value="denegado" user=user>Denegado</a> btn-primary">Rechazar</a>
-{% endfor %}
+		<table>
+			<thead>
+				<th>DNI</th>
+				<th>Programa</th>
+				<th>Nombres</th>
+				<th>Apellidos</th>
+				<th>Accion</th>
+			</thead>
+			<tbody>
+			{% for usuario in listSolicitudes %}
+			<tr>
+				  <td>{{ usuario.2 }}</td>
+				  <td>{{ usuario.1.programa }}</td>
+				  <td>{{ usuario.0.first_name }}</td>
+				  <td>{{ usuario.0.last_name }}</td>
+				  <td>
+					  <a href="{% url 'usuario:login' %}" user=usuario.id value="Aceptar"%}" class="btn btn-warning">Aceptar</a>
+					  
+					  <a href="{% url 'usuario:login' %}" user=usuario.id value="Rechazado"%}" class="btn btn-danger">Rechazar</a>
+				  </td>
+			</tr>
+			{% endfor %}
+		</tbody>
+		</table>
+		
+	{% if user.is_authenticated %}
+    	<a href="{% url 'usuario:logout' %}">Logout</a>
+	{% else %}
+	    <h4>No hay usuario Authenticated</h4>
+	{% endif %}
 {% endblock %}
+
 
