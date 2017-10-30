@@ -62,11 +62,11 @@
 	font-family: inherit;	
 }
 
-#navbar-egresado{
+#navbar-egresado, #navbar-admin-login{
 	background-color: #52d3aa;
 }
 
-#text-navbar-egresado{
+#text-navbar-egresado, #text-navbar-admin-login{
 	color: white;
 	background-color: #52d3aa; 
 }
@@ -74,4 +74,9 @@
 #img-navbar-egresado{
 	width: 10%;
 	height: 10%;
+}
+
+#col-admin-index{
+	border-style: groove;
+	border-color: #52d3aa;
 }

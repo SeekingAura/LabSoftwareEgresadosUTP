@@ -33,10 +33,11 @@ urlpatterns = [
     url(r'^reset/password_reset_done',password_reset_done,{'template_name':'login/password_reset_done.html'},name="password_reset_done"),
     #otro proceso de reset
 
-    #This urls will be fort test
-    url(r'^inicio', TemplateView.as_view(template_name="egresados/main.html"), name="egresadosInicio" ),
-
 	url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$', password_reset_confirm, {'template_name': 'login/password_reset_confirm.html'}, name='password_reset_confirm'),
     url(r'^reset/done', password_reset_complete, {'template_name':'login/password_reset_complete.html'}, name='password_reset_complete'),
+
+    #This urls will be fort test
+    url(r'^inicio', TemplateView.as_view(template_name="egresados/main.html"), name="egresadosInicio" ),
+    
 
 ]
