@@ -19,6 +19,9 @@ from django.contrib.auth.views import login, logout_then_login, password_reset
 from django.contrib.auth.views import password_reset_done, password_reset_confirm, password_reset_complete
 from login.views import index
 
+#This is for test url without views
+from django.views.generic import TemplateView
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
 	url(r'^$', index, name="index"),
@@ -29,4 +32,7 @@ urlpatterns = [
     #otro proceso de reset
 	url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$', password_reset_confirm, {'template_name': 'password_reset_confirm.html'}, name='password_reset_confirm'),
     url(r'^reset/done', password_reset_complete, {'template_name':'password_reset_complete.html'}, name='password_reset_complete'),
+
+    #This urls will be fort test
+    url(r'^inicio', TemplateView.as_view(template_name="egresados/main.html"), name="egresadosInicio" ),
 ]

@@ -1,0 +1,34 @@
+{% load staticfiles %}
+<div class="container-fluid" display="flex" width="100%">
+  <p class="text-rigth">Bienvenido, Nombre1 Nombre2</p>	
+  <img class="text-rigth" src="{% static 'images/sin_foto.png' %}" id="img-navbar-egresado">	
+</div>
+
+
+<!-- Navbar -->
+<nav class="navbar col-12 container-fluid" id="navbar-egresado">
+  <a class="navbar-brand" href="{% url 'egresadosInicio' %}" id="text-navbar-egresado">Inicio</a>
+  <a class="navbar-brand" href="#" id="text-navbar-egresado">Perfil</a>
+  <a class="navbar-brand" href="#" id="text-navbar-egresado">Amigos</a>
+  <a class="navbar-brand" href="#" id="text-navbar-egresado">Noticias</a>
+  <a class="navbar-brand" href="#" id="text-navbar-egresado">Mensajes</a>
+  
+  <!--
+  <div class="collapse navbar-collapse" id="navbarText">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Features</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Pricing</a>
+      </li>
+    </ul>
+    <span class="navbar-text">
+      Navbar text with an inline element
+    </span>
+  </div>
+-->
+</nav>

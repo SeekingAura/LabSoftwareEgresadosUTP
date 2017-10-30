@@ -61,3 +61,17 @@
 #a-login{
 	font-family: inherit;	
 }
+
+#navbar-egresado{
+	background-color: #52d3aa;
+}
+
+#text-navbar-egresado{
+	color: white;
+	background-color: #52d3aa; 
+}
+
+#img-navbar-egresado{
+	width: 10%;
+	height: 10%;
+}
