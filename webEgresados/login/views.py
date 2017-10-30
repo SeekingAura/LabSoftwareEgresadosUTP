@@ -23,8 +23,11 @@ from django.contrib.auth import authenticate, login
 
 
 def determinarTipoUser(username):
-	user=User.objects.get(username=username)
-	user=UsuariosAdminEgresado.objects.get(user_id=user.id)
+	try:
+		user=User.objects.get(username=username)
+		user=UsuariosAdminEgresado.objects.get(user_id=user.id)
+	except:
+		return redirect("usuario:login")
 	try:
 		userAdmin=UsuarioAdministrador.objects.get(userAdminEgre_id=user.DNI)
 	except:
@@ -92,8 +95,9 @@ def registro(request, type):
 				userEgre.save()
 				form = registroEgresado()
 				context['form'] = form
-			messages.success(request, 'registro completado con exito')
-			
+			messages.success(request, 'Registro completado con exito')
+		#else:
+			#messages.error(request, 'Hay errores en el registro')
 		
 	
 	return render(request,'usuarios/registro.html', context)
@@ -114,10 +118,13 @@ def login_view(request):
 					print("este usuario es Admin y Egresado")
 				elif(tipoUser[0]=="administrador"):
 					print("este usuario es Admin")
+					return redirect("usuarioAdmin:index")
 				elif(tipoUser[0]=="egresado"):
 					print("este usuario es egresado")
+					return redirect("usuarioEgre:index")
+				
 				return HttpResponseRedirect("bienvenido")
-	return render(request,'login.html', context)
+	return render(request,'login/login.html', context)
 
 	
 	
@@ -142,7 +149,7 @@ def Bienvenido(request):
 		print(UsuariosAdminEgresado.objects.all().filter(estadoCuenta="pendiente"))
 		#for i in rang
 		
-	return render_to_response('bienvenido.html',context)
+	return render_to_response('login/bienvenido.html',context)
 
 	
 def logout_view(request):
