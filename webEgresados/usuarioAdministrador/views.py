@@ -18,6 +18,7 @@ from usuarioAdminEgresado.models import UsuariosAdminEgresado
 from usuarioAdministrador.models import UsuarioAdministrador
 from usuarioEgresado.models import UsuarioEgresado
 from django.contrib.auth import authenticate, login
+from django.core.mail import EmailMessage
 
 
 def determinarTipoUser(username):
@@ -49,13 +50,61 @@ def determinarTipoUser(username):
 def redirectAdmin(user):
 	tipoUser=determinarTipoUser(user)
 	if(len(tipoUser)==2):
-		print("este usuario es Admin y Egresado")
+		#print("este usuario es Admin y Egresado")
+		return None
 	elif(tipoUser[0]=="administrador"):
-		print("este usuario es Admin")
+		#print("este usuario es Admin")
+		return None
 	elif(tipoUser[0]=="egresado"):
-		print("este usuario es egresado")
+		#print("este usuario es egresado")
 		return redirect("usuarioEgre:index")
 	return None
+		
+@login_required(login_url="usuario:login")		
+def aceptarSoli_view(request, DNI):
+	redirectValue=redirectAdmin(request.user)
+	if(redirectValue is not None):#caso para redireccionar si entra usuario que no es admin
+		return redirectValue
+	print("Aceptando soli", DNI)
+	try:
+		userAdminEgre=UsuariosAdminEgresado.objects.get(DNI=str(DNI))
+		if(userAdminEgre.estadoCuenta=="pendiente"):
+			userAdminEgre.estadoCuenta="activada"
+			userAdminEgre.save()
+			user=User.objects.get(id=userAdminEgre.user_id)
+			password=User.objects.make_random_password()
+			user.set_password(password)
+			user.save()
+			email = EmailMessage("Activación de cuenta", "Su cuenta ha sido ACTIVADA satisfactoriamente, recuerde que debe ingresar a http://"+str(request.META['HTTP_HOST'])+"/usuario/login para acceder a su cuenta \n\nSu usuario es: "+str(user.email)+"\nsu contraseña es: "+str(password), to=[str(user.email)])
+			#email.send()#Descomentar para que envie mensaje
+			messages.success(request, 'Usuario con DNI: '+str(DNI)+" Aceptado correctamente")
+	except:
+		print("NOT FOUND")
+	return redirect("usuarioAdmin:index")
+
+	
+def rechazarSoli_view(request, DNI):
+	redirectValue=redirectAdmin(request.user)
+	if(redirectValue is not None):#caso para redireccionar si entra usuario que no es admin
+		return redirectValue
+	print("Rechazando soli", DNI)
+	try:
+		userAdminEgre=UsuariosAdminEgresado.objects.get(DNI=str(DNI))
+		if(userAdminEgre.estadoCuenta=="pendiente"):
+			userAdminEgre.estadoCuenta="rechazada"
+			userAdminEgre.save()
+			user=User.objects.get(id=userAdminEgre.user_id)
+			#password=User.objects.make_random_password()
+			#user.set_password(password)
+			#user.save()
+			mensaje=""
+			email = EmailMessage("Activación de cuenta", "Su cuenta ha sido RECHAZADA, por el motivo de: "+mensaje+" \n\nSi desea formar parte del sistema solvente los problemas planteados en su motivo de rechazo, Para mayor información consulte con un administrador", to=[str(user.email)])
+			#email.send()#Descomentar para que envie mensaje
+			User.objects.get(id=userAdminEgre.user_id).delete()
+			messages.warning(request, 'Usuario con DNI: '+str(DNI)+" Rechazado correctamente")
+	except:
+		print("NOT FOUND")
+	return redirect("usuarioAdmin:index")
 		
 @login_required(login_url="usuario:login")
 def index(request):
@@ -68,7 +117,7 @@ def index(request):
 		username = request.user.first_name
 		context['username']=username
 		solicPendientes=UsuariosAdminEgresado.objects.all().filter(estadoCuenta="pendiente")
-		print(solicPendientes)
+		#print(solicPendientes)
 		listSoli=[]
 		for i in solicPendientes:
 			listSoli.append([i.DNI, i.user_id])
@@ -80,6 +129,5 @@ def index(request):
 				listSoliEgre.append([tempUser, tempEgre, i[0]])
 			except:
 				continue
-		print("solo los egresados pendientes", listSoliEgre)
 		context['listSolicitudes']=listSoliEgre
-	return render_to_response('administrador/index.html',context)
+	return render(request,'administrador/index.html', context)

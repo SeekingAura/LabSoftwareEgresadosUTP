@@ -4,9 +4,9 @@
 
 {% block content %}
 
-<h1>Bievenido {{ tipoUser }} {{ user.first_name }}</h1>
+<h1>Bienvenido {{ tipoUser }} {{ user.first_name }}</h1>
 
-<h2>Lista de solicitudes pendiente</h2>
+<h2>Lista de solicitudes pendientes</h2>
 
 	<hr>
 	<div class="row">
@@ -17,7 +17,16 @@
 
 
 	<!-- La siguiente parte debe ir en otro template (solicitudes)-->
+	
 	<hr>
+		{% if messages %}
+	<ul class="messages">
+		{% for message in messages %}
+		<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+		{% endfor %}
+	</ul>
+	
+	{% endif %}
 		<table class="table table-striped">
 			<thead>
 				<th>DNI</th>
@@ -35,14 +44,14 @@
 				  <td>{{ usuario.1.programa }}</td>
 				  <td>
 				  	
-					  <a href="#" class="btn btn-warning">Aceptar</a>
+					  <a href="{% url 'usuarioAdmin:aceptarSoli' DNI=usuario.2 %}" class="btn btn-warning">Aceptar</a>
 					  
-					  <a href="#" class="btn btn-danger">Rechazar</a>
+					  <a href="{% url 'usuarioAdmin:rechazarSoli' DNI=usuario.2 %}" class="btn btn-danger">Rechazar</a>
 					
 				  </td>
 			</tr>
 			{% endfor %}
-		</tbody>
+			</tbody>
 		</table>
 		
 {% endblock %}
