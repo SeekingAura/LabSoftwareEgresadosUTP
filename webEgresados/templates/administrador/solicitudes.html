@@ -1,0 +1,43 @@
+{% extends 'administrador/base.html' %}
+
+{% block title %}Aceptar solicitudes de registro{% endblock %}
+
+{% block content %}
+
+<h1>Bievenido {{ tipoUser }} {{ user.first_name }}</h1>
+
+<h2>Lista de solicitudes pendiente</h2>
+	<hr>
+
+	<!-- La siguiente parte debe ir en otro template (solicitudes)-->
+	<hr>
+		<table class="table table-striped">
+			<thead>
+				<th>DNI</th>
+				<th>Nombres</th>
+				<th>Apellidos</th>
+				<th>Programa</th>
+				<th>Accion</th>
+			</thead>
+			<tbody>
+			{% for usuario in listSolicitudes %}
+			<tr>
+				  <td>{{ usuario.2 }}</td>
+				  <td>{{ usuario.0.first_name }}</td>
+				  <td>{{ usuario.0.last_name }}</td>
+				  <td>{{ usuario.1.programa }}</td>
+				  <td>
+				  	
+					  <a href="#" class="btn btn-warning">Aceptar</a>
+					  
+					  <a href="#" class="btn btn-danger">Rechazar</a>
+					
+				  </td>
+			</tr>
+			{% endfor %}
+		</tbody>
+		</table>
+		
+{% endblock %}
+
+

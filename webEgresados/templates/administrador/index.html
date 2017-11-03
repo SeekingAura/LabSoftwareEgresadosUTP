@@ -9,46 +9,13 @@
 <h2>Lista de solicitudes pendiente</h2>
 	<hr>
 	<div class="row">
-		<div class="col-sm-4 col-md-4" id="col-admin-index">Mis actividades y mas
-			{% for i in list %}
-				<p>{{i}}</p>
-			{% endfor %}
+		<div class="col-sm-4 col-md-4" id="col-admin-index"><h3>Mis actividades y mas</h3>
 		</div>
-		<div class="col-sm-4 col-md-4" id="col-admin-index">Noticias de otros
+		<div class="col-sm-4 col-md-4" id="col-admin-index"><h3>Noticias de otros</h3>
 		</div>
-		<div class="col-sm-4 col-md-4" id="col-admin-index">Crear noticia
+		<div class="col-sm-4 col-md-4" id="col-admin-index"><h3>Crear noticia</h3>
 		</div>
 	</div>
-
-
-	<!-- La siguiente parte debe ir en otro template (solicitudes)-->
-	<hr>
-		<table class="table table-striped">
-			<thead>
-				<th>DNI</th>
-				<th>Nombres</th>
-				<th>Apellidos</th>
-				<th>Programa</th>
-				<th>Accion</th>
-			</thead>
-			<tbody>
-			{% for usuario in listSolicitudes %}
-			<tr>
-				  <td>{{ usuario.2 }}</td>
-				  <td>{{ usuario.0.first_name }}</td>
-				  <td>{{ usuario.0.last_name }}</td>
-				  <td>{{ usuario.1.programa }}</td>
-				  <td>
-				  	
-					  <a href="#" class="btn btn-warning">Aceptar</a>
-					  
-					  <a href="#" class="btn btn-danger">Rechazar</a>
-					
-				  </td>
-			</tr>
-			{% endfor %}
-		</tbody>
-		</table>
 		
 {% endblock %}
 
