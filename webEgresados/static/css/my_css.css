@@ -72,11 +72,20 @@
 }
 
 #img-navbar-egresado{
-	width: 10%;
-	height: 10%;
+	width: 100px;
+	height: 100px;
 }
 
 #col-admin-index{
 	border-style: groove;
 	border-color: #52d3aa;
+}
+
+#navbar-main{
+	background-color: black;
+}
+
+#col-admin-index{
+	height: 450px;
+	overflow: auto;
 }
