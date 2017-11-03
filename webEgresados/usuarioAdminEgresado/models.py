@@ -42,7 +42,9 @@ class Departamento(models.Model):
 class UsuariosAdminEgresado(models.Model):
 	user=models.ForeignKey(User)
 	DNI=models.CharField(max_length=30, primary_key=True, validators=[numeric_validator])
-	departamento=models.CharField(max_length=30, blank=True)
+	departamento=models.CharField(max_length=100, blank=True)
+	pais=models.CharField(max_length=100, blank=True)
+	#departamento=models.ManyToManyField(Departamento, null=True, blank=True)
 	ciudad=models.CharField(max_length=30, blank=True)
 	direccion=models.CharField(max_length=100, blank=True)
 	telefono=models.CharField(max_length=15, validators=[numeric_validator], blank=True)
