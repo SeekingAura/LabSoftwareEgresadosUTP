@@ -10,49 +10,13 @@
 
 	<hr>
 	<div class="row">
-		<div class="col" id="col-admin-index">Mis actividades y mas</div>
-		<div class="col" id="col-admin-index">Noticias de otros</div>
-		<div class="col" id="col-admin-index">Crear noticia</div>
+		<div class="col-sm-4 col-md-4" id="col-admin-index"><h3>Mis actividades y mas</h3>
+		</div>
+		<div class="col-sm-4 col-md-4" id="col-admin-index"><h3>Noticias de otros</h3>
+		</div>
+		<div class="col-sm-4 col-md-4" id="col-admin-index"><h3>Crear noticia</h3>
+		</div>
 	</div>
-
-
-	<!-- La siguiente parte debe ir en otro template (solicitudes)-->
-	
-	<hr>
-		{% if messages %}
-	<ul class="messages">
-		{% for message in messages %}
-		<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-		{% endfor %}
-	</ul>
-	
-	{% endif %}
-		<table class="table table-striped">
-			<thead>
-				<th>DNI</th>
-				<th>Nombres</th>
-				<th>Apellidos</th>
-				<th>Programa</th>
-				<th>Accion</th>
-			</thead>
-			<tbody>
-			{% for usuario in listSolicitudes %}
-			<tr>
-				  <td>{{ usuario.2 }}</td>
-				  <td>{{ usuario.0.first_name }}</td>
-				  <td>{{ usuario.0.last_name }}</td>
-				  <td>{{ usuario.1.programa }}</td>
-				  <td>
-				  	
-					  <a href="{% url 'usuarioAdmin:aceptarSoli' DNI=usuario.2 %}" class="btn btn-warning">Aceptar</a>
-					  
-					  <a href="{% url 'usuarioAdmin:rechazarSoli' DNI=usuario.2 %}" class="btn btn-danger">Rechazar</a>
-					
-				  </td>
-			</tr>
-			{% endfor %}
-			</tbody>
-		</table>
 		
 {% endblock %}
 
