@@ -9,7 +9,6 @@ from django.template import loader
 
 from django.contrib.auth import logout
 from django.http import HttpResponseRedirect
-#from .forms import registroAdministrador, registroEgresado, loginForm
 from django.contrib.auth.decorators import login_required
 from django.core.validators import EmailValidator, ValidationError
 from django.contrib import messages
@@ -18,13 +17,14 @@ from usuarioAdminEgresado.models import UsuariosAdminEgresado
 from usuarioAdministrador.models import UsuarioAdministrador
 from usuarioEgresado.models import UsuarioEgresado
 from django.contrib.auth import authenticate, login
+from .forms import primerLogin_Form
 from .decorators import *
 
 
 		
 @login_required(login_url="usuario:login")
 @primerLogin(index_url="usuarioEgre:primerLogin")
-@redirectEgresado_(index_url="usuarioAdmin:index")
+@redirectEgresado(index_url="usuarioAdmin:index")
 def index_view(request):
 	username = None
 	context={'username': username, 'tipoUser' : "Egresado", 'user' : request.user}
@@ -36,8 +36,10 @@ def index_view(request):
 
 @login_required(login_url="usuario:login")
 @primerLogin(index_url="usuarioEgre:index", isNotYet=False)
-@redirectEgresado_(index_url="usuarioAdmin:index")
+@redirectEgresado(index_url="usuarioAdmin:index")
 def primerLogin_view(request):
 	context={}
+	form=primerLogin_Form()
+	context['form'] = form
 	print("estoy en primer inicio")
-	return render(request, 'egresado/index.html',context)
+	return render(request, 'egresado/primerlogin.html',context)

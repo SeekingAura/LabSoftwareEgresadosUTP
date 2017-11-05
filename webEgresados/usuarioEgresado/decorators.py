@@ -54,12 +54,6 @@ def login_required(function=None, redirect_field_name=REDIRECT_FIELD_NAME, login
 	return actual_decorator
 
 def primerLogin(index_url=None, raise_exception=False, isNotYet=True):
-	"""
-	Decorator for views that checks whether a user has a particular permission
-	enabled, redirecting to the log-in page if necessary.
-	If the raise_exception parameter is given the PermissionDenied exception
-	is raised.
-	"""
 	def check(user):
 		try:
 			usuario=User.objects.get(username=user)
@@ -81,9 +75,8 @@ def primerLogin(index_url=None, raise_exception=False, isNotYet=True):
 	#print(index_url)
 	return user_passes_test(check, login_url=index_url)
 	
-def redirectEgresado_(index_url=None, raise_exception=False):
+def redirectEgresado(index_url=None, raise_exception=False):
 	def determinarTipoUser(username):
-		print("PERRAS")
 		try:
 			user=User.objects.get(username=username)
 			user=UsuariosAdminEgresado.objects.get(user_id=user.id)

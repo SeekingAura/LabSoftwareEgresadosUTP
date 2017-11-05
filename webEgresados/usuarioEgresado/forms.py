@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from usuarioAdminEgresado.models import UsuariosAdminEgresado
+from usuarioAdminEgresado.models import UsuariosAdminEgresado, Pais
 
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login
@@ -12,6 +12,8 @@ from django.core.validators import EmailValidator
 import re
 from django.core.exceptions import ValidationError
 from django.contrib import messages
+
+from datetime import date
 
 
 def numeric_validator(value):
@@ -25,17 +27,36 @@ def numeric_validator(value):
 		
 		raise ValidationError('este campo debe ser solamente númerico')
 		
-		
+
+YEARS= [x for x in range(date.today().year-100,date.today().year)]
+def paisCreator():
+	temp=["pais1", "pais2", "pais3"]
+	templist=Pais.objects.all().values_list('paisNombre')
+	print(templist)
+	result=[]
+	for i in templist:
+		tuple=[]
+		tuple.append(i[0])
+		tuple.append(i[0].title())
+		result.append(tuple)
+	
+	return sorted(result)
 		
 class primerLogin_Form(forms.Form):
 	
-	pais=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'DNI',
+	pais=forms.ChoiceField(widget=forms.Select(attrs={'class':'form-control','placeholder':'Pais',
 		'required':'true','maxlength':'32'}), 
-		validators=[], label="pais")
+		validators=[], choices=paisCreator(),label="pais")
 	intereses = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'correo electrónico',
 		'required':'true'}), validators=[], label="Intereses")
-	fechaNacimiento=forms.DataField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Nombres',
-		'required':'true', 'maxlength':'32',}), validators=[], label="Fecha de nacimiento")
+	
+	fechaNacimiento= forms.DateField(widget=forms.SelectDateWidget(attrs={'class':'form-control','placeholder':'correo electrónico',
+		'required':'true'},years=YEARS), label='Fecha de nacimiento', initial="1990-06-21")
+
+
+	#fechaNacimiento=forms.DateField(widget=forms.SelectDateWidget(attrs={'class':'form-control','placeholder':'Nombres',
+	#	'required':'true', 'maxlength':'32',}, empty_label=("Choose Year", "Choose Month", "Choose Day"),
+    #), validators=[], label="Fecha de nacimiento")
 	genero=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Apellidos',
 		'required':'true', 'maxlength':'32',}), validators=[],  label="Genero")
 	direccionResidencia=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Apellidos',

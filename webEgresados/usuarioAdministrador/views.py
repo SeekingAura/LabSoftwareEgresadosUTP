@@ -130,4 +130,4 @@ def index(request):
 			except:
 				continue
 		context['listSolicitudes']=listSoliEgre
-	return render(request,'administrador/index.html', context)
+	return render(request,'administrador/solicitudes.html', context)
