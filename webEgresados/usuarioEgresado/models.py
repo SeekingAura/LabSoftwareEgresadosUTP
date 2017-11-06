@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 from usuarioAdminEgresado import models as UserAdminEgreModel
-
+from usuarioAdministrador.models import intereses as interesesModel
 import re
 from django.core.exceptions import ValidationError
 
@@ -20,16 +20,15 @@ def getProgramas():
 		
 class UsuarioEgresado(models.Model):
 	userAdminEgre=models.ForeignKey(UserAdminEgreModel.UsuariosAdminEgresado)
-	
-	pais=models.CharField(max_length=30, blank=True)
 	direccionTrabajo=models.CharField(max_length=100, blank=True)
 	fechaNacimiento=models.DateField(blank=True, null=True)
-	genero=models.CharField(max_length=6, blank=True)
+	genero=models.CharField(max_length=10, choices=[["masculino","Masculino"], ["femenino","Femenino"], ["ninguno","N/A"]], blank=True)
 	
 	
 	
 	programa=models.CharField(max_length=100, choices=getProgramas())
-	
+	promoteAge=models.DateField(blank=True, null=True)
+	privacidad=models.CharField(max_length=10, choices=[["publico","Publico"], ["amigos de amigos","Amigos de amigos (tus amigos están incluidos)"], ["amigos","Amigos"],["privado","Privado"]], blank=True)
 	ocupacion=models.CharField(max_length=100, blank=True)
 	def __str__ (self):
 		return str(self.userAdminEgre)
@@ -52,5 +51,5 @@ class AmigosEgresado(models.Model):
 	
 class InteresesEgresado(models.Model):
 	userEgre=models.ForeignKey(UsuarioEgresado)
-	interesID=models.CharField(max_length=30, validators=[numeric_validator])
+	interes=models.CharField(max_length=30, validators=[numeric_validator])
 	
