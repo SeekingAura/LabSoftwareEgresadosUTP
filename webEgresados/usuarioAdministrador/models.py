@@ -11,3 +11,5 @@ class UsuarioAdministrador(models.Model):
 class intereses(models.Model):
 	titulo=models.CharField(max_length=50, primary_key=True, validators=[])
 	description=models.CharField(max_length=300, validators=[])
+	def __str__ (self):
+		return str(self.titulo)

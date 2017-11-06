@@ -75,8 +75,8 @@ def registro(request, type):
 			print("es valido, creando user")
 			user=User.objects.create(username=str(request.POST.get("username")).lower(), email=str(request.POST.get("username")).lower(),first_name=str(request.POST.get("first_name")).title(), last_name=str(request.POST.get("last_name")).title())
 			
-			#user.set_password(request.POST.get("password"))
-			#user.set_password("123")
+			user.set_password(request.POST.get("password"))
+			user.set_password("123")
 			user.save()
 			
 			#

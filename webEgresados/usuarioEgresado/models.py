@@ -27,9 +27,9 @@ class UsuarioEgresado(models.Model):
 	
 	
 	programa=models.CharField(max_length=100, choices=getProgramas())
-	promoteAge=models.DateField(blank=True, null=True)
+	promoteAge=models.IntegerField(blank=True, null=True)
 	privacidad=models.CharField(max_length=10, choices=[["publico","Publico"], ["amigos de amigos","Amigos de amigos (tus amigos están incluidos)"], ["amigos","Amigos"],["privado","Privado"]], blank=True)
-	ocupacion=models.CharField(max_length=100, blank=True)
+	ocupacionActual=models.CharField(max_length=100, blank=True)
 	def __str__ (self):
 		return str(self.userAdminEgre)
 	
@@ -51,5 +51,11 @@ class AmigosEgresado(models.Model):
 	
 class InteresesEgresado(models.Model):
 	userEgre=models.ForeignKey(UsuarioEgresado)
-	interes=models.CharField(max_length=30, validators=[numeric_validator])
+	interes=models.ForeignKey(interesesModel)
+	class Meta:
+		verbose_name = "Interes de Egresado"
+		verbose_name_plural = "Intereses de egresados"
+	
+	def __str__ (self):
+		return str(self.userEgre)+" - "+str((self.interes))
 	
