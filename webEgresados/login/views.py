@@ -75,8 +75,8 @@ def registro(request, type):
 			print("es valido, creando user")
 			user=User.objects.create(username=str(request.POST.get("username")).lower(), email=str(request.POST.get("username")).lower(),first_name=str(request.POST.get("first_name")).title(), last_name=str(request.POST.get("last_name")).title())
 			
-			user.set_password(request.POST.get("password"))
-			user.set_password("123")
+			#user.set_password(request.POST.get("password"))
+			#user.set_password("123")
 			user.save()
 			
 			#
@@ -91,14 +91,16 @@ def registro(request, type):
 				form = registroAdministrador()
 				context['form'] = form
 				email = EmailMessage("Registro de cuenta", "Su cuenta ha quedado pendiente a ser activada por un Super usuario, esté atento a que su solicitud sea atendida \n\nNo olvide que su cuenta es "+str(request.POST.get("username")).lower(), to=[str(request.POST.get("username")).lower()])
-				email.send()
+				#email.send()#MODO_PRUEBAS
+				user.set_password("123")#MODO_PRUEBAS
+				user.save()#MODO_PRUEBAS
 			elif(type=="egresado"):
 				userEgre=UsuarioEgresado.objects.create(userAdminEgre=userAdminEgre, programa=request.POST.get("programa"))
 				userEgre.save()
 				form = registroEgresado()
 				context['form'] = form
 				email = EmailMessage("Registro de cuenta", "Su cuenta ha quedado pendiente a ser activada por un administrador, esté atento a que su solicitud sea atendida \n\nNo olvide que su cuenta es: "+str(request.POST.get("username")).lower(), to=[str(request.POST.get("username")).lower()])
-				#email.send()#descomentar esto para enviar el mensaje
+				#email.send()#MODO_PRUEBAS
 				
 			messages.success(request, 'Registro completado con exito, se le ha enviado un mensaje a su correo electronico')
 		#else:

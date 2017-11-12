@@ -72,9 +72,10 @@ def aceptarSoli_view(request, DNI):
 			userAdminEgre.estadoCuenta="activada"
 			userAdminEgre.save()
 			user=User.objects.get(id=userAdminEgre.user_id)
-			#password=User.objects.make_random_password()
+			password=User.objects.make_random_password()
 			#user.set_password(password)
-			#user.save()
+			user.set_password("123")
+			user.save()
 			email = EmailMessage("Activación de cuenta", "Su cuenta ha sido ACTIVADA satisfactoriamente, recuerde que debe ingresar a http://"+str(request.META['HTTP_HOST'])+"/usuario/login para acceder a su cuenta \n\nSu usuario es: "+str(user.email)+"\nsu contraseña es: "+str(password), to=[str(user.email)])
 			#email.send()#Descomentar para que envie mensaje
 			messages.success(request, 'Usuario con DNI: '+str(DNI)+" Aceptado correctamente")

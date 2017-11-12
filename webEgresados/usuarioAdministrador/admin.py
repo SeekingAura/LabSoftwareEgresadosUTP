@@ -8,3 +8,4 @@ admin.site.register (UsuarioAdministrador)
 class interesesAdmin(admin.ModelAdmin):
 	list_display = ("titulo", "description", )
 	#list_filter = ("titulo", )
+	

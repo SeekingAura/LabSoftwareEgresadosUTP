@@ -48,6 +48,7 @@ def getPaises():
 		result.append(tuple)
 	result=sorted(result)
 	result.insert(0, [None, "Seleccione Pais"])
+	print("son paises", result)
 	return result
 
 def getDepartamentos():
@@ -71,6 +72,7 @@ def getIntereses():
 		tuple.append(i[0])
 		tuple.append(i[0].title())
 		result.append(tuple)
+	print()
 	return sorted(result)
 	
 def getDate():
