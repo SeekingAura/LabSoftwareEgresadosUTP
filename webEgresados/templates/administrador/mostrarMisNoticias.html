@@ -1,0 +1,54 @@
+{% extends 'administrador/base.html' %}
+
+{% block title %}Aceptar solicitudes de registro{% endblock %}
+
+{% block content %}
+
+<h1>Bievenido {{ tipoUser }} {{ user.first_name }}</h1>
+
+<h2>Area de creación de noticias</h2>
+	<hr>
+
+	<!-- La siguiente parte debe ir en otro template (solicitudes)-->
+	<hr>
+		{% if messages %}
+		<ul class="messages">
+			{% for message in messages %}
+			<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+			{% endfor %}
+		</ul>
+		{% endif %}
+		<table class="table table-striped">
+			<thead>
+				<th>Titulo</th>
+				<th>Contenido</th>
+				<th>Intereses relacionados</th>
+				<th>Accion</th>
+			</thead>
+			<tbody>
+			{% for noticia in noticias %}
+			<tr>
+				  <td>{{ noticia.0 }}</td>
+				  <td>{{ noticia.1 }}</td>
+				  
+				  <td>
+				  {% for interes in noticia.2 %}
+				  <li>{{interes}} </li>
+				  {% endfor %}
+				  </td>
+				  <td>
+				  	
+					  <a href="{% url 'usuarioAdmin:editarNoticia' noticia.3 %}" class="btn btn-warning">Editar</a>
+					  
+					  <a href="{% url 'usuarioAdmin:eliminarNoticia' noticia.3 %}" class="btn btn-danger">Eliminar</a>
+					
+				  </td>
+			</tr>
+			{% endfor %}
+		</tbody>
+		</table>
+	<a href="{% url 'usuarioAdmin:index' %}">Index</a>
+	<a href="{% url 'usuarioAdmin:crearNoticia' %}">Crear Noticia</a>
+{% endblock %}
+
+
