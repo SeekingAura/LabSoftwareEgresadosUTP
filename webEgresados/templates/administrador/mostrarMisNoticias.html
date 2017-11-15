@@ -6,7 +6,7 @@
 
 <h1>Bievenido {{ tipoUser }} {{ user.first_name }}</h1>
 
-<h2>Lista de solicitudes pendiente</h2>
+<h2>Area de creación de noticias</h2>
 	<hr>
 
 	<!-- La siguiente parte debe ir en otro template (solicitudes)-->
@@ -20,32 +20,35 @@
 		{% endif %}
 		<table class="table table-striped">
 			<thead>
-				<th>DNI</th>
-				<th>Nombres</th>
-				<th>Apellidos</th>
-				<th>Programa</th>
+				<th>Titulo</th>
+				<th>Contenido</th>
+				<th>Intereses relacionados</th>
 				<th>Accion</th>
 			</thead>
 			<tbody>
-			{% for usuario in listSolicitudes %}
+			{% for noticia in noticias %}
 			<tr>
-				  <td>{{ usuario.2 }}</td>
-				  <td>{{ usuario.0.first_name }}</td>
-				  <td>{{ usuario.0.last_name }}</td>
-				  <td>{{ usuario.1.programa }}</td>
+				  <td>{{ noticia.0 }}</td>
+				  <td>{{ noticia.1 }}</td>
+				  
+				  <td>
+				  {% for interes in noticia.2 %}
+				  <li>{{interes}} </li>
+				  {% endfor %}
+				  </td>
 				  <td>
 				  	
-					  <a href="{% url 'usuarioAdmin:aceptarSoli' usuario.2 %}" class="btn btn-warning">Aceptar</a>
+					  <a href="{% url 'usuarioAdmin:editarNoticia' noticia.3 %}" class="btn btn-warning">Editar</a>
 					  
-					  <a href="{% url 'usuarioAdmin:rechazarSoli' usuario.2 %}" class="btn btn-danger">Rechazar</a>
+					  <a href="{% url 'usuarioAdmin:eliminarNoticia' noticia.3 %}" class="btn btn-danger">Eliminar</a>
 					
 				  </td>
 			</tr>
 			{% endfor %}
 		</tbody>
 		</table>
-		<a href="{% url 'usuarioAdmin:crearNoticia' %}">Crear Noticias</a>
-		<a href="{% url 'usuarioAdmin:mostrarMisNoticias' %}">Mostrar mis Noticias</a>
+	<a href="{% url 'usuarioAdmin:index' %}">Index</a>
+	<a href="{% url 'usuarioAdmin:crearNoticia' %}">Crear Noticia</a>
 {% endblock %}
 
 

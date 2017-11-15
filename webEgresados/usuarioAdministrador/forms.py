@@ -28,14 +28,13 @@ def numeric_validator(value):
 	else:
 		
 		raise ValidationError('este campo debe ser solamente númerico')
-		
-
-def existNoticia_validator(value):
+	
+def noticiaAlreadyExist_validator(value):
 	value=value.lower()
 	
 	temp=noticias.objects.all().values_list('titulo')
 	for i in temp:
-		if i==value:
+		if str(i[0]).lower()==value:
 			raise ValidationError('Ya existe una noticia con dicho nombre')
 	
 	
@@ -53,11 +52,14 @@ def getIntereses():
 
 
 class crearNoticia_Form(forms.Form):
-	titulo=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Titulo', 'maxlength':'100',}), required=True, validators=[existNoticia_validator],  label="Titulo")
+	titulo=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Titulo', 'maxlength':'100',}), required=True, validators=[noticiaAlreadyExist_validator],  label="Titulo")
 	contenido=forms.CharField(widget=forms.Textarea(attrs={'class':'form-control','placeholder':'Contenido', 'maxlength':'500',}), required=True, validators=[],  label="Contenido")
 	intereses = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple(attrs={'class':'form-control','placeholder':'Intereses', 'maxlength':'32'}),required=False, help_text="Estos intereses se usarán para que se filtre noticias que sean del interes de los egresados", choices=getIntereses(), label="Intereses",validators=[])
 	
-	
+class modificarNoticia_Form(forms.Form):
+	titulo=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Titulo', 'maxlength':'100',}), required=True, validators=[],  label="Titulo")
+	contenido=forms.CharField(widget=forms.Textarea(attrs={'class':'form-control','placeholder':'Contenido', 'maxlength':'500',}), required=True, validators=[],  label="Contenido")
+	intereses = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple(attrs={'class':'form-control','placeholder':'Intereses', 'maxlength':'32'}),required=False, help_text="Estos intereses se usarán para que se filtre noticias que sean del interes de los egresados", choices=getIntereses(), label="Intereses",validators=[])
 	
 		
 	

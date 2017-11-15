@@ -31,7 +31,7 @@ class UsuarioEgresado(models.Model):
 	privacidad=models.CharField(max_length=10, choices=[["publico","Publico"], ["amigos de amigos","Amigos de amigos (tus amigos están incluidos)"], ["amigos","Amigos"],["privado","Privado"]], blank=True)
 	ocupacionActual=models.CharField(max_length=100, blank=True)
 	def __str__ (self):
-		return str(self.userAdminEgre)
+		return "Egresado - "+str(self.userAdminEgre.user.first_name)+" - "+str(self.userAdminEgre.user)
 	
 	
 	

@@ -54,4 +54,4 @@ class UsuariosAdminEgresado(models.Model):
 		verbose_name_plural = "Usuarios Administradores Egresados"
 	
 	def __str__ (self):
-		return str(self.DNI)+" - "+self.estadoCuenta
+		return str(self.user.first_name)+" - "+str(self.user)
