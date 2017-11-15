@@ -1,8 +1,10 @@
 from django.conf.urls import url
-from .views import index
+from .views import index_view, primerLogin_view
 
 urlpatterns = [
-	url(r'^index', index, name="index"),
+	url(r'^index', index_view, name="index"),
+	url(r'^primerlogin', primerLogin_view, name="primerLogin"),
+	
 	#url(r'^registrar/(?P<type>\w+)/$', registro, name="registrar"),
 	#url(r'^login', login_view, name="login"),
 	#url(r'^logout/', logout_view, name='logout'),

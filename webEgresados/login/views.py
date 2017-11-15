@@ -18,7 +18,7 @@ from usuarioAdminEgresado.models import UsuariosAdminEgresado
 from usuarioAdministrador.models import UsuarioAdministrador
 from usuarioEgresado.models import UsuarioEgresado
 from django.contrib.auth import authenticate, login
-
+from django.core.mail import EmailMessage
 #Entry.objects.get(pk=1)#hacer querys antes de esto
 
 
@@ -76,7 +76,7 @@ def registro(request, type):
 			user=User.objects.create(username=str(request.POST.get("username")).lower(), email=str(request.POST.get("username")).lower(),first_name=str(request.POST.get("first_name")).title(), last_name=str(request.POST.get("last_name")).title())
 			
 			#user.set_password(request.POST.get("password"))
-			user.set_password("123")
+			#user.set_password("123")
 			user.save()
 			
 			#
@@ -90,12 +90,19 @@ def registro(request, type):
 				userAdmin.save()
 				form = registroAdministrador()
 				context['form'] = form
+				email = EmailMessage("Registro de cuenta", "Su cuenta ha quedado pendiente a ser activada por un Super usuario, esté atento a que su solicitud sea atendida \n\nNo olvide que su cuenta es "+str(request.POST.get("username")).lower(), to=[str(request.POST.get("username")).lower()])
+				#email.send()#MODO_PRUEBAS
+				user.set_password("123")#MODO_PRUEBAS
+				user.save()#MODO_PRUEBAS
 			elif(type=="egresado"):
 				userEgre=UsuarioEgresado.objects.create(userAdminEgre=userAdminEgre, programa=request.POST.get("programa"))
 				userEgre.save()
 				form = registroEgresado()
 				context['form'] = form
-			messages.success(request, 'Registro completado con exito')
+				email = EmailMessage("Registro de cuenta", "Su cuenta ha quedado pendiente a ser activada por un administrador, esté atento a que su solicitud sea atendida \n\nNo olvide que su cuenta es: "+str(request.POST.get("username")).lower(), to=[str(request.POST.get("username")).lower()])
+				#email.send()#MODO_PRUEBAS
+				
+			messages.success(request, 'Registro completado con exito, se le ha enviado un mensaje a su correo electronico')
 		#else:
 			#messages.error(request, 'Hay errores en el registro')
 		
@@ -106,6 +113,16 @@ def login_view(request):
 	context={}
 	form=loginForm()
 	context['form'] = form
+	if request.user.is_authenticated():#case if already logged
+		username = request.user.first_name
+		context['username']=username
+		tipoUser=determinarTipoUser(request.user)
+		if(len(tipoUser)==2):
+			return redirect("usuarioAdmin:index")
+		elif(tipoUser[0]=="administrador"):
+			return redirect("usuarioAdmin:index")
+		elif(tipoUser[0]=="egresado"):
+			return redirect("usuarioEgre:index")
 	if(request.method == 'POST'):
 		form=loginForm(data=request.POST)
 		context['form'] = form
@@ -115,15 +132,14 @@ def login_view(request):
 				login(request, user)
 				tipoUser=determinarTipoUser(user)
 				if(len(tipoUser)==2):
-					print("este usuario es Admin y Egresado")
+					return redirect("usuarioAdmin:index")
 				elif(tipoUser[0]=="administrador"):
-					print("este usuario es Admin")
 					return redirect("usuarioAdmin:index")
 				elif(tipoUser[0]=="egresado"):
-					print("este usuario es egresado")
 					return redirect("usuarioEgre:index")
 				
 				return HttpResponseRedirect("bienvenido")
+		
 	return render(request,'login/login.html', context)
 
 	
@@ -146,15 +162,13 @@ def Bienvenido(request):
 		elif(tipoUser[0]=="egresado"):
 			print("este usuario es egresado")
 			context['tipoUser']="Egresado"
-		print(UsuariosAdminEgresado.objects.all().filter(estadoCuenta="pendiente"))
-		#for i in rang
+		
 		
 	return render_to_response('login/bienvenido.html',context)
 
 	
 def logout_view(request):
 	logout(request)
-	print("Trate de LOGOUT")
 	return redirect("usuario:login")# Redirect to a success page.
 	#return HttpResponseRedirect("login")
 	

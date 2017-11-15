@@ -11,6 +11,13 @@
 
 	<!-- La siguiente parte debe ir en otro template (solicitudes)-->
 	<hr>
+		{% if messages %}
+		<ul class="messages">
+			{% for message in messages %}
+			<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+			{% endfor %}
+		</ul>
+		{% endif %}
 		<table class="table table-striped">
 			<thead>
 				<th>DNI</th>
@@ -28,16 +35,17 @@
 				  <td>{{ usuario.1.programa }}</td>
 				  <td>
 				  	
-					  <a href="#" class="btn btn-warning">Aceptar</a>
+					  <a href="{% url 'usuarioAdmin:aceptarSoli' usuario.2 %}" class="btn btn-warning">Aceptar</a>
 					  
-					  <a href="#" class="btn btn-danger">Rechazar</a>
+					  <a href="{% url 'usuarioAdmin:rechazarSoli' usuario.2 %}" class="btn btn-danger">Rechazar</a>
 					
 				  </td>
 			</tr>
 			{% endfor %}
 		</tbody>
 		</table>
-		
+		<a href="{% url 'usuarioAdmin:crearNoticia' %}">Crear Noticias</a>
+		<a href="{% url 'usuarioAdmin:mostrarMisNoticias' %}">Mostrar mis Noticias</a>
 {% endblock %}
 
 
