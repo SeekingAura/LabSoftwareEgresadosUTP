@@ -27,7 +27,10 @@ def getAllNoticias():
 	tempValues=noticias.objects.all()
 	result=[]
 	for i in tempValues:
-		temp=[i.titulo, i.contenido]
+		temp=[i.titulo, i.contenido, [], i.creador.userAdminEgre.user.first_name+" "+i.creador.userAdminEgre.user.last_name]
+		tempInteresesNoticia=noticiasIntereses.objects.all().filter(noticia=i)
+		for j in tempInteresesNoticia:
+			temp[2].append(j.interes)
 		result.append(temp)
 	print(result)
 	return result
@@ -39,7 +42,11 @@ def getOtherNoticias(userId):
 	tempValues=noticias.objects.all().exclude(creador_id=userAdmin.id)
 	result=[]
 	for i in tempValues:
-		temp=[i.titulo, i.contenido]
+		temp=[i.titulo, i.contenido, [], i.creador.userAdminEgre.user.first_name+" "+i.creador.userAdminEgre.user.last_name]
+		
+		tempInteresesNoticia=noticiasIntereses.objects.all().filter(noticia=i)
+		for j in tempInteresesNoticia:
+			temp[2].append(j.interes)
 		result.append(temp)
 	print(result)
 	return result
@@ -233,3 +240,15 @@ def verNoticiasPropias_view(request):
 	
 	
 	return render(request,'administrador/mostrarMisNoticias.html', context)
+	
+@login_required(login_url="usuario:login")
+@redirectAdmin(index_url="usuarioEgre:index")
+def verNoticiasTodas_view(request):
+	username = None
+	context={'username': request.user.first_name, 'tipoUser' : "Administrador", 'user' : request.user}
+	context['noticias']=getOtherNoticias(request.user.id)
+	
+	
+	return render(request,'administrador/mostrarTodasNoticias.html', context)
+	
+	

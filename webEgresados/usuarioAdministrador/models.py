@@ -22,6 +22,8 @@ class noticias(models.Model):
 	titulo=models.CharField(max_length=100, validators=[])
 	contenido=models.TextField(max_length=500, validators=[])
 	creador=models.ForeignKey(UsuarioAdministrador)
+	fechaCreacion=models.DateField()
+	fechaEdicion=models.DateField()
 	class Meta:
 		verbose_name = "Noticia"
 		verbose_name_plural = "Noticias"
