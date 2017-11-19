@@ -1,4 +1,4 @@
-{% extends 'login/base.html' %}
+{% extends 'egresado/base.html' %}
 
 {% block title %}Index{% endblock %}
 
@@ -13,5 +13,7 @@
 {% endif %}
 <h1>Bievenido/a {{ tipoUser }} {{ user.first_name }}</h1>
 
+<a href="{% url 'usuario:logout' %}">Logout</a>
+<a href="{% url 'usuarioEgre:noticiasTodas' %}">Ver noticias</a>
 {% endblock %}
 

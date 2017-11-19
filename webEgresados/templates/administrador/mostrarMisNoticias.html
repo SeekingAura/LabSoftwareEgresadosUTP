@@ -23,7 +23,10 @@
 				<th>Titulo</th>
 				<th>Contenido</th>
 				<th>Intereses relacionados</th>
+				<th>Fecha de creación de Noticia</th>
+				<th>Fecha de edición Noticia</th>
 				<th>Accion</th>
+				
 			</thead>
 			<tbody>
 			{% for noticia in noticias %}
@@ -37,6 +40,12 @@
 				  {% endfor %}
 				  </td>
 				  <td>
+				  {{noticia.4}}
+				  </td>
+				  <td>
+				  {{noticia.5}}
+				  </td>
+				  <td>
 				  	
 					  <a href="{% url 'usuarioAdmin:editarNoticia' noticia.3 %}" class="btn btn-warning">Editar</a>
 					  
@@ -48,6 +57,7 @@
 		</tbody>
 		</table>
 	<a href="{% url 'usuarioAdmin:index' %}">Index</a>
+	<a href="{% url 'usuarioAdmin:crearNoticia' %}">Crear Noticia</a>
 	<a href="{% url 'usuarioAdmin:crearNoticia' %}">Crear Noticia</a>
 {% endblock %}
 
