@@ -14,25 +14,93 @@ from django.core.validators import EmailValidator, ValidationError
 from django.contrib import messages
 
 from usuarioAdminEgresado.models import UsuariosAdminEgresado
-from usuarioAdministrador.models import UsuarioAdministrador, intereses
+from usuarioAdministrador.models import UsuarioAdministrador, intereses, noticias, noticiasIntereses
 from usuarioEgresado.models import UsuarioEgresado, InteresesEgresado
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.password_validation import password_validators_help_text_html
 from .forms import primerLogin_Form, departamentoValidator
 from .decorators import *
 
+from operator import attrgetter
 
-		
+
+def getAllNoticias():
+	tempValues=noticias.objects.all()
+	result=[]
+	for i in tempValues:
+		temp=[i.titulo, i.contenido, [], i.creador.userAdminEgre.user.first_name+" "+i.creador.userAdminEgre.user.last_name, str(i.fechaCreacion)+" - "+str(i.timeCreacion.strftime('%H:%M:%S')), str(i.fechaEdicion)+" - "+str(i.timeEdicion.strftime('%H:%M:%S'))]
+		tempInteresesNoticia=noticiasIntereses.objects.all().filter(noticia=i)
+		for j in tempInteresesNoticia:
+			temp[2].append(j.interes)
+		result.append(temp)
+	return result
+
+def getInteresesEgresado(idUser):
+	user=User.objects.get(id=idUser)
+	userAdminEgre=UsuariosAdminEgresado.objects.get(user_id=user.id)
+	userEgre=UsuarioEgresado.objects.get(userAdminEgre_id=userAdminEgre.DNI)
+	return InteresesEgresado.objects.all().filter(userEgre_id=userEgre.id).values_list('interes')
+	
+	
+def getAllNoticiasSortedInteres(idUser):
+	
+	interesesRelacionados=getInteresesEgresado(idUser)
+	tempValues=[]
+	noticiasResultID=[]
+	result=[]
+	print(interesesRelacionados)
+	for i in interesesRelacionados:#agregando id de noticias a razón de intereses
+		temp=noticiasIntereses.objects.all().filter(interes=i).values_list('noticia')
+		for j in temp:
+			if not j[0] in noticiasResultID:
+				noticiasResultID.append(j[0])
+	
+	for i in noticiasResultID:#agregando las noticias con los id obtenidos
+		x=noticias.objects.get(id=i)
+		tempValues.append(x)
+	
+
+	
+	# noticias relacioandas al interes
+	for i in sorted(tempValues, key=attrgetter('timeEdicion', 'fechaEdicion'), reverse=True):
+		temp=[i.titulo, i.contenido, [], i.creador.userAdminEgre.user.first_name+" "+i.creador.userAdminEgre.user.last_name, str(i.fechaCreacion)+" - "+str(i.timeCreacion.strftime('%H:%M:%S')), str(i.fechaEdicion)+" - "+str(i.timeEdicion.strftime('%H:%M:%S'))]
+		tempInteresesNoticia=noticiasIntereses.objects.all().filter(noticia=i)
+		for j in tempInteresesNoticia:
+			temp[2].append(j.interes)
+		result.append(temp)
+	
+	noticiasResultIDtemp2=[]
+	
+	for i in noticiasIntereses.objects.all().values_list('noticia'):
+		if not i[0] in noticiasResultID:#agregando id de las demas noticias
+			noticiasResultID.append(i[0])
+			noticiasResultIDtemp2.append(i[0])#lista de los valores restantes
+	
+	tempValues=[]
+	for i in noticiasResultIDtemp2:#agregando las noticias con los id obtenidos
+		x=noticias.objects.get(id=i)
+		tempValues.append(x)
+	
+	for i in sorted(tempValues, key=attrgetter('timeEdicion','fechaEdicion'), reverse=True):
+		temp=[i.titulo, i.contenido, [], i.creador.userAdminEgre.user.first_name+" "+i.creador.userAdminEgre.user.last_name, str(i.fechaCreacion)+" - "+str(i.timeCreacion.strftime('%H:%M:%S')), str(i.fechaEdicion)+" - "+str(i.timeEdicion.strftime('%H:%M:%S'))]
+		tempInteresesNoticia=noticiasIntereses.objects.all().filter(noticia=i)
+		for j in tempInteresesNoticia:
+			temp[2].append(j.interes)
+		result.append(temp)
+	
+	return result
+
+
+	
 @login_required(login_url="usuario:login")
 @primerLogin(index_url="usuarioEgre:primerLogin")
 @redirectEgresado(index_url="usuarioAdmin:index")
 def index_view(request):
 	username = None
 	context={'username': username, 'tipoUser' : "Egresado", 'user' : request.user}
-	if request.user.is_authenticated():
-		username = request.user.first_name
-		context['username']=username
-		
+	username = request.user.first_name
+	context['username']=username
+	
 	return render(request, 'egresado/index.html',context)
 
 @login_required(login_url="usuario:login")
@@ -99,3 +167,17 @@ def primerLogin_view(request):
 		else:
 			messages.error(request, 'Hay errores en el registro, revise los campos')
 	return render(request, 'egresado/primerlogin.html',context)
+	
+@login_required(login_url="usuario:login")
+@primerLogin(index_url="usuarioEgre:primerLogin")
+@redirectEgresado(index_url="usuarioAdmin:index")
+def verNoticias_view(request):
+	username = None
+	context={'username': username, 'tipoUser' : "Egresado", 'user' : request.user}
+	username = request.user.first_name
+	context['username']="probando"
+	interesesValue=getInteresesEgresado(request.user.id)
+	context['noticias']=getAllNoticiasSortedInteres(request.user.id)
+		
+	return render(request, 'egresado/NoticiasTodas.html',context)
+	

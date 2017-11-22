@@ -21,15 +21,17 @@ from usuarioEgresado.models import UsuarioEgresado
 from django.contrib.auth import authenticate, login
 from django.core.mail import EmailMessage
 from .decorators import *
-
+import datetime
 
 def getAllNoticias():
 	tempValues=noticias.objects.all()
 	result=[]
 	for i in tempValues:
-		temp=[i.titulo, i.contenido]
+		temp=[i.titulo, i.contenido, [], i.creador.userAdminEgre.user.first_name+" "+i.creador.userAdminEgre.user.last_name, str(i.fechaCreacion)+" - "+str(i.timeCreacion.strftime('%H:%M:%S')), str(i.fechaEdicion)+" - "+str(i.timeEdicion.strftime('%H:%M:%S'))]
+		tempInteresesNoticia=noticiasIntereses.objects.all().filter(noticia=i)
+		for j in tempInteresesNoticia:
+			temp[2].append(j.interes)
 		result.append(temp)
-	print(result)
 	return result
 
 def getOtherNoticias(userId):
@@ -39,7 +41,11 @@ def getOtherNoticias(userId):
 	tempValues=noticias.objects.all().exclude(creador_id=userAdmin.id)
 	result=[]
 	for i in tempValues:
-		temp=[i.titulo, i.contenido]
+		temp=[i.titulo, i.contenido, [], i.creador.userAdminEgre.user.first_name+" "+i.creador.userAdminEgre.user.last_name, str(i.fechaCreacion)+" - "+str(i.timeCreacion.strftime('%H:%M:%S')), str(i.fechaEdicion)+" - "+str(i.timeEdicion.strftime('%H:%M:%S'))]
+		
+		tempInteresesNoticia=noticiasIntereses.objects.all().filter(noticia=i)
+		for j in tempInteresesNoticia:
+			temp[2].append(j.interes)
 		result.append(temp)
 	print(result)
 	return result
@@ -52,7 +58,7 @@ def getAdminNoticias(userId):
 	
 	result=[]
 	for i in tempValues:
-		temp=[i.titulo, i.contenido, [], i.id]
+		temp=[i.titulo, i.contenido, [], i.id, str(i.fechaCreacion)+" - "+str(i.timeCreacion.strftime('%H:%M:%S')), str(i.fechaEdicion)+" - "+str(i.timeEdicion.strftime('%H:%M:%S'))]
 		tempInteresesNoticia=noticiasIntereses.objects.all().filter(noticia=i)
 		for j in tempInteresesNoticia:
 			temp[2].append(j.interes)
@@ -113,7 +119,6 @@ def solicitudes_view(request):
 		username = request.user.first_name
 		context['username']=username
 		solicPendientes=UsuariosAdminEgresado.objects.all().filter(estadoCuenta="pendiente")
-		#print(solicPendientes)
 		listSoli=[]
 		for i in solicPendientes:
 			listSoli.append([i.DNI, i.user_id])
@@ -147,15 +152,13 @@ def crearNoticias_view(request):
 			
 			userAdminEgre=UsuariosAdminEgresado.objects.get(user_id=request.user.id)
 			userAdmin=UsuarioAdministrador.objects.get(userAdminEgre_id=userAdminEgre.DNI)
-			noticia=noticias.objects.create(titulo=request.POST.get("titulo"), contenido=request.POST.get("contenido"), creador=userAdmin)
+			noticia=noticias.objects.create(titulo=request.POST.get("titulo"), contenido=request.POST.get("contenido"), creador=userAdmin, fechaCreacion=datetime.datetime.now(), timeCreacion=datetime.datetime.now(), fechaEdicion=datetime.datetime.now(), timeEdicion=datetime.datetime.now())
 			noticia.save()
-			
 			for i in request.POST.getlist("intereses"):
 				tempIntereses=intereses.objects.get(titulo=i)
 				tempNoticiaInteres=noticiasIntereses.objects.create(noticia=noticia, interes=tempIntereses)
 				tempNoticiaInteres.save()
 			
-				
 			messages.success(request, 'Noticia creada!')
 			form = crearNoticia_Form()
 			context['form'] = form
@@ -203,6 +206,8 @@ def editarNoticia_view(request, idNoticia):
 					tempIntereses=intereses.objects.get(titulo=i)
 					tempNoticiaInteres=noticiasIntereses.objects.create(noticia=noticia, interes=tempIntereses)
 					tempNoticiaInteres.save()
+				noticia.fechaEdicion=datetime.datetime.now()
+				noticia.timeEdicion=datetime.datetime.now()
 				noticia.save()	
 				messages.success(request, 'Noticia editada!')
 				form = crearNoticia_Form()
@@ -233,3 +238,15 @@ def verNoticiasPropias_view(request):
 	
 	
 	return render(request,'administrador/mostrarMisNoticias.html', context)
+	
+@login_required(login_url="usuario:login")
+@redirectAdmin(index_url="usuarioEgre:index")
+def verNoticiasTodas_view(request):
+	username = None
+	context={'username': request.user.first_name, 'tipoUser' : "Administrador", 'user' : request.user}
+	context['noticias']=getOtherNoticias(request.user.id)
+	
+	
+	return render(request,'administrador/mostrarTodasNoticias.html', context)
+	
+	
