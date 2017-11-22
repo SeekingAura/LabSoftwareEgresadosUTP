@@ -1,5 +1,6 @@
 {% extends 'login/base.html' %}
 
+
 {% block title %}Primer login{% endblock %}
 
 {% block content %}
@@ -16,14 +17,120 @@
 	{% endif %}
 	<form method="POST">
 		{% csrf_token %}
-		<table>
-			{{ form.as_table }}
-		</table>
 		
 		
-		<input type="submit" value="Registrar">
+		<div class="form-group col-md-8">
+			<label for="pais">Pais</label>
+			<select class="form-control" required="True" name="pais" >
+				{% for pais in paises %}
+					<option value="{{ pais.0 }}">{{ pais.1 }}</option>
+				{% endfor %}
+			</select>
+		</div>
+
+		<div class="form-group col-md-8">
+			<label for="depto">Departamento</label>
+			<select class="form-control" required="True" name="departamento" >
+				{% for depto in deptos %}
+					<option value="{{ depto.0 }}">{{ depto.1 }}</option>
+				{% endfor %}
+			</select>
+		</div>
+		<br>
+		Seleccione intereses
+		{% for interes in intereses %}
+		<div class="form-check col-md-8">
+		  <label class="form-check-label">
+		    <input class="form-check-input" type="checkbox" value="{{ interes.0 }}">
+		    {{ interes.0 }}
+		  </label>
+		</div>
+		{% endfor %}
+
+        <div class="form-group row col-md-8">
+          <label for="example-date-input" class="col-2 col-form-label">Fecha de nacimiento</label>
+          <input class="form-control" name="fecha_nacimiento" type="date" value="2017-12-12" id="example-date-input">          
+		</div>
+				
+		<div class="form-group row col-md-8">
+          <label for="example-date-input" class="col-2 col-form-label">Fecha de graduación</label>
+          <input class="form-control" name="graduacion" type="date" value="2017-12-12" id="example-date-input">          
+		</div>
+
+		<div class="form-group col-md-8">
+			<label for="genero">Género</label>
+			<select class="form-control" required="True" name="genero" >
+				<option value="masculino">Masculino</option>
+				<option value="femenino">Femenino</option>
+			</select>
+		</div>
+
+		<div class="form-group col-md-8">
+		    <label for="direccionResidencia">Dirección de residencia</label>
+		    <input type="text" name="direccionResidencia" class="form-control" placeholder="Ingrese su dirección de residencia">
+	  	</div>
+
+	  	<div class="form-group col-md-8">
+		    <label for="direccionTrabajo">Dirección de trabajo</label>
+		    <input type="text" name="direccionTrabajo" class="form-control" placeholder="Ingrese su dirección de trabajo">
+	  	</div>
+
+	  	<div class="form-group col-md-8">
+		    <label for="ocupacionActual">Ocupación actual</label>
+		    <input type="text" name="ocupacionActual" class="form-control" placeholder="Ingrese su ocupación actual">
+	  	</div>
+	  	
+	  	<div class="form-group col-md-8">
+		    <label for="telefono">Teléfono</label>
+		    <input type="text" name="telefono" class="form-control" placeholder="Ingrese su teléfono">
+	  	</div>
+
+	  	<div class="form-group">
+		    <label for="telefono">Acceso a mi información</label>
+	  	</div>
+	  	<div class="form-check">
+		  <label class="form-check-label">
+		    <input class="form-check-input" type="radio" name="privacidad" id="privacidad" value="publico" checked>
+		    Publico
+		  </label>
+		</div>
+		<div class="form-check">
+		  <label class="form-check-label">
+		    <input class="form-check-input" type="radio" name="privacidad" id="privacidad" value="amigos de amigos">
+		    Amigos de amigos (tus amigos están incluidos)
+		  </label>
+		</div>
+	  	<div class="form-check">
+		  <label class="form-check-label">
+		    <input class="form-check-input" type="radio" name="privacidad" id="privacidad" value="amigos">
+		    Amigos
+		  </label>
+		</div>
+		<div class="form-check">
+		  <label class="form-check-label">
+		    <input class="form-check-input" type="radio" name="privacidad" id="privacidad" value="privado">
+		    Privado
+		  </label>
+		</div>
+		 <div class="form-group col-md-8">
+		    <label for="inputPassword4">Contraseña</label>
+		    <input type="password" class="form-control" id="inputPassword4" placeholder="Password" name="password" required="True">
+	    </div>
+	    <div class="form-group col-md-8">
+		    <label for="inputPassword4">Confirmar contraseña</label>
+		    <input type="password" class="form-control" id="inputPassword4" placeholder="Password" name="passwordConfimation" required="True">
+	    </div>
+  		<br>
+		<input type="submit" value="Guardar" class="btn btn-primary">
 	
 	</form>
+
+	<script type="text/javascript">
+		$('.datepicker').datepicker({
+		    format: 'yyyy-mm-dd',
+		    startDate: '-3d'
+		});
+	</script>
 	
 	
 	

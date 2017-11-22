@@ -13,12 +13,12 @@ from django.contrib.auth.decorators import login_required
 from django.core.validators import EmailValidator, ValidationError
 from django.contrib import messages
 
-from usuarioAdminEgresado.models import UsuariosAdminEgresado
+from usuarioAdminEgresado.models import UsuariosAdminEgresado, Pais
 from usuarioAdministrador.models import UsuarioAdministrador, intereses, noticias, noticiasIntereses
 from usuarioEgresado.models import UsuarioEgresado, InteresesEgresado
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.password_validation import password_validators_help_text_html
-from .forms import primerLogin_Form, departamentoValidator
+from .forms import primerLogin_Form, departamentoValidator, getPaises, getDepartamentos, getIntereses
 from .decorators import *
 
 from operator import attrgetter
@@ -109,10 +109,23 @@ def index_view(request):
 def primerLogin_view(request):
 	context={}
 	form=primerLogin_Form()
+	paises = getPaises()
+	departamentos = getDepartamentos()
+	intereses = getIntereses()
 	context['form'] = form
+	context['paises'] = paises
+	context['deptos'] = departamentos
+	context['intereses'] = intereses
 	if(request.method == 'POST'):
+		print(request.POST)
+		p = request.POST.get('pais')
+		print("PAISSSSSSSSSSS " + p) 	
 		form=primerLogin_Form(data=request.POST)
 		context['form'] = form
+		context['paises'] = paises
+		context['deptos'] = departamentos
+		context['intereses'] = intereses
+
 		valido=True
 		if(not departamentoValidator(request.POST.get("pais"), request.POST.get("departamento"))):
 			messages.error(request, 'El departamento dado no corresponde al pais seleccionado')
