@@ -1,5 +1,5 @@
 {% extends 'login/base.html' %}
-
+{% load staticfiles %}
 
 {% block title %}Primer login{% endblock %}
 
@@ -19,15 +19,15 @@
 		{% csrf_token %}
 		
 		
-		<div class="form-group col-md-8">
+	    <div class="form-group col-md-8">
 			<label for="pais">Pais</label>
 			<select class="form-control" required="True" name="pais" >
 				{% for pais in paises %}
 					<option value="{{ pais.0 }}">{{ pais.1 }}</option>
 				{% endfor %}
 			</select>
-		</div>
-
+		</div> 
+			
 		<div class="form-group col-md-8">
 			<label for="depto">Departamento</label>
 			<select class="form-control" required="True" name="departamento" >

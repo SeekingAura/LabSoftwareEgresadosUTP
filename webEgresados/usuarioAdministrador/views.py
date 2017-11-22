@@ -16,7 +16,7 @@ from django.contrib import messages
 
 from usuarioAdminEgresado.models import UsuariosAdminEgresado
 from usuarioAdministrador.models import UsuarioAdministrador, noticias, noticiasIntereses, intereses
-from usuarioAdministrador.forms import crearNoticia_Form, modificarNoticia_Form
+from usuarioAdministrador.forms import crearNoticia_Form, modificarNoticia_Form, getIntereses
 from usuarioEgresado.models import UsuarioEgresado
 from django.contrib.auth import authenticate, login
 from django.core.mail import EmailMessage
@@ -139,12 +139,15 @@ def crearNoticias_view(request):
 	username = None
 	context={'username': request.user.first_name, 'tipoUser' : "Administrador", 'user' : request.user}
 	form = crearNoticia_Form()
+	intereses = getIntereses()
 	context['form'] = form
+	context['intereses'] = intereses
 		
 	
 	if(request.method == 'POST'):
 		form=crearNoticia_Form(data=request.POST)
 		context['form'] = form
+		context['intereses'] = intereses
 		if(len(request.POST.getlist("intereses"))==0):
 			messages.error(request, 'Debe tener seleccionado al menos 1 interes')
 		elif(form.is_valid()):
