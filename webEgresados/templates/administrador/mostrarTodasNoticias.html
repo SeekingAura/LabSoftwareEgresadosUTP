@@ -5,8 +5,6 @@
 
 {% block content %}
 
-<h1>Bievenido {{ tipoUser }} {{ user.first_name }}</h1>
-
 <h2>Area de visualización de noticias</h2>
 	<hr>
 
@@ -52,8 +50,7 @@
 			{% endfor %}
 		</tbody>
 		</table>
-	<a href="{% url 'usuarioAdmin:index' %}">Index</a>
-	<a href="{% url 'usuarioAdmin:crearNoticia' %}">Crear Noticia</a>
+	
 {% endblock %}
 
 

@@ -21,13 +21,8 @@
 
 
 	<!-- Navbar -->
-	<nav class="navbar col-12 container-fluid" id="navbar-admin-login">
-	  <a class="navbar-brand" href="{% url 'usuarioAdmin:index' %}" id="text-navbar-admin-login">Inicio</a>
-	  <a class="navbar-brand" href="#" id="text-navbar-egresado">Perfil</a>
-	  <a class="navbar-brand" href="#" id="text-navbar-egresado">Usuarios egresados[0]</a>
-	  <a class="navbar-brand" href="#" id="text-navbar-egresado">Noticias</a>
-  
-	</nav>
+	{% include 'administrador/partials/navbar_admin_login.html' %}
+
 	{% block content %}
 	<h5>Este es el contenido del archivo base</h5>
 	{% endblock %}

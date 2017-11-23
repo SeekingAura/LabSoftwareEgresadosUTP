@@ -5,8 +5,6 @@
 
 {% block content %}
 
-<h1>Bievenido {{ tipoUser }} {{ user.first_name }}</h1>
-
 <h2>Area de creación de noticias</h2>
 	<hr>
 
@@ -29,8 +27,7 @@
 		<input type="submit" value="Registrar">
 	
 	</form>
-	<a href="{% url 'usuarioAdmin:index' %}">Index</a>
-	<a href="{% url 'usuarioAdmin:mostrarMisNoticias' %}">Mostrar mis Noticias</a>
+	
 {% endblock %}
 
 

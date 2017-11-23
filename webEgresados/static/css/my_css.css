@@ -64,11 +64,21 @@
 
 #navbar-egresado, #navbar-admin-login{
 	background-color: #52d3aa;
+	list-style: none;
 }
 
 #text-navbar-egresado, #text-navbar-admin-login{
 	color: white;
 	background-color: #52d3aa; 
+}
+
+#text-navbar-admin, #navbarDropdown{
+	color: white;	
+	font-size: 20px;
+}
+
+#text-navbar-admin-dropdown{
+	color: #52d3aa;
 }
 
 #img-navbar-egresado{
@@ -89,3 +99,4 @@
 	height: 450px;
 	overflow: auto;
 }
+

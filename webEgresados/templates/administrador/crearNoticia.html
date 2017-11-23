@@ -6,8 +6,6 @@
 
 {% block content %}
 
-<h1>Bievenido {{ tipoUser }} {{ user.first_name }}</h1>
-
 <h2>Area de creación de noticias</h2>
 	<hr>
 
@@ -36,11 +34,7 @@
 		{% for interes in intereses %}
 		<div class="form-check col-md-8">
 		  <label class="form-check-label">
-<<<<<<< HEAD
-		    <input class="form-check-input" type="checkbox" value="{{ interes.0 }}">
-=======
 		    <input class="form-check-input" type="checkbox" value="{{ interes.0 }}" name="intereses">
->>>>>>> master
 		    {{ interes.0 }}
 		  </label>
 		</div>
@@ -49,8 +43,7 @@
 		<input type="submit" value="Registrar" class="btn btn-primary">
 	
 	</form>
-	<a href="{% url 'usuarioAdmin:index' %}">Index</a>
-	<a href="{% url 'usuarioAdmin:mostrarMisNoticias' %}">Mostrar mis Noticias</a>
+	
 {% endblock %}
 
 
