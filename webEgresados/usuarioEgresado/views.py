@@ -18,7 +18,7 @@ from usuarioAdministrador.models import UsuarioAdministrador, intereses, noticia
 from usuarioEgresado.models import UsuarioEgresado, InteresesEgresado
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.password_validation import password_validators_help_text_html
-from .forms import primerLogin_Form, departamentoValidator, getPaises, getDepartamentos, getIntereses
+from .forms import primerLogin_Form, departamentoValidator, getPaises, getDepartamentos, getIntereses, editarPerfil_Form
 from .decorators import *
 
 from operator import attrgetter
@@ -41,6 +41,11 @@ def getInteresesEgresado(idUser):
 	userEgre=UsuarioEgresado.objects.get(userAdminEgre_id=userAdminEgre.DNI)
 	return InteresesEgresado.objects.all().filter(userEgre_id=userEgre.id).values_list('interes')
 	
+def getImage(idUser):
+	user=User.objects.get(id=idUser)
+	userAdminEgre=UsuariosAdminEgresado.objects.get(user_id=user.id)
+	userEgre=UsuarioEgresado.objects.get(userAdminEgre_id=userAdminEgre.DNI)
+	return userEgre.foto
 	
 def getAllNoticiasSortedInteres(idUser):
 	
@@ -193,4 +198,68 @@ def verNoticias_view(request):
 	context['noticias']=getAllNoticiasSortedInteres(request.user.id)
 		
 	return render(request, 'egresado/NoticiasTodas.html',context)
+
+@login_required(login_url="usuario:login")
+@primerLogin(index_url="usuarioEgre:primerLogin")
+@redirectEgresado(index_url="usuarioAdmin:index")
+def editarPerfil_view(request):
+	context={}
+
+	user=User.objects.get(id=request.user.id)
+	userAdminEgre=UsuariosAdminEgresado.objects.get(user_id=user.id)
+	userEgre=UsuarioEgresado.objects.get(userAdminEgre_id=userAdminEgre.DNI)
+	interesesDato=InteresesEgresado.objects.all().filter(userEgre=userEgre).values_list("interes")
+	print(interesesDato)
+	interesesDatoTemp=[]
+	for i in interesesDato:
+		interesesDatoTemp.append(i[0])
+	print(interesesDatoTemp)
+	form = editarPerfil_Form(initial={'intereses':interesesDatoTemp, 'direccionResidencia':userAdminEgre.direccionResidencia, 'direccionTrabajo': userEgre.direccionTrabajo, 'ocupacionActual': userEgre.ocupacionActual, 'telefono': userAdminEgre.telefono, 'privacidad': userEgre.privacidad, 'foto':userEgre.foto})
+	context['form'] = form
+	print(userEgre.foto)
 	
+	if(request.method == 'POST'):
+		form=editarPerfil_Form(data=request.POST, files=request.FILES)
+		
+		context['form'] = form
+		valido=True
+		
+		if(len(request.POST.getlist("intereses"))==0):
+			messages.error(request, 'Debe tener seleccionado al menos 1 interes')
+			valido=False
+		if(form.is_valid() and valido):
+			user=User.objects.get(username=request.user)
+			userAdminEgre=UsuariosAdminEgresado.objects.get(user_id=user.id)
+			userEgre=UsuarioEgresado.objects.get(userAdminEgre_id=userAdminEgre.DNI)
+			
+			InteresesEgresado.objects.all().filter(userEgre=userEgre).delete()
+			for i in request.POST.getlist("intereses"):
+				interes=intereses.objects.get(titulo=i)
+				interes=InteresesEgresado.objects.create(userEgre=userEgre, interes=interes)
+				interes.save()
+
+			
+			userAdminEgre.direccionResidencia=request.POST.get("direccionResidencia")	
+			
+			userEgre.direccionTrabajo=request.POST.get("direccionTrabajo")
+			
+			userEgre.ocupacionActual=request.POST.get("ocupacionActual")
+			
+			userAdminEgre.telefono=request.POST.get("telefono")
+			
+			userEgre.foto=request.POST.get("foto")
+			print(request.FILES)
+			print(form.cleaned_data)
+			userEgre.privacidad=request.POST.get("privacidad")
+			user.set_password(request.POST.get("password"))
+			usuarioActual=request.user
+			logout(request)
+			user.save()
+			userAdminEgre.save()
+			userEgre.save()
+			messages.success(request, 'Se ha actualizado su cuenta')
+			user = authenticate(username=usuarioActual, password=request.POST.get("password"))
+			login(request, user)
+		else:
+			messages.error(request, 'Hay errores en el registro, revise los campos')
+	return render(request, 'egresado/editarPerfil.html',context)

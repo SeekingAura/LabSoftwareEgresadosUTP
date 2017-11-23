@@ -131,4 +131,31 @@ class primerLogin_Form(forms.Form):
 		#else:
 		#	 self.full_clean()
 		return password2
+
+class editarPerfil_Form(forms.Form):
+	intereses = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple(attrs={'class':'form-control','placeholder':'Intereses',
+		'maxlength':'32'}),required=False, help_text="Estos intereses se usarán para filtrarle noticias que le sean de su interés",choices=getIntereses(), label="Intereses",validators=[])
+		
+	direccionResidencia=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Dirección de residencia',
+		'maxlength':'32',}), required=False, validators=[],  label="Dirección de residencia")
+	direccionTrabajo=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Dirección de trabajo',
+		'maxlength':'32',}), required=False, validators=[],  label="Dirección de Trabajo")
+	ocupacionActual=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Ocupación Actual',
+		'maxlength':'32',}), required=False, validators=[],  label="Ocupación actual")
+	telefono=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Telefono',
+		'maxlength':'32',}), required=False, validators=[numeric_validator],  label="Telefono")
+	privacidad=forms.ChoiceField(widget=forms.RadioSelect(attrs={'class':'form-control','placeholder':'Acceso a mi información',
+		'required':'true', 'maxlength':'32',}), choices=[["publico","Publico"], ["amigos de amigos","Amigos de amigos (tus amigos están incluidos)"], ["amigos","Amigos"],["privado","Privado"]], initial="publico", required=True, validators=[],  label="Acceso a mi información")
+	foto=forms.ImageField(widget=forms.FileInput(attrs={'class':'form-control','placeholder':'Foto', 'id' : 'input-file'}),required=False, label="Foto")
+	password=forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control','placeholder':'contraseña','maxlength':'32', 'required':'true'}), label="Contraseña")
+	passwordConfimation=forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control','placeholder':'repita contraseña','maxlength':'32', 'required':'true'}),validators=[validate_password], help_text=password_validators_help_text_html(), label="Confimar contraseña")
 	
+	def clean(self):
+		password1 = self.cleaned_data.get('password')
+		password2 = self.cleaned_data.get('passwordConfimation')
+		if password1 != password2 and password2 is not None:
+			raise forms.ValidationError(('las contraseñas no coinciden'), code='invalid') 
+		#else:
+		#	 self.full_clean()
+		print(self.cleaned_data)
+		return password2

@@ -1,12 +1,13 @@
 {% extends 'administrador/base.html' %}
-
-{% block title %}Aceptar solicitudes de registro{% endblock %}
+{% load staticfiles %}
+{% block nombres %}<p class="text-rigth">Bienvenido, {{tipoUser}} {{user.first_name}} {{user.last_name}}</p>{% endblock %}
+{% block title %}Mis noticias{% endblock %}
 
 {% block content %}
 
 <h1>Bievenido {{ tipoUser }} {{ user.first_name }}</h1>
 
-<h2>Area de creación de noticias</h2>
+<h2>Area de muestra de noticias</h2>
 	<hr>
 
 	<!-- La siguiente parte debe ir en otro template (solicitudes)-->

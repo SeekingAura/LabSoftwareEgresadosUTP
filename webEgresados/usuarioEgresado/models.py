@@ -25,7 +25,7 @@ class UsuarioEgresado(models.Model):
 	genero=models.CharField(max_length=10, choices=[["masculino","Masculino"], ["femenino","Femenino"], ["ninguno","N/A"]], blank=True)
 	
 	
-	
+	foto=models.ImageField(upload_to = "photo", default = 'photo/None/no-img.jpg',blank=True, null=True)
 	programa=models.CharField(max_length=100, choices=getProgramas())
 	promoteAge=models.IntegerField(blank=True, null=True)
 	privacidad=models.CharField(max_length=10, choices=[["publico","Publico"], ["amigos de amigos","Amigos de amigos (tus amigos están incluidos)"], ["amigos","Amigos"],["privado","Privado"]], blank=True)
