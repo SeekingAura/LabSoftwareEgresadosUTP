@@ -1,4 +1,6 @@
 {% extends 'administrador/base.html' %}
+{% load staticfiles %}
+{% block nombres %}Bienvenido, {{tipoUser}} {{user.first_name}} {{user.last_name}}{% endblock %}
 
 {% block title %}Agregar nueva noticia{% endblock %}
 
@@ -34,7 +36,11 @@
 		{% for interes in intereses %}
 		<div class="form-check col-md-8">
 		  <label class="form-check-label">
+<<<<<<< HEAD
 		    <input class="form-check-input" type="checkbox" value="{{ interes.0 }}">
+=======
+		    <input class="form-check-input" type="checkbox" value="{{ interes.0 }}" name="intereses">
+>>>>>>> master
 		    {{ interes.0 }}
 		  </label>
 		</div>

@@ -139,15 +139,15 @@ def crearNoticias_view(request):
 	username = None
 	context={'username': request.user.first_name, 'tipoUser' : "Administrador", 'user' : request.user}
 	form = crearNoticia_Form()
-	intereses = getIntereses()
+	form_intereses = getIntereses()
 	context['form'] = form
-	context['intereses'] = intereses
+	context['intereses'] = form_intereses
 		
 	
 	if(request.method == 'POST'):
 		form=crearNoticia_Form(data=request.POST)
 		context['form'] = form
-		context['intereses'] = intereses
+		context['intereses'] = form_intereses
 		if(len(request.POST.getlist("intereses"))==0):
 			messages.error(request, 'Debe tener seleccionado al menos 1 interes')
 		elif(form.is_valid()):
@@ -157,6 +157,7 @@ def crearNoticias_view(request):
 			userAdmin=UsuarioAdministrador.objects.get(userAdminEgre_id=userAdminEgre.DNI)
 			noticia=noticias.objects.create(titulo=request.POST.get("titulo"), contenido=request.POST.get("contenido"), creador=userAdmin, fechaCreacion=datetime.datetime.now(), timeCreacion=datetime.datetime.now(), fechaEdicion=datetime.datetime.now(), timeEdicion=datetime.datetime.now())
 			noticia.save()
+			print("INTERESES: ", request.POST.getlist("intereses"))
 			for i in request.POST.getlist("intereses"):
 				tempIntereses=intereses.objects.get(titulo=i)
 				tempNoticiaInteres=noticiasIntereses.objects.create(noticia=noticia, interes=tempIntereses)
@@ -181,7 +182,8 @@ def editarNoticia_view(request, idNoticia):
 			temp.append(i[0])
 		form = modificarNoticia_Form(initial={'titulo':noticia.titulo, 'contenido':noticia.contenido, 'intereses': temp})
 		context['form'] = form
-		
+		context['noticia'] = noticia 
+		context['intereses'] = temp
 
 		temp=noticias.objects.all().values_list('titulo')
 		
@@ -216,7 +218,7 @@ def editarNoticia_view(request, idNoticia):
 				form = crearNoticia_Form()
 				context['form'] = form
 				return redirect("usuarioAdmin:mostrarMisNoticias")
-		return render(request,'administrador/crearNoticia.html', context)
+		return render(request,'administrador/modificarNoticia.html', context)
 	except:
 		messages.error(request, 'Error al modificar noticia, no existe')
 		return redirect("usuarioAdmin:mostrarMisNoticias")
@@ -227,7 +229,7 @@ def editarNoticia_view(request, idNoticia):
 def eliminarNoticia_view(request, idNoticia):
 	try:
 		noticias.objects.get(id=idNoticia).delete()
-		messages.warning(request, 'Noticia borrada!')
+		messages.error(request, 'Noticia borrada!')
 	except:
 		print("NOT FOUND")
 	return redirect("usuarioAdmin:mostrarMisNoticias")

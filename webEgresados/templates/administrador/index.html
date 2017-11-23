@@ -1,5 +1,6 @@
 {% extends 'administrador/base.html' %}
-
+{% load staticfiles %}
+{% block nombres %}Bienvenido, {{tipoUser}} {{request.user.first_name}} {{request.user.last_name}}{% endblock %}
 {% block title %}Aceptar solicitudes de registro{% endblock %}
 
 {% block content %}

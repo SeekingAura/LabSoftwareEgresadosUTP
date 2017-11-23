@@ -12,7 +12,22 @@
 
 	<div class="container">
 		{% block navbar %}
-			{% include 'egresado/partials/navbar_egresado.html' %}
+			<div class="container-fluid" display="flex" width="100%">
+			  {% block nombres %}<p class="text-rigth">Bienvenido, Nombre1 Nombre2</p>{% endblock %}
+			  {% block foto %}<img class="text-rigth" src="{% static 'images/sin_foto.png' %}" id="img-navbar-egresado">{% endblock %}
+			</div>
+
+
+			<!-- Navbar -->
+			<nav class="navbar col-12 container-fluid" id="navbar-egresado">
+			  <a class="navbar-brand" href="{% url 'usuarioEgre:index' %}" id="text-navbar-egresado">Inicio</a>
+			  <a class="navbar-brand" href="{% url 'usuarioEgre:editarPerfil' %}" id="text-navbar-egresado">Perfil</a>
+			  <a class="navbar-brand" href="#" id="text-navbar-egresado">Amigos</a>
+			  <a class="navbar-brand" href="{% url 'usuarioEgre:noticiasTodas' %}" id="text-navbar-egresado">Noticias</a>
+			  <a class="navbar-brand" href="#" id="text-navbar-egresado">Mensajes</a>
+			  
+			  
+			</nav>
 		{% endblock %}
 
 		{% block content %}
