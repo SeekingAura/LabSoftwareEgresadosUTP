@@ -1,7 +1,7 @@
 {% extends 'administrador/base.html' %}
 {% load staticfiles %}
-{% block nombres %}<p class="text-rigth">Bienvenido, {{tipoUser}} {{user.first_name}} {{user.last_name}}</p>{% endblock %}
-{% block title %}Crear noticia{% endblock %}
+{% block nombres %}Bienvenido, {{tipoUser}} {{user.first_name}} {{user.last_name}}{% endblock %}
+{% block title %}Agregar nueva noticia{% endblock %}
 
 {% block content %}
 
@@ -21,12 +21,27 @@
 	{% endif %}
 	<form method="POST">
 		{% csrf_token %}
-		<table>
-			{{ form.as_table }}
-		</table>
 		
+		<div class="form-group col-md-8">
+		    <label for="titulo">Título</label>
+		    <input type="text" name="titulo" class="form-control" placeholder="Titulo de la noticia" required="True" maxlength="100">
+	  	</div>
+		<div class="form-group col-md-8">
+		    <label for="contenido">Contenido</label>
+		    <textarea class="form-control" id="textarea-newNoticia" rows="4" name="contenido" required="True"></textarea>
+	  	</div>
+
+	  	Seleccione intereses
+		{% for interes in intereses %}
+		<div class="form-check col-md-8">
+		  <label class="form-check-label">
+		    <input class="form-check-input" type="checkbox" value="{{ interes.0 }}" name="intereses">
+		    {{ interes.0 }}
+		  </label>
+		</div>
+		{% endfor %}
 		
-		<input type="submit" value="Registrar">
+		<input type="submit" value="Registrar" class="btn btn-primary">
 	
 	</form>
 	<a href="{% url 'usuarioAdmin:index' %}">Index</a>
