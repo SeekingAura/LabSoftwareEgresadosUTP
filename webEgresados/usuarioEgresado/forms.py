@@ -99,11 +99,11 @@ class primerLogin_Form(forms.Form):
 	
 	
 	
-	fechaNacimiento= forms.DateField(widget=forms.SelectDateWidget(attrs={'class':'form-control','placeholder':'Fecha de nacimiento',
-		'required':'true'},years=getDate()), required=True, label='Fecha de nacimiento', initial=str(date.today().year-30)+"-"+str(date.today().month)+"-"+str(date.today().day))
+	fechaNacimiento= forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Fecha de nacimiento',
+		'required':'true'}), required=True, label='Fecha de nacimiento')
 
-	graduacion= forms.ChoiceField(widget=forms.Select(attrs={'class':'form-control','placeholder':'año de graduación',
-		'required':'true'}), required=True, choices=getYears(), label='año de graduación')
+	graduacion= forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'año de graduación',
+		'required':'true'}), required=True, label='año de graduación')
 	
 	genero=forms.ChoiceField(widget=forms.RadioSelect(attrs={'class':'form-control','placeholder':'Genero',
 		'required':'true', 'maxlength':'32',}), choices=[["masculino", "Masculino"], ["femenino", "Femenino"]], required=True, validators=[],  label="Genero")

@@ -116,20 +116,21 @@ def primerLogin_view(request):
 	form=primerLogin_Form()
 	paises = getPaises()
 	departamentos = getDepartamentos()
-	intereses = getIntereses()
+	form_intereses = getIntereses()
 	context['form'] = form
 	context['paises'] = paises
 	context['deptos'] = departamentos
-	context['intereses'] = intereses
+	context['intereses'] = form_intereses
+	context['datos'] = {}
+
 	if(request.method == 'POST'):
 		print(request.POST)
-		p = request.POST.get('pais')
-		print("PAISSSSSSSSSSS " + p) 	
 		form=primerLogin_Form(data=request.POST)
 		context['form'] = form
 		context['paises'] = paises
 		context['deptos'] = departamentos
-		context['intereses'] = intereses
+		context['intereses'] = form_intereses
+		context['datos'] = request.POST
 
 		valido=True
 		if(not departamentoValidator(request.POST.get("pais"), request.POST.get("departamento"))):
@@ -139,7 +140,11 @@ def primerLogin_view(request):
 			messages.error(request, 'Debe tener seleccionado al menos 1 interes')
 			valido=False
 		#1997 2002 fechaNacimiento_year, fechaNacimiento_month, fechaNacimiento_day
-		if(int(request.POST.get("fechaNacimiento_year"))>=int(request.POST.get("graduacion"))-15):
+		fecha_graduacion = request.POST.get("graduacion")
+		list_fecha_graduacion = fecha_graduacion.split('-')
+		fecha_nacimiento = request.POST.get("fechaNacimiento")
+		list_fecha_nacimiento = fecha_nacimiento.split('-')
+		if(int()>=int(list_fecha_graduacion[0])-15):
 			messages.error(request, 'La fecha de graduación no es acorde a la de su nacimiento')
 			valido=False
 		if(form.is_valid() and valido):
@@ -155,9 +160,9 @@ def primerLogin_view(request):
 				interes=InteresesEgresado.objects.create(userEgre=userEgre, interes=interes)
 				interes.save()
 			
-			userEgre.fechaNacimiento=str(request.POST.get("fechaNacimiento_year"))+"-"+str(request.POST.get("fechaNacimiento_month"))+"-"+str(request.POST.get("fechaNacimiento_day"))
+			userEgre.fechaNacimiento= list_fecha_nacimiento[0] + "-" + list_fecha_nacimiento[1] + "-" + list_fecha_nacimiento[2]
 			
-			userEgre.promoteAge=int(request.POST.get("graduacion"))
+			userEgre.promoteAge=int(list_fecha_graduacion[0])
 			userEgre.genero=request.POST.get("genero")
 			
 			if(request.POST.get("direccionResidencia") is not None):
