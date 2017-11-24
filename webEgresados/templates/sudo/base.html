@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/my_css.css' %}">
+	<title>{% block title %}Inicio - Plataforma egresados UTP{% endblock %}</title>
+</head>
+<body>
+
+	<div class="container">
+		{% block navbar %}
+			<div class="container-fluid" display="flex" width="100%">
+			  {% block nombres %}<p class="text-rigth">Bienvenido, Nombre1 Nombre2</p>{% endblock %}
+			  {% block foto %}<img class="text-rigth" src="{% static 'images/sin_foto.png' %}" id="img-navbar-egresado">{% endblock %}
+			</div>
+
+
+			<!-- Navbar -->
+			<nav class="navbar col-12 container-fluid" id="navbar-egresado">
+			  <a class="navbar-brand" href="{% url 'usuario:sudoIndex' %}" id="text-navbar-egresado">Inicio</a>
+			  <a class="navbar-brand" href="#" id="text-navbar-egresado">Perfil</a>
+			  <a class="navbar-brand" href="#" id="text-navbar-egresado">Amigos</a>
+			  <a class="navbar-brand" href="#" id="text-navbar-egresado">Noticias</a>
+			  <a class="navbar-brand" href="#" id="text-navbar-egresado">Mensajes</a>
+			  
+			  
+			</nav>
+		{% endblock %}
+
+		{% block content %}
+		{% endblock %}
+	</div>
+
+
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+</body>
+</html>
