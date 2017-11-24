@@ -9,13 +9,13 @@ from django.template import loader
 
 from django.contrib.auth import logout
 from django.http import HttpResponseRedirect
-from .forms import registroAdministrador, registroEgresado, loginForm
+from .forms import registroAdministrador, registroEgresado, loginForm, loginSudo_Form
 from django.contrib.auth.decorators import login_required
 from django.core.validators import EmailValidator, ValidationError
 from django.contrib import messages
 
 from usuarioAdminEgresado.models import UsuariosAdminEgresado
-from usuarioAdministrador.models import UsuarioAdministrador
+from usuarioAdministrador.models import UsuarioAdministrador, intereses
 from usuarioEgresado.models import UsuarioEgresado
 from django.contrib.auth import authenticate, login
 from django.core.mail import EmailMessage
@@ -142,7 +142,46 @@ def login_view(request):
 		
 	return render(request,'login/login.html', context)
 
+def loginSudo_view(request):
+	context={}
+	form=loginSudo_Form()
+	context['form'] = form
+	if request.user.is_authenticated():#case if already logged
+		username = request.user.first_name
+		context['username']=username
+			
+	if(request.method == 'POST'):
+		form=loginSudo_Form(data=request.POST)
+		context['form'] = form
+		if(form.is_valid()):
+			user = form.login(request)
+			if user:
+				login(request, user)
+				return redirect("usuario:sudoIndex")
+				
+		
+	return render(request,'sudo/login.html', context)
+
 	
+def indexSudo_view(request):
+	context={}
+	
+	return render(request, 'sudo/index.html',context)
+
+@login_required(login_url="usuario:sudoLogin")
+def interesesTodosSudo_view(request):
+	context={}
+	datos=intereses.objects.all()
+	context['datos']=datos
+	return render(request, 'sudo/interesesTodos.html',context)
+	
+def index_view(request):
+	#username = None
+	#context={'username': username, 'tipoUser' : "Egresado", 'user' : request.user}
+	#username = request.user.first_name
+	#context['username']=username
+	
+	return render(request, 'egresado/index.html',context)
 	
 @login_required(login_url="usuario:login")
 def Bienvenido(request):

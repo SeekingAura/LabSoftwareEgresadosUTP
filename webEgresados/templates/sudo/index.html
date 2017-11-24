@@ -1,0 +1,12 @@
+{% extends 'sudo/base.html' %}
+{% block nombres %}<p class="text-rigth">Bienvenido, super usuario del sistema</p>{% endblock %}
+{% block title %}Bienvenido{% endblock %}
+
+{% block content %}
+
+<h1>Bievenido/a super usuario</h1>
+
+<a href="{% url 'usuario:logout' %}">Logout</a>
+
+{% endblock %}
+

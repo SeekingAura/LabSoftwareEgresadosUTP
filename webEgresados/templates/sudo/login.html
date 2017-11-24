@@ -1,0 +1,42 @@
+
+{% extends 'sudo/base.html' %}
+{% load bootstrap %}
+{% block title %}Iniciar sesion - Sudo{% endblock %}
+
+{% block header %}
+{% endblock %}
+
+	
+	{% block content %}
+	{% if messages %}
+	<ul class="messages">
+		{% for message in messages %}
+		<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+		{% endfor %}
+	</ul>
+	
+	{% endif %}
+	<div class="container">
+		<div class="row">
+			<div class="col sm-s12 xm-s12">
+				<h1 class="mx-auto" id="font-login">Inicio de sesión - Super usuario</h1>		
+			</div>		
+		</div>
+			
+			 <form action="" method="POST" class="col-sm-s12">
+			 	{% csrf_token %}
+                    {{ form|bootstrap }}
+                    <input type="submit" class="btn btn-primary" style="width:100%" value="Iniciar sesión" id="btn-login">
+            
+            </form>
+        <div class="row">
+		<div class="mx-auto">
+			<a href="{% url 'password_reset' %}" id="a-login">Olvidé mi contraseña</a>	
+		</div>
+		</div>
+	</div>
+	{% endblock %}
+
+	{% block footer %}
+	
+	{% endblock %}

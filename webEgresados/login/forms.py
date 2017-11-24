@@ -176,7 +176,22 @@ class loginForm(forms.Form):
 		password = self.cleaned_data.get('password')
 		user = authenticate(username=username, password=password)
 		return user
+
+class loginSudo_Form(forms.Form):
+	password=forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control','placeholder':'contraseña','maxlength':'32', 'required':'true'}), label="Contraseña")
+	def clean(self):
+		password = self.cleaned_data.get('password')
+		user = authenticate(username="sudo", password=password)
 		
+		if not user or not user.is_active:
+			raise forms.ValidationError("Usuario o contraseña invalidos")
+			
+		return self.cleaned_data
+
+	def login(self, request):
+		password = self.cleaned_data.get('password')
+		user = authenticate(username="sudo", password=password)
+		return user
 """
 class RegistroForm(UserCreationForm):
 	username = forms.EmailField(label=_("usuario (Email)"))

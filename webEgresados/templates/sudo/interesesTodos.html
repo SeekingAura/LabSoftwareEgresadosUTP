@@ -1,0 +1,30 @@
+{% extends 'sudo/base.html' %}
+{% block nombres %}<p class="text-rigth">Bienvenido, super usuario del sistema</p>{% endblock %}
+{% block title %}Bienvenido{% endblock %}
+
+{% block content %}
+
+<h1>Intereses del sistema</h1>
+
+<table class="table table-striped">
+			<thead>
+				<th>Titulo</th>
+				<th>Descripción</th>
+			</thead>
+			<tbody>
+			{% for noticia in noticias %}
+			<tr>
+				{% for dato in datos %}
+				  <td>{{ dato.titulo }}</td>
+				  <td>{{ dato.description }}</td>
+				  
+				  
+			</tr>
+			{% endfor %}
+		</tbody>
+		</table>
+
+<a href="{% url 'usuario:logout' %}">Logout</a>
+
+{% endblock %}
+
