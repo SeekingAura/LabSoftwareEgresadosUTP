@@ -15,13 +15,14 @@
 	</ul>
 	
 	{% endif %}
-	<form method="POST">
+	<form method="POST" id="custom-form">
 		{% csrf_token %}
 		
 		
 	    <div class="form-group col-md-8">
 			<label for="pais">Pais</label>
-			<select class="form-control" name="pais" required>
+			<select class="form-control" name="pais" required id="pais">
+				<option value="0">Seleccione pais</option>
 				{% for pais in paises %}
 					<option value="{{ pais.0 }}"
 						{% if datos.pais == pais.0 %}
@@ -34,7 +35,7 @@
 			
 		<div class="form-group col-md-8">
 			<label for="depto">Departamento</label>
-			<select class="form-control" name="departamento" required>
+			<select class="form-control" name="departamento" required id="depto">
 				{% for depto in deptos %}
 					<option value="{{ depto.0 }}"
 						{% if datos.departamento == depto.0 %}
@@ -141,7 +142,7 @@
 		    <input type="password" class="form-control" id="inputPassword4" placeholder="Password" name="passwordConfimation" required="True" minlength="8">
 	    </div>
   		<br>
-		<input type="submit" value="Guardar" class="btn btn-primary">
+		<input type="submit" value="Guardar" class="btn btn-primary" id="boton">
 	
 	</form>
 
@@ -151,7 +152,22 @@
 		    startDate: '-3d'
 		});
 	</script>
+
 	
+	
+	<script type="text/javascript">
+		$("#boton").click(function(){
+
+			value_pais = $("#pais").val();
+			value_depto = $("#depto").val();
+
+			if(value_pais == "0" || value_depto == "0"){
+				alert("Seleccione un pais y un departamento");
+			}else{
+				$("#boton").submit();
+			}
+		});
+	</script>
 	
 	
 {% endblock %}

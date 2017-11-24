@@ -124,7 +124,6 @@ def primerLogin_view(request):
 	context['datos'] = {}
 
 	if(request.method == 'POST'):
-		print(request.POST)
 		form=primerLogin_Form(data=request.POST)
 		context['form'] = form
 		context['paises'] = paises
@@ -220,12 +219,17 @@ def editarPerfil_view(request):
 		interesesDatoTemp.append(i[0])
 	print(interesesDatoTemp)
 	form = editarPerfil_Form(initial={'intereses':interesesDatoTemp, 'direccionResidencia':userAdminEgre.direccionResidencia, 'direccionTrabajo': userEgre.direccionTrabajo, 'ocupacionActual': userEgre.ocupacionActual, 'telefono': userAdminEgre.telefono, 'privacidad': userEgre.privacidad, 'foto':userEgre.foto})
+	form_intereses = getIntereses()
 	context['form'] = form
+	context['intereses'] = form_intereses
+	context['userAdminEgre'] = userAdminEgre
+	context['userEgre'] = userEgre
+	context['misIntereses'] = interesesDatoTemp
 	print(userEgre.foto)
 	
 	if(request.method == 'POST'):
 		form=editarPerfil_Form(data=request.POST, files=request.FILES)
-		
+		print(request.POST)
 		context['form'] = form
 		valido=True
 		
@@ -266,5 +270,7 @@ def editarPerfil_view(request):
 			user = authenticate(username=usuarioActual, password=request.POST.get("password"))
 			login(request, user)
 		else:
+			print("form is valid: ", form.is_valid())
+			print("valido: ", valido)
 			messages.error(request, 'Hay errores en el registro, revise los campos')
 	return render(request, 'egresado/editarPerfil.html',context)

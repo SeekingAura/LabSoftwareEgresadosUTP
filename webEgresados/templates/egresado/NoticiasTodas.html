@@ -8,13 +8,11 @@
 {% endblock %}
 {% block content %}
 
-<h1>Bievenido {{ tipoUser }} {{ user.first_name }}</h1>
-
 <h2>Area de visualización de noticias</h2>
 	<hr>
 
 	<!-- La siguiente parte debe ir en otro template (solicitudes)-->
-	<hr>
+
 		{% if messages %}
 		<ul class="messages">
 			{% for message in messages %}
@@ -22,41 +20,31 @@
 			{% endfor %}
 		</ul>
 		{% endif %}
-		<table class="table table-striped">
-			<thead>
-				<th>Titulo</th>
-				<th>Contenido</th>
-				<th>Intereses relacionados</th>
-				<th>Creador Noticia</th>
-				<th>Fecha de creación de Noticia</th>
-				<th>Fecha de edición Noticia</th>
-			</thead>
-			<tbody>
+		
+		<ul id="lista-noticias">
 			{% for noticia in noticias %}
-			<tr>
-				  <td>{{ noticia.0 }}</td>
-				  <td>{{ noticia.1 }}</td>
-				  
-				  <td>
-				  {% for interes in noticia.2 %}
-				  <li>{{interes}} </li>
-				  {% endfor %}
-				  </td>
-				  <td>
-				  {{noticia.3}}
-				  </td>
-				  <td>
-				  {{noticia.4}}
-				  </d>
-				  <td>
-				  {{noticia.5}}
-				  </d>
-			</tr>
-			{% endfor %}
-		</tbody>
-		</table>
-	<a href="{% url 'usuarioAdmin:index' %}">Index</a>
-	<a href="{% url 'usuarioAdmin:crearNoticia' %}">Crear Noticia</a>
+
+				<div class="card text-center">
+				  <div class="card-header" id="card-header-noticia">
+				    Noticia
+				  </div>
+				  <div class="card-body">
+				    <h4 class="card-title">{{ noticia.0 }}</h4>
+				    <p class="card-text">{{ noticia.1 }}</p>
+				    <a href="#" class="btn btn-primary">Subscribirse</a>
+				  </div>
+				  <div class="card-footer text-muted">
+				    {{ noticia.3 }} |
+				    {{ noticia.4 }}
+				  </div>
+				</div>
+				<hr>
+
+			{% endfor %}			
+
+
+		</ul>
+	
 {% endblock %}
 
 

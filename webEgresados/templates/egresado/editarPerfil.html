@@ -17,18 +17,93 @@
 		</ul>
 		
 	{% endif %}
-	<form method="POST">
+	<hr>
+	<form method="POST" id="custom-form" class="center-block">
 			{% csrf_token %}
 			
-			<table>
-				{{ form.as_table }}
-			</table>
+			<label for="intereses">Seleccione intereses</label>
+			{% for interes in intereses %}
+			<div class="form-check col-md-8">
+			  <label class="form-check-label">
+			    <input class="form-check-input" type="checkbox" value="{{ interes.0 }}" name="intereses"
+			    	{% if  interes.0 in misIntereses %}
+			    		checked = "True"
+			    	{% endif %}
+			    >
+			    {{ interes.0 }}
+			  </label>
+			</div>
+			{% endfor %}
+
+			<div class="form-group col-md-8">
+			    <label for="direccionResidencia">Dirección de residencia</label>
+			    <input type="text" name="direccionResidencia" class="form-control" placeholder="Ingrese su dirección de residencia" maxlength="100" value="{{ userAdminEgre.direccionResidencia }}">
+		  	</div>
+
+		  	<div class="form-group col-md-8">
+			    <label for="direccionTrabajo">Dirección de trabajo</label>
+			    <input type="text" name="direccionTrabajo" class="form-control" placeholder="Ingrese su dirección de trabajo" maxlength="100" value="{{ userEgre.direccionTrabajo }}">
+		  	</div>
+
+		  	<div class="form-group col-md-8">
+			    <label for="ocupacionActual">Ocupación actual</label>
+			    <input type="text" name="ocupacionActual" class="form-control" placeholder="Ingrese su ocupación actual" maxlength="100" value="{{ userEgre.ocupacionActual }}">
+		  	</div>
+		  	
+		  	<div class="form-group col-md-8">
+			    <label for="telefono">Teléfono</label>
+			    <input type="text" name="telefono" class="form-control" placeholder="Ingrese su teléfono" maxlength="15" value="{{ userAdminEgre.telefono }}">
+		  	</div>
+
+		  	<div class="form-group">
+		    <label for="telefono">Acceso a mi información</label>
+		  	</div>
+		  	<div class="form-check">
+			  <label class="form-check-label">
+			    <input class="form-check-input" type="radio" name="privacidad" id="privacidad" value="publico" {% if userEgre.privacidad == 'publico' %} checked {% endif %}>
+			    Publico
+			  </label>
+			</div>
+			<div class="form-check">
+			  <label class="form-check-label">
+			    <input class="form-check-input" type="radio" name="privacidad" id="privacidad" value="amigos de amigos" {% if userEgre.privacidad == 'amigos de amigos' %} checked {% endif %}>
+			    Amigos de amigos (tus amigos están incluidos)
+			  </label>
+			</div>
+		  	<div class="form-check">
+			  <label class="form-check-label">
+			    <input class="form-check-input" type="radio" name="privacidad" id="privacidad" value="amigos" {% if userEgre.privacidad == 'amigos' %} checked {% endif %}>
+			    Amigos
+			  </label>
+			</div>
+			<div class="form-check">
+			  <label class="form-check-label">
+			    <input class="form-check-input" type="radio" name="privacidad" id="privacidad" value="privado" {% if userEgre.privacidad == 'privado' %} checked {% endif %}>
+			    Privado
+			  </label>
+			</div>
+
+			<div class="form-group">
+			    <label for="exampleFormControlFile1">Foto de perfil</label>
+			    <input type="file" class="form-control-file" id="exampleFormControlFile1" name="foto">
+			</div>
+
+			<div class="form-group col-md-8">
+			    <label for="inputPassword4">Contraseña</label>
+			    <input type="password" class="form-control" id="inputPassword4" placeholder="Password" name="password" minlength="8">
+		    </div>
+		    <div class="form-group col-md-8">
+			    <label for="inputPassword4">Confirmar contraseña</label>
+			    <input type="password" class="form-control" id="inputPassword4" placeholder="Password" name="passwordConfimation" minlength="8">
+		    </div>
+	  		<br>
 			
-			
-			<input type="submit" value="Registrar">
+			<input type="submit" value="Registrar" class="btn btn-primary">
 		
 	</form>
 	
 	<a href="{% url 'usuario:logout' %}">Logout</a>
+
+	<br>
 {% endblock %}
 
