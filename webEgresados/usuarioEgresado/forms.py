@@ -147,8 +147,8 @@ class editarPerfil_Form(forms.Form):
 	privacidad=forms.ChoiceField(widget=forms.RadioSelect(attrs={'class':'form-control','placeholder':'Acceso a mi información',
 		'required':'true', 'maxlength':'32',}), choices=[["publico","Publico"], ["amigos de amigos","Amigos de amigos (tus amigos están incluidos)"], ["amigos","Amigos"],["privado","Privado"]], initial="publico", validators=[],  label="Acceso a mi información")
 	foto=forms.ImageField(widget=forms.FileInput(attrs={'class':'form-control','placeholder':'Foto', 'id' : 'input-file'}),required=False, label="Foto")
-	password=forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control','placeholder':'contraseña','maxlength':'32'}), label="Contraseña")
-	passwordConfimation=forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control','placeholder':'repita contraseña','maxlength':'32'}),validators=[validate_password], help_text=password_validators_help_text_html(), label="Confimar contraseña")
+	password=forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control','placeholder':'contraseña','maxlength':'32'}), required=False, label="Contraseña")
+	passwordConfimation=forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control','placeholder':'repita contraseña','maxlength':'32'}), required=False, validators=[validate_password], help_text=password_validators_help_text_html(), label="Confimar contraseña")
 	
 	def clean(self):
 		password1 = self.cleaned_data.get('password')

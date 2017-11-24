@@ -256,7 +256,8 @@ def editarPerfil_view(request):
 			
 			userAdminEgre.telefono=request.POST.get("telefono")
 			
-			userEgre.foto=request.POST.get("foto")
+			userEgre.foto=request.FILES.get('foto')
+			print("FOTOOOOOOOOOOOOO")
 			print(request.FILES)
 			print(form.cleaned_data)
 			userEgre.privacidad=request.POST.get("privacidad")

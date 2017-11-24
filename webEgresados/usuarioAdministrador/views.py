@@ -181,9 +181,11 @@ def editarNoticia_view(request, idNoticia):
 		for i in noticiasInteres:
 			temp.append(i[0])
 		form = modificarNoticia_Form(initial={'titulo':noticia.titulo, 'contenido':noticia.contenido, 'intereses': temp})
+		form_intereses = getIntereses()
 		context['form'] = form
 		context['noticia'] = noticia 
-		context['intereses'] = temp
+		context['misIntereses'] = temp
+		context['intereses'] = form_intereses
 
 		temp=noticias.objects.all().values_list('titulo')
 		
@@ -191,6 +193,9 @@ def editarNoticia_view(request, idNoticia):
 		if(request.method == 'POST'):
 			form=modificarNoticia_Form(data=request.POST)
 			context['form'] = form
+			context['noticia'] = noticia 
+			context['misIntereses'] = temp
+			context['intereses'] = form_intereses
 			yaExiste=False
 			for i in temp:
 				print(i)
