@@ -6,17 +6,33 @@
 
 <h1>Intereses del sistema</h1>
 
+	<hr>
+	{% if messages %}
+	<ul class="messages">
+		{% for message in messages %}
+		<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+		{% endfor %}
+	</ul>
+	{% endif %}
+
 <table class="table table-striped">
 			<thead>
 				<th>Titulo</th>
 				<th>Descripción</th>
+				<th>Acción</th>
 			</thead>
 			<tbody>
-			{% for noticia in noticias %}
+			{% for interes in intereses %}
 			<tr>
-				{% for dato in datos %}
-				  <td>{{ dato.titulo }}</td>
-				  <td>{{ dato.description }}</td>
+				
+			  <td>{{ interes.titulo }}</td>
+			  <td>{{ interes.description }}</td>
+			  <td>
+			  	 <a href="#" class="btn btn-warning">Editar</a>
+				  
+				  <a href="{% url 'usuario:sudoInteresEliminar' idInteres=interes.titulo %}" class="btn btn-danger">Eliminar</a>
+
+			  </td>
 				  
 				  
 			</tr>

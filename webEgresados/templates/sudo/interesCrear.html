@@ -1,0 +1,36 @@
+{% extends 'sudo/base.html' %}
+{% block nombres %}<p class="text-rigth">Bienvenido, super usuario del sistema</p>{% endblock %}
+{% block title %}Bienvenido{% endblock %}
+
+{% block content %}
+
+<h1>Crear intereses del sistema</h1>
+
+	<hr>
+	{% if messages %}
+	<ul class="messages">
+		{% for message in messages %}
+		<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+		{% endfor %}
+	</ul>
+	{% endif %}
+	<form method="POST">
+		{% csrf_token %}
+		
+		<div class="form-group col-md-8">
+		    <label for="titulo">Título</label>
+		    <input type="text" name="titulo" class="form-control" placeholder="Titulo del interes" required="True" maxlength="100">
+	  	</div>
+		<div class="form-group col-md-8">
+		    <label for="contenido">Descripción</label>
+		    <textarea class="form-control" id="textarea-newNoticia" rows="4" name="description" required="True"></textarea>
+	  	</div>
+		
+		<input type="submit" value="Registrar" class="btn btn-primary">
+	
+	</form>
+
+<a href="{% url 'usuario:logout' %}">Logout</a>
+
+{% endblock %}
+

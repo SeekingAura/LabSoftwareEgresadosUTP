@@ -6,7 +6,7 @@ from django.shortcuts import render, redirect, render_to_response
 from django.http import HttpResponse
 from django.template import loader
 
-
+from datetime import date
 from django.contrib.auth import logout
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
@@ -132,6 +132,8 @@ def primerLogin_view(request):
 		context['datos'] = request.POST
 
 		valido=True
+
+
 		if(not departamentoValidator(request.POST.get("pais"), request.POST.get("departamento"))):
 			messages.error(request, 'El departamento dado no corresponde al pais seleccionado')
 			valido=False
@@ -143,7 +145,12 @@ def primerLogin_view(request):
 		list_fecha_graduacion = fecha_graduacion.split('-')
 		fecha_nacimiento = request.POST.get("fechaNacimiento")
 		list_fecha_nacimiento = fecha_nacimiento.split('-')
-		if(int()>=int(list_fecha_graduacion[0])-15):
+		actualYear=date.today().year
+		if(date.today().year>int(list_fecha_graduacion[0])):
+			messages.error(request, 'la fecha ingresada es en el futuro, es decir usted aun no es egresado.')
+			valido=False
+
+		if(int(date.today().year)>=int(list_fecha_graduacion[0])-15):
 			messages.error(request, 'La fecha de graduación no es acorde a la de su nacimiento')
 			valido=False
 		if(form.is_valid() and valido):

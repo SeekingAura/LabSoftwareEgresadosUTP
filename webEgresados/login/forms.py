@@ -192,6 +192,11 @@ class loginSudo_Form(forms.Form):
 		password = self.cleaned_data.get('password')
 		user = authenticate(username="sudo", password=password)
 		return user
+
+class crearInteres_Form(forms.Form):
+	titulo=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Titulo', 'maxlength':'100',}), required=True, validators=[],  label="Titulo")
+	description=forms.CharField(widget=forms.Textarea(attrs={'class':'form-control','placeholder':'Contenido', 'maxlength':'500',}), required=True, validators=[],  label="Contenido")
+
 """
 class RegistroForm(UserCreationForm):
 	username = forms.EmailField(label=_("usuario (Email)"))

@@ -21,11 +21,16 @@
 			<!-- Navbar -->
 			<nav class="navbar col-12 container-fluid" id="navbar-egresado">
 			  <a class="navbar-brand" href="{% url 'usuario:sudoIndex' %}" id="text-navbar-egresado">Inicio</a>
-			  <a class="navbar-brand" href="#" id="text-navbar-egresado">Perfil</a>
-			  <a class="navbar-brand" href="#" id="text-navbar-egresado">Amigos</a>
-			  <a class="navbar-brand" href="#" id="text-navbar-egresado">Noticias</a>
-			  <a class="navbar-brand" href="#" id="text-navbar-egresado">Mensajes</a>
-			  
+			  <li class="nav-item dropdown">
+			    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			      Intereses
+			    </a>
+			    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+			      <a class="dropdown-item" href="{% url 'usuario:sudoInteresCrear' %}" id="text-navbar-admin-dropdown">Crear interes</a>
+			      <a class="dropdown-item" href="{% url 'usuario:sudoInteresesVer' %}" id="text-navbar-admin-dropdown">Ver intereses</a>
+			    </div>
+			  </li>
+			  <a class="navbar-brand" href="#" id="text-navbar-egresado">Solicitudes administradores</a>
 			  
 			</nav>
 		{% endblock %}

@@ -78,11 +78,11 @@ def aceptarSoli_view(request, DNI):
 			userAdminEgre.save()
 			user=User.objects.get(id=userAdminEgre.user_id)
 			password=User.objects.make_random_password()
-			#user.set_password(password)
-			user.set_password("123")
+			user.set_password(password)
+			#user.set_password("123")
 			user.save()
 			email = EmailMessage("Activación de cuenta", "Su cuenta ha sido ACTIVADA satisfactoriamente, recuerde que debe ingresar a http://"+str(request.META['HTTP_HOST'])+"/usuario/login para acceder a su cuenta \n\nSu usuario es: "+str(user.email)+"\nsu contraseña es: "+str(password), to=[str(user.email)])
-			#email.send()#MODO_PRUEBAS
+			email.send()#MODO_PRUEBAS
 			messages.success(request, 'Usuario con DNI: '+str(DNI)+" Aceptado correctamente")
 	except:
 		print("NOT FOUND")
@@ -103,7 +103,7 @@ def rechazarSoli_view(request, DNI):
 			#user.save()
 			mensaje=""
 			email = EmailMessage("Activación de cuenta", "Su cuenta ha sido RECHAZADA, por el motivo de: "+mensaje+" \n\nSi desea formar parte del sistema solvente los problemas planteados en su motivo de rechazo, Para mayor información consulte con un administrador", to=[str(user.email)])
-			#email.send()#MODO_PRUEBAS
+			email.send()#MODO_PRUEBAS
 			User.objects.get(id=userAdminEgre.user_id).delete()
 			messages.warning(request, 'Usuario con DNI: '+str(DNI)+" Rechazado correctamente")
 	except:

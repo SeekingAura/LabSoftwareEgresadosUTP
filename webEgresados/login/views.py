@@ -9,7 +9,7 @@ from django.template import loader
 
 from django.contrib.auth import logout
 from django.http import HttpResponseRedirect
-from .forms import registroAdministrador, registroEgresado, loginForm, loginSudo_Form
+from .forms import registroAdministrador, registroEgresado, loginForm, loginSudo_Form, crearInteres_Form
 from django.contrib.auth.decorators import login_required
 from django.core.validators import EmailValidator, ValidationError
 from django.contrib import messages
@@ -75,7 +75,7 @@ def registro(request, type):
 			print("es valido, creando user")
 			user=User.objects.create(username=str(request.POST.get("username")).lower(), email=str(request.POST.get("username")).lower(),first_name=str(request.POST.get("first_name")).title(), last_name=str(request.POST.get("last_name")).title())
 			
-			#user.set_password(request.POST.get("password"))
+			user.set_password(request.POST.get("password"))
 			#user.set_password("123")
 			user.save()
 			
@@ -91,7 +91,7 @@ def registro(request, type):
 				form = registroAdministrador()
 				context['form'] = form
 				email = EmailMessage("Registro de cuenta", "Su cuenta ha quedado pendiente a ser activada por un Super usuario, esté atento a que su solicitud sea atendida \n\nNo olvide que su cuenta es "+str(request.POST.get("username")).lower(), to=[str(request.POST.get("username")).lower()])
-				#email.send()#MODO_PRUEBAS
+				email.send()#MODO_PRUEBAS
 				user.set_password("123")#MODO_PRUEBAS
 				user.save()#MODO_PRUEBAS
 			elif(type=="egresado"):
@@ -100,7 +100,7 @@ def registro(request, type):
 				form = registroEgresado()
 				context['form'] = form
 				email = EmailMessage("Registro de cuenta", "Su cuenta ha quedado pendiente a ser activada por un administrador, esté atento a que su solicitud sea atendida \n\nNo olvide que su cuenta es: "+str(request.POST.get("username")).lower(), to=[str(request.POST.get("username")).lower()])
-				#email.send()#MODO_PRUEBAS
+				email.send()#MODO_PRUEBAS
 				
 			messages.success(request, 'Registro completado con exito, se le ha enviado un mensaje a su correo electronico')
 		#else:
@@ -172,8 +172,47 @@ def indexSudo_view(request):
 def interesesTodosSudo_view(request):
 	context={}
 	datos=intereses.objects.all()
-	context['datos']=datos
+	context['intereses']=datos
 	return render(request, 'sudo/interesesTodos.html',context)
+
+@login_required(login_url="usuario:sudoLogin")
+def	interesElininarSudo_view(request, idInteres):
+	try:
+		intereses.objects.get(titulo=idInteres).delete()
+		message.error(request, "Interes eliminado")
+	except:
+		print("Interes not found")
+	return redirect("usuario:sudoInteresesVer")
+
+@login_required(login_url="usuario:sudoLogin")
+def interesCrearSudo_view(request):
+	context={}
+	form = crearInteres_Form()
+	context['form'] = form
+
+	if(request.method  == 'POST'):
+		form = crearInteres_Form(data=request.POST)
+		context['form'] = form
+		valid = True
+		print(request.POST)
+		value = request.POST.get('titulo').lower()
+		temp = intereses.objects.all().values_list('titulo')
+		print('TEMP: ', temp)
+		for i in temp:
+			if str(i[0]).lower() == value:
+				valid = False
+				messages.error(request, 'Ya existe un interes con ese nombre')
+
+		if(form.is_valid() and valid):
+			interes = intereses.objects.create(titulo=request.POST.get('titulo'), description=request.POST.get('description'))
+			interes.save()
+			messages.success(request, 'Interes creado!!!')
+			form = crearInteres_Form()
+			context['form'] = form
+			print("Pase por aqui")
+		else:
+			messages.error(request, 'Hay errores en los campos')
+	return render(request, 'sudo/interesCrear.html',context)
 	
 def index_view(request):
 	#username = None
