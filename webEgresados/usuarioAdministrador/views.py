@@ -367,7 +367,7 @@ def primerLogin_view(request):
 
 @login_required(login_url="usuario:login")
 @primerLogin(index_url="usuarioEgre:primerLogin")
-@redirectEgresado(index_url="usuarioAdmin:index")
+@redirectAdmin(index_url="usuarioEgre:index")
 def editarPerfil_view(request):
 	context={}
 
