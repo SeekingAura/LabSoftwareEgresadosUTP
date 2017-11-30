@@ -1,0 +1,82 @@
+{% extends 'administrador/base.html' %}
+{% block nombres %}Bienvenido{% endblock %}
+{% load staticfiles %}
+
+{% block title %}Primer login{% endblock %}
+
+{% block content %}
+
+<h1>Bievenido/a {{ tipoUser }} {{ user.first_name }}</h1>
+<h2>Complete sus datos</h2>
+	{% if messages %}
+	<ul class="messages">
+		{% for message in messages %}
+		<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+		{% endfor %}
+	</ul>
+	
+	{% endif %}
+	<form method="POST">
+		{% csrf_token %}
+					
+		<div class="form-group col-md-8">
+			<label for="depto">Departamento</label>
+			<select class="form-control" name="departamento" required id="depto">
+				{% for depto in deptos %}
+					<option value="{{ depto.0 }}"
+						{% if datos.departamento == depto.0 %}
+							selected
+						{% endif %}
+					>{{ depto.1 }}</option>
+				{% endfor %}
+			</select>
+		</div>
+		<br>
+		
+
+        
+		<div class="form-group col-md-8">
+		    <label for="direccionResidencia">Dirección de residencia</label>
+		    <input type="text" name="direccionResidencia" class="form-control" placeholder="Ingrese su dirección de residencia" maxlength="100" value="{{ datos.direccionResidencia }}">
+	  	</div>
+
+	  	
+	  	<div class="form-group col-md-8">
+		    <label for="telefono">Teléfono</label>
+		    <input type="text" name="telefono" class="form-control" placeholder="Ingrese su teléfono" maxlength="15" value="{{ datos.telefono }}">
+	  	</div>
+
+	  	
+		 <div class="form-group col-md-8">
+		    <label for="inputPassword4">Contraseña</label>
+		    <input type="password" class="form-control" id="inputPassword4" placeholder="Password" name="password" required="True" minlength="8">
+	    </div>
+	    <div class="form-group col-md-8">
+		    <label for="inputPassword4">Confirmar contraseña</label>
+		    <input type="password" class="form-control" id="inputPassword4" placeholder="Password" name="passwordConfimation" required="True" minlength="8">
+	    </div>
+  		<br>
+		<input type="submit" value="Guardar" class="btn btn-primary" id="boton">
+	
+	</form>
+
+
+	
+	
+	<script type="text/javascript">
+		$("#boton").click(function(){
+
+			value_pais = $("#pais").val();
+			value_depto = $("#depto").val();
+
+			if(value_pais == "0" || value_depto == "0"){
+				alert("Seleccione un pais y un departamento");
+			}else{
+				$("#boton").submit();
+			}
+		});
+	</script>
+	
+	
+{% endblock %}
+

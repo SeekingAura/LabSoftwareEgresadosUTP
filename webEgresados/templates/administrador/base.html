@@ -33,11 +33,7 @@
 	
 	{% block login %}
 	
-	{% if user.is_authenticated %}
-    	<a href="{% url 'usuario:logout' %}">Logout</a>
-	{% else %}
-	    <h4>No hay usuario Authenticated</h4>
-	{% endif %}
+	
 	
 	{% endblock %}
 	

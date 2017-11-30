@@ -29,12 +29,12 @@ def numeric_validator(value):
 		raise ValidationError('este campo debe ser solamente númerico')
 		
 
-def departamentoValidator(paisValue, departamentoValue):
+def departamento_validator(paisValue, departamentoValue):
 	resultDepartamento=Departamento.objects.get(departamentoNombre=departamentoValue)
 	resultPais=Pais.objects.get(paisNombre=paisValue)
 	if(resultDepartamento.idPais_id!=resultPais.id):
-		return False
-	return True
+		return True
+	return False
 
 		
 #query get values
@@ -125,7 +125,7 @@ class primerLogin_Form(forms.Form):
 	def clean(self):
 		password1 = self.cleaned_data.get('password')
 		password2 = self.cleaned_data.get('passwordConfimation')
-		print("cleaned password1={}, password2={}".format(password1, password2))
+		#print("cleaned password1={}, password2={}".format(password1, password2))
 		if password1 != password2 and password2 is not None:
 			raise forms.ValidationError(('las contraseñas no coinciden'), code='invalid') 
 		#else:

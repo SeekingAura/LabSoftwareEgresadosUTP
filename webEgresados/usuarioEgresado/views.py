@@ -18,11 +18,26 @@ from usuarioAdministrador.models import UsuarioAdministrador, intereses, noticia
 from usuarioEgresado.models import UsuarioEgresado, InteresesEgresado
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.password_validation import password_validators_help_text_html
-from .forms import primerLogin_Form, departamentoValidator, getPaises, getDepartamentos, getIntereses, editarPerfil_Form
+from .forms import primerLogin_Form, departamento_validator, getPaises, getDepartamentos, getIntereses, editarPerfil_Form
 from .decorators import *
 
 from operator import attrgetter
 
+
+#validators
+def numeric_validator(value):
+	result=re.match('[0-9]*', str(value))
+	if result is not None:	
+		
+		if len(result.group(0))!=len(str(value)):
+			
+			#raise ValidationError('este campo debe ser solamente númerico')
+			return True
+	else:
+		
+		#raise ValidationError('este campo debe ser solamente númerico')
+		return True
+	return False
 
 def getAllNoticias():
 	tempValues=noticias.objects.all()
@@ -126,19 +141,19 @@ def primerLogin_view(request):
 	if(request.method == 'POST'):
 		form=primerLogin_Form(data=request.POST)
 		context['form'] = form
-		context['paises'] = paises
-		context['deptos'] = departamentos
-		context['intereses'] = form_intereses
 		context['datos'] = request.POST
 
 		valido=True
 
 
-		if(not departamentoValidator(request.POST.get("pais"), request.POST.get("departamento"))):
+		if(departamento_validator(request.POST.get("pais"), request.POST.get("departamento"))):
 			messages.error(request, 'El departamento dado no corresponde al pais seleccionado')
 			valido=False
 		if(len(request.POST.getlist("intereses"))==0):
 			messages.error(request, 'Debe tener seleccionado al menos 1 interes')
+			valido=False
+		if(numeric_validator(request.POST.get("telefono"))):
+			messages.error(request, 'el campo del telefono debe de ser númerico')
 			valido=False
 		#1997 2002 fechaNacimiento_year, fechaNacimiento_month, fechaNacimiento_day
 		fecha_graduacion = request.POST.get("graduacion")

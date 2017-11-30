@@ -1,0 +1,47 @@
+{% extends 'sudo/base.html' %}
+{% load staticfiles %}
+{% block nombres %}<p class="text-rigth">Bienvenido, super usuario del sistema</p>{% endblock %}
+{% block title %}Aceptar solicitudes de registro{% endblock %}
+
+{% block content %}
+
+<h2>Lista de solicitudes de administrador pendientes</h2>
+	<hr>
+
+	<!-- La siguiente parte debe ir en otro template (solicitudes)-->
+	<hr>
+		{% if messages %}
+		<ul class="messages">
+			{% for message in messages %}
+			<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+			{% endfor %}
+		</ul>
+		{% endif %}
+		<table class="table table-striped">
+			<thead>
+				<th>DNI</th>
+				<th>Nombres</th>
+				<th>Apellidos</th>
+				<th>Accion</th>
+			</thead>
+			<tbody>
+			{% for usuario in listSolicitudes %}
+			<tr>
+				  <td>{{ usuario.2 }}</td>
+				  <td>{{ usuario.0.first_name }}</td>
+				  <td>{{ usuario.0.last_name }}</td>
+				  <td>
+				  	
+					  <a href="{% url 'usuario:sudoAceptarSoli' usuario.2 %}" class="btn btn-warning">Aceptar</a>
+					  
+					  <a href="{% url 'usuario:sudoRechazarSoli' usuario.2 %}" class="btn btn-danger">Rechazar</a>
+					
+				  </td>
+			</tr>
+			{% endfor %}
+		</tbody>
+		</table>
+		
+{% endblock %}
+
+

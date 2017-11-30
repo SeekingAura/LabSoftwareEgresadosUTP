@@ -75,7 +75,7 @@ def registro(request, type):
 			print("es valido, creando user")
 			user=User.objects.create(username=str(request.POST.get("username")).lower(), email=str(request.POST.get("username")).lower(),first_name=str(request.POST.get("first_name")).title(), last_name=str(request.POST.get("last_name")).title())
 			
-			user.set_password(request.POST.get("password"))
+			#user.set_password(request.POST.get("password"))
 			#user.set_password("123")
 			user.save()
 			
@@ -91,8 +91,8 @@ def registro(request, type):
 				form = registroAdministrador()
 				context['form'] = form
 				email = EmailMessage("Registro de cuenta", "Su cuenta ha quedado pendiente a ser activada por un Super usuario, esté atento a que su solicitud sea atendida \n\nNo olvide que su cuenta es "+str(request.POST.get("username")).lower(), to=[str(request.POST.get("username")).lower()])
-				email.send()#MODO_PRUEBAS
-				user.set_password("123")#MODO_PRUEBAS
+				#email.send()#MODO_PRUEBAS
+				#user.set_password("123")#MODO_PRUEBAS
 				user.save()#MODO_PRUEBAS
 			elif(type=="egresado"):
 				userEgre=UsuarioEgresado.objects.create(userAdminEgre=userAdminEgre, programa=request.POST.get("programa"))
@@ -100,7 +100,7 @@ def registro(request, type):
 				form = registroEgresado()
 				context['form'] = form
 				email = EmailMessage("Registro de cuenta", "Su cuenta ha quedado pendiente a ser activada por un administrador, esté atento a que su solicitud sea atendida \n\nNo olvide que su cuenta es: "+str(request.POST.get("username")).lower(), to=[str(request.POST.get("username")).lower()])
-				email.send()#MODO_PRUEBAS
+				#email.send()#MODO_PRUEBAS
 				
 			messages.success(request, 'Registro completado con exito, se le ha enviado un mensaje a su correo electronico')
 		#else:
@@ -117,12 +117,16 @@ def login_view(request):
 		username = request.user.first_name
 		context['username']=username
 		tipoUser=determinarTipoUser(request.user)
-		if(len(tipoUser)==2):
-			return redirect("usuarioAdmin:index")
-		elif(tipoUser[0]=="administrador"):
-			return redirect("usuarioAdmin:index")
-		elif(tipoUser[0]=="egresado"):
-			return redirect("usuarioEgre:index")
+		
+		if(not isinstance(tipoUser, list)):
+			return redirect("usuario:sudoIndex")
+		else:
+			if(len(tipoUser)==2):
+				return redirect("usuarioAdmin:index")
+			elif(tipoUser[0]=="administrador"):
+				return redirect("usuarioAdmin:index")
+			elif(tipoUser[0]=="egresado"):
+				return redirect("usuarioEgre:index")
 	if(request.method == 'POST'):
 		form=loginForm(data=request.POST)
 		context['form'] = form
@@ -176,7 +180,7 @@ def interesesTodosSudo_view(request):
 	return render(request, 'sudo/interesesTodos.html',context)
 
 @login_required(login_url="usuario:sudoLogin")
-def	interesElininarSudo_view(request, idInteres):
+def	interesEliminarSudo_view(request, idInteres):
 	try:
 		intereses.objects.get(titulo=idInteres).delete()
 		message.error(request, "Interes eliminado")
@@ -213,6 +217,68 @@ def interesCrearSudo_view(request):
 		else:
 			messages.error(request, 'Hay errores en los campos')
 	return render(request, 'sudo/interesCrear.html',context)
+
+@login_required(login_url="usuario:sudoLogin")
+def aceptarSoliSudo_view(request, DNI):
+	print("Aceptando soli", DNI)
+	try:
+		userAdminEgre=UsuariosAdminEgresado.objects.get(DNI=str(DNI))
+		if(userAdminEgre.estadoCuenta=="pendiente"):
+			userAdminEgre.estadoCuenta="activada"
+			userAdminEgre.save()
+			user=User.objects.get(id=userAdminEgre.user_id)
+			password=User.objects.make_random_password()
+			#user.set_password(password)
+			user.set_password("123")
+			user.save()
+			email = EmailMessage("Activación de cuenta", "Su cuenta ha sido ACTIVADA satisfactoriamente, recuerde que debe ingresar a http://"+str(request.META['HTTP_HOST'])+"/usuario/login para acceder a su cuenta \n\nSu usuario es: "+str(user.email)+"\nsu contraseña es: "+str(password), to=[str(user.email)])
+			#email.send()#MODO_PRUEBAS
+			messages.success(request, 'Usuario con DNI: '+str(DNI)+" Aceptado correctamente")
+	except:
+		print("NOT FOUND")
+	return redirect("usuario:sudoSolicitudes")
+
+@login_required(login_url="usuario:sudoLogin")
+def rechazarSoliSudo_view(request, DNI):
+	print("Rechazando soli", DNI)
+	try:
+		userAdminEgre=UsuariosAdminEgresado.objects.get(DNI=str(DNI))
+		if(userAdminEgre.estadoCuenta=="pendiente"):
+			userAdminEgre.estadoCuenta="rechazada"
+			userAdminEgre.save()
+			user=User.objects.get(id=userAdminEgre.user_id)
+			#password=User.objects.make_random_password()
+			#user.set_password(password)
+			#user.save()
+			mensaje=""#debe ser algo que se capture al realziar rechazo
+			email = EmailMessage("Activación de cuenta", "Su cuenta ha sido RECHAZADA, por el motivo de: "+mensaje+" \n\nSi desea formar parte del sistema solvente los problemas planteados en su motivo de rechazo, Para mayor información consulte con el super usuario del sistema", to=[str(user.email)])
+			#email.send()#MODO_PRUEBAS
+			User.objects.get(id=userAdminEgre.user_id).delete()
+			messages.warning(request, 'Usuario con DNI: '+str(DNI)+" Rechazado correctamente")
+	except:
+		print("NOT FOUND")
+	return redirect("usuario:sudoSolicitudes")
+
+	
+@login_required(login_url="usuario:sudoLogin")
+def solicitudesSudo_view(request):
+	username = None
+	context={'username': username, 'tipoUser' : "Administrador", 'user' : request.user}
+	solicPendientes=UsuariosAdminEgresado.objects.all().filter(estadoCuenta="pendiente")
+	listSoli=[]
+	for i in solicPendientes:
+		listSoli.append([i.DNI, i.user_id])
+	listSoliAdmin=[]
+	for i in listSoli:
+		try:
+			tempAdmin=UsuarioAdministrador.objects.get(userAdminEgre_id=i[0])
+			tempUser=User.objects.get(id=i[1])
+			listSoliAdmin.append([tempUser, tempAdmin, i[0]])
+		except:
+			continue
+	context['listSolicitudes']=listSoliAdmin
+	return render(request,'sudo/solicitudes.html', context)
+	
 	
 def index_view(request):
 	#username = None

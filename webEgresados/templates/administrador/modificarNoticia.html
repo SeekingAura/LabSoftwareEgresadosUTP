@@ -35,7 +35,7 @@
 		  <label class="form-check-label">
 		    <input class="form-check-input" type="checkbox" value="{{ interes.0 }}" name="intereses"
 		    	{% if  interes.0 in misIntereses %}
-		    		checked = "True"
+		    		checked = "true"
 		    	{% endif %}
 		    >
 		    {{ interes.0 }}
@@ -44,9 +44,6 @@
 		{% endfor %}
 		
 		<input type="submit" value="Guardar cambios" class="btn btn-primary">
-		
-		
-		<input type="submit" value="Registrar">
 	
 	</form>
 	

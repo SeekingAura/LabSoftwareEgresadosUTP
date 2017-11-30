@@ -66,9 +66,9 @@ def primerLogin(index_url=None, raise_exception=False, isNotYet=True):
 			return False
 		
 
-		if(not usuario.pais=="" and isNotYet):
+		if(not usuario.departamento=="" and isNotYet):
 			return True
-		elif(usuario.pais=="" and not isNotYet):
+		elif(usuario.departamento=="" and not isNotYet):
 			return True
 		if raise_exception:
 			raise PermissionDenied
