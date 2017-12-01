@@ -17,7 +17,7 @@ from django.contrib import messages
 from django.contrib.auth.password_validation import validate_password, password_validators_help_text_html
 from usuarioAdminEgresado.models import UsuariosAdminEgresado
 from usuarioAdministrador.models import UsuarioAdministrador, noticias, noticiasIntereses, intereses
-from usuarioAdministrador.forms import crearNoticia_Form, modificarNoticia_Form, getIntereses, primerLogin_Form, getDepartamentos
+from usuarioAdministrador.forms import crearNoticia_Form, modificarNoticia_Form, getIntereses, primerLogin_Form, getDepartamentos, editarPerfil_Form
 from usuarioEgresado.models import UsuarioEgresado
 from django.contrib.auth import authenticate, login
 from django.core.mail import EmailMessage
@@ -373,67 +373,48 @@ def editarPerfil_view(request):
 
 	user=User.objects.get(id=request.user.id)
 	userAdminEgre=UsuariosAdminEgresado.objects.get(user_id=user.id)
-	userEgre=UsuarioEgresado.objects.get(userAdminEgre_id=userAdminEgre.DNI)
-	interesesDato=InteresesEgresado.objects.all().filter(userEgre=userEgre).values_list("interes")
-	print(interesesDato)
-	interesesDatoTemp=[]
-	for i in interesesDato:
-		interesesDatoTemp.append(i[0])
-	print(interesesDatoTemp)
-	form = editarPerfil_Form(initial={'intereses':interesesDatoTemp, 'direccionResidencia':userAdminEgre.direccionResidencia, 'direccionTrabajo': userEgre.direccionTrabajo, 'ocupacionActual': userEgre.ocupacionActual, 'telefono': userAdminEgre.telefono, 'privacidad': userEgre.privacidad, 'foto':userEgre.foto})
-	form_intereses = getIntereses()
+	form = editarPerfil_Form(initial={'direccionResidencia':userAdminEgre.direccionResidencia, 'telefono': userAdminEgre.telefono})
 	context['form'] = form
-	context['intereses'] = form_intereses
 	context['userAdminEgre'] = userAdminEgre
-	context['userEgre'] = userEgre
-	context['misIntereses'] = interesesDatoTemp
-	print(userEgre.foto)
 	
 	if(request.method == 'POST'):
-		form=editarPerfil_Form(data=request.POST, files=request.FILES)
-		print(request.POST)
+		form=editarPerfil_Form(data=request.POST)
 		context['form'] = form
 		valido=True
 		
-		if(len(request.POST.getlist("intereses"))==0):
-			messages.error(request, 'Debe tener seleccionado al menos 1 interes')
+		
+		if(numeric_validator(request.POST.get("telefono"))):
+			messages.error(request, 'El campo del telefono debe de ser númerico')
 			valido=False
+		
+		password1 = request.POST.get('password')
+		password2 = request.POST.get('passwordConfimation')
+		#print("cleaned password1={}, password2={}".format(password1, password2))
+		if password1 != password2 and password2 is not None:
+			messages.error(request, 'las contraseñas no coinciden') 
+			valido=False
+		else:
+			try:
+				validate_password(password1)
+			except:
+				messages.error(request, "su contraseña NO puede ser solamente númerica ni muy simple")
+		
 		if(form.is_valid() and valido):
 			user=User.objects.get(username=request.user)
 			userAdminEgre=UsuariosAdminEgresado.objects.get(user_id=user.id)
-			userEgre=UsuarioEgresado.objects.get(userAdminEgre_id=userAdminEgre.DNI)
-			
-			InteresesEgresado.objects.all().filter(userEgre=userEgre).delete()
-			for i in request.POST.getlist("intereses"):
-				interes=intereses.objects.get(titulo=i)
-				interes=InteresesEgresado.objects.create(userEgre=userEgre, interes=interes)
-				interes.save()
-
 			
 			userAdminEgre.direccionResidencia=request.POST.get("direccionResidencia")	
 			
-			userEgre.direccionTrabajo=request.POST.get("direccionTrabajo")
-			
-			userEgre.ocupacionActual=request.POST.get("ocupacionActual")
-			
 			userAdminEgre.telefono=request.POST.get("telefono")
 			
-			userEgre.foto=request.FILES.get('foto')
-			print("FOTOOOOOOOOOOOOO")
-			print(request.FILES)
-			print(form.cleaned_data)
-			userEgre.privacidad=request.POST.get("privacidad")
 			user.set_password(request.POST.get("password"))
 			usuarioActual=request.user
 			logout(request)
 			user.save()
 			userAdminEgre.save()
-			userEgre.save()
 			messages.success(request, 'Se ha actualizado su cuenta')
 			user = authenticate(username=usuarioActual, password=request.POST.get("password"))
 			login(request, user)
 		else:
-			print("form is valid: ", form.is_valid())
-			print("valido: ", valido)
 			messages.error(request, 'Hay errores en el registro, revise los campos')
-	return render(request, 'egresado/editarPerfil.html',context)
+	return render(request, 'administrador/editarPerfil.html',context)

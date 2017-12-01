@@ -87,16 +87,35 @@ class primerLogin_Form(forms.Form):
 	password=forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control','placeholder':'contraseña','maxlength':'32', 'required':'true'}), label="Contraseña")
 	passwordConfimation=forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control','placeholder':'repita contraseña','maxlength':'32', 'required':'true'}),validators=[validate_password], help_text=password_validators_help_text_html(), label="Confimar contraseña")
 
-	# def clean(self):
-		# password1 = self.cleaned_data.get('password')
-		# password2 = self.cleaned_data.get('passwordConfimation')
-		# #print("cleaned password1={}, password2={}".format(password1, password2))
-		# if password1 != password2 and password2 is not None:
-			# raise forms.ValidationError(('las contraseñas no coinciden'), code='invalid') 
-		# #else:
-		# #	 self.full_clean()
-		# return password2
+	def clean(self):
+		password1 = self.cleaned_data.get('password')
+		password2 = self.cleaned_data.get('passwordConfimation')
+		#print("cleaned password1={}, password2={}".format(password1, password2))
+		if password1 != password2 and password2 is not None:
+			raise forms.ValidationError(('las contraseñas no coinciden'), code='invalid') 
+		#else:
+		#	 self.full_clean()
+		return password2
 	
+class editarPerfil_Form(forms.Form):
+	
+	direccionResidencia=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Dirección de residencia',
+		'maxlength':'32',}), required=False, validators=[],  label="Dirección de residencia")
+	telefono=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Telefono',
+		'maxlength':'32',}), required=False, validators=[numeric_validator],  label="Telefono")
+	
+	password=forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control','placeholder':'contraseña','maxlength':'32', 'required':'true'}), label="Contraseña")
+	passwordConfimation=forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control','placeholder':'repita contraseña','maxlength':'32', 'required':'true'}),validators=[validate_password], help_text=password_validators_help_text_html(), label="Confimar contraseña")
+
+	def clean(self):
+		password1 = self.cleaned_data.get('password')
+		password2 = self.cleaned_data.get('passwordConfimation')
+		#print("cleaned password1={}, password2={}".format(password1, password2))
+		if password1 != password2 and password2 is not None:
+			raise forms.ValidationError(('las contraseñas no coinciden'), code='invalid') 
+		#else:
+		#	 self.full_clean()
+		return password2
 	
 
 	

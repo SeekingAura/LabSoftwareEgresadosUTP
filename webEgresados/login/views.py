@@ -176,14 +176,17 @@ def indexSudo_view(request):
 def interesesTodosSudo_view(request):
 	context={}
 	datos=intereses.objects.all()
+	for i in datos:
+		i.titulo=i.titulo.replace(" ", "_")
 	context['intereses']=datos
 	return render(request, 'sudo/interesesTodos.html',context)
 
 @login_required(login_url="usuario:sudoLogin")
 def	interesEliminarSudo_view(request, idInteres):
 	try:
+		idInteres=idInteres.replace("_", " ")
 		intereses.objects.get(titulo=idInteres).delete()
-		message.error(request, "Interes eliminado")
+		messages.error(request, "Interes eliminado")
 	except:
 		print("Interes not found")
 	return redirect("usuario:sudoInteresesVer")
@@ -201,7 +204,6 @@ def interesCrearSudo_view(request):
 		print(request.POST)
 		value = request.POST.get('titulo').lower()
 		temp = intereses.objects.all().values_list('titulo')
-		print('TEMP: ', temp)
 		for i in temp:
 			if str(i[0]).lower() == value:
 				valid = False
@@ -218,6 +220,41 @@ def interesCrearSudo_view(request):
 			messages.error(request, 'Hay errores en los campos')
 	return render(request, 'sudo/interesCrear.html',context)
 
+@login_required(login_url="usuario:sudoLogin")
+def interesEditarSudo_view(request, idInteres):
+	context={}
+	form = crearInteres_Form()
+	try:
+		interes=intereses.objects.get(titulo=idInteres)
+	except:
+		print("Interes not found")
+	context['form'] = form
+	context['interes']=interes
+	
+
+	if(request.method  == 'POST'):
+		form = crearInteres_Form(data=request.POST)
+		context['form'] = form
+		valido = True
+		print(request.POST)
+		value = request.POST.get('titulo').lower()
+		temp = intereses.objects.all().values_list('titulo')
+		for i in temp:
+			if str(i[0]).lower() == value:
+				valido = False
+				messages.error(request, 'Ya existe un interes con ese nombre')
+		#if()
+		if(form.is_valid() and valido):
+			interes = intereses.objects.create(titulo=request.POST.get('titulo'), description=request.POST.get('description'))
+			interes.save()
+			messages.success(request, 'Interes creado!!!')
+			form = crearInteres_Form()
+			context['form'] = form
+			print("Pase por aqui")
+		else:
+			messages.error(request, 'Hay errores en los campos')
+	return render(request, 'sudo/interesCrear.html',context)
+	
 @login_required(login_url="usuario:sudoLogin")
 def aceptarSoliSudo_view(request, DNI):
 	print("Aceptando soli", DNI)
