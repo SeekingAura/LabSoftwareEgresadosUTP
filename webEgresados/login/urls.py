@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from .views import Bienvenido, login_view, logout_view, registro, loginSudo_view, indexSudo_view, interesesTodosSudo_view, interesEliminarSudo_view, interesCrearSudo_view, solicitudesSudo_view, aceptarSoliSudo_view, rechazarSoliSudo_view
+from .views import Bienvenido, login_view, logout_view, registro, loginSudo_view, indexSudo_view, interesesTodosSudo_view, interesEditarSudo_view, interesEliminarSudo_view, interesCrearSudo_view, solicitudesSudo_view, aceptarSoliSudo_view, rechazarSoliSudo_view
 
 urlpatterns = [
 	url(r'^bienvenido', Bienvenido, name="bienvenido"),
@@ -10,6 +10,7 @@ urlpatterns = [
 	url(r'^sudo/index', indexSudo_view, name="sudoIndex"),
 	url(r'^sudo/interescrear', interesCrearSudo_view, name="sudoInteresCrear"),
 	url(r'^sudo/interesesver', interesesTodosSudo_view, name="sudoInteresesVer"),
+	url(r'^sudo/intereseditar/(?P<idInteres>\w+)/$', interesEditarSudo_view, name="sudoInteresEditar"),
 	url(r'^sudo/intereseliminar/(?P<idInteres>\w+)/$', interesEliminarSudo_view, name="sudoInteresEliminar"),
 	url(r'^sudo/solicitudes', solicitudesSudo_view, name="sudoSolicitudes"),
 	url(r'^sudo/aceptarsolicitud/(?P<DNI>\w+)/$', aceptarSoliSudo_view, name="sudoAceptarSoli"),

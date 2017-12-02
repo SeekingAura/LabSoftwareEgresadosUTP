@@ -28,7 +28,7 @@
 			  <td>{{ interes.titulo }}</td>
 			  <td>{{ interes.description }}</td>
 			  <td>
-			  	 <a href="#" class="btn btn-warning">Editar</a>
+			  	 <a href="{% url 'usuario:sudoInteresEditar' idInteres=interes.titulo %}" class="btn btn-warning">Editar</a>
 				  
 				  <a href="{% url 'usuario:sudoInteresEliminar' idInteres=interes.titulo %}" class="btn btn-danger">Eliminar</a>
 

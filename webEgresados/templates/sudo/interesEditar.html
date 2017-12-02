@@ -19,11 +19,11 @@
 		
 		<div class="form-group col-md-8">
 		    <label for="titulo">Título</label>
-		    <input type="text" name="titulo" class="form-control" placeholder="Titulo del interes" required="True" maxlength="100">
+		    <input type="text" name="titulo" class="form-control" placeholder="Titulo del interes" required="True" maxlength="100" value="{{ interes.titulo }}">
 	  	</div>
 		<div class="form-group col-md-8">
 		    <label for="contenido">Descripción</label>
-		    <textarea class="form-control" id="textarea-newNoticia" rows="4" name="description" required="True"></textarea>
+		    <textarea class="form-control" id="textarea-newNoticia" rows="4" name="description" required="True" >{{ interes.description }}</textarea>
 	  	</div>
 		
 		<input type="submit" value="Registrar" class="btn btn-primary">
