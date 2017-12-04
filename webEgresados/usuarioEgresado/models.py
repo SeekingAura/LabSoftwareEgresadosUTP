@@ -15,9 +15,48 @@ def numeric_validator(value):
 		raise ValidationError('este campo debe ser solamente númerico')
 
 		
+
+
+class ProgramaAcademico(models.Model):
+	nombre=models.CharField(max_length=300)
+	estado=models.CharField(max_length=50, choices=[["activo","Activo"], ["desactivado","Desactivado"]])
+	class Meta:
+		verbose_name="Programa Academico"
+		verbose_name_plural = "Programas Academicos"
+
 def getProgramas():
+	programaslist=[]
+	try:
+		programas=ProgramaAcademico.objects.all()
+	except:
 		return [("ingenieria de sistemas", "Ingenieria de sistemas"), ("ingenieria industrial", "Ingenieria industrial"), ("ingenieria Mecanica", "Ingenieria Mecanica")]
+	for i in programas:
+		programaslist.append([i.nombre, i.nombre])
+	
+	#sorted(tempValues, key=attrgetter('nombre'), reverse=True)
+	return sorted(programaslist)
 		
+class GraduadosPersonas(models.Model):
+	DNI=models.CharField(max_length=100)
+	first_name=models.CharField(max_length=300)
+	last_name=models.CharField(max_length=300)
+	promoteAge=models.IntegerField()
+	class Meta:
+		verbose_name="Graduado Persona"
+		verbose_name_plural = "Graduados Personas"
+	def __str__ (self):
+		return "DNI - "+str(self.DNI)+" - "+str(self.first_name)+str(self.last_name)
+
+class Graduados(models.Model):
+	gradPersonas=models.ForeignKey(GraduadosPersonas)
+	programa=models.CharField(max_length=100, choices=getProgramas())
+	class Meta:
+		verbose_name="Graduado"
+		verbose_name_plural = "Graduados"
+	def __str__ (self):
+		return str(self.gradPersonas)
+	
+	
 class UsuarioEgresado(models.Model):
 	userAdminEgre=models.ForeignKey(UserAdminEgreModel.UsuariosAdminEgresado)
 	direccionTrabajo=models.CharField(max_length=100, blank=True)
@@ -33,7 +72,9 @@ class UsuarioEgresado(models.Model):
 	def __str__ (self):
 		return "Egresado - "+str(self.userAdminEgre.user.first_name)+" - "+str(self.userAdminEgre.user)
 	
-	
+	class Meta:
+		verbose_name="Usuario Egresado"
+		verbose_name_plural = "Usuarios Egresados"
 	
 	#amigos=models.ForeignKey(amigosEgresado)
 	#intereses=models.ForeignKey(interesesEgresado)

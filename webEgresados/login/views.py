@@ -146,6 +146,23 @@ def login_view(request):
 		
 	return render(request,'login/login.html', context)
 
+# Views and functions from sudo
+
+def getPendientes():
+	solicPendientes=UsuariosAdminEgresado.objects.all().filter(estadoCuenta="pendiente")
+	listSoli=[]
+	for i in solicPendientes:
+		listSoli.append([i.DNI, i.user_id])
+	listSoliAdmin=[]
+	for i in listSoli:
+		try:
+			tempAdmin=UsuarioAdministrador.objects.get(userAdminEgre_id=i[0])
+			tempUser=User.objects.get(id=i[1])
+			listSoliAdmin.append([tempUser, tempAdmin, i[0]])
+		except:
+			continue
+	return listSoliAdmin
+	
 def loginSudo_view(request):
 	context={}
 	form=loginSudo_Form()
@@ -166,16 +183,17 @@ def loginSudo_view(request):
 		
 	return render(request,'sudo/login.html', context)
 
-	
+@login_required(login_url="usuario:sudoLogin")	
 def indexSudo_view(request):
 	context={}
-	
+	context['listSolicitudes']=getPendientes()
 	return render(request, 'sudo/index.html',context)
 
 @login_required(login_url="usuario:sudoLogin")
 def interesesTodosSudo_view(request):
 	context={}
 	datos=intereses.objects.all()
+	context['listSolicitudes']=getPendientes()
 	for i in datos:
 		i.titulo=i.titulo.replace(" ", "_")
 	context['intereses']=datos
@@ -196,6 +214,7 @@ def interesCrearSudo_view(request):
 	context={}
 	form = crearInteres_Form()
 	context['form'] = form
+	context['listSolicitudes']=getPendientes()
 
 	if(request.method  == 'POST'):
 		form = crearInteres_Form(data=request.POST)
@@ -231,8 +250,8 @@ def interesEditarSudo_view(request, idInteres):
 		print("Interes not found")
 	context['form'] = form
 	context['interes']=interes
-	
-
+	context['listSolicitudes']=getPendientes()
+	context['listSolicitudesLen']=len(getPendientes())
 	if(request.method  == 'POST'):
 		form = crearInteres_Form(data=request.POST)
 		context['form'] = form
@@ -304,19 +323,8 @@ def rechazarSoliSudo_view(request, DNI):
 def solicitudesSudo_view(request):
 	username = None
 	context={'username': username, 'tipoUser' : "Administrador", 'user' : request.user}
-	solicPendientes=UsuariosAdminEgresado.objects.all().filter(estadoCuenta="pendiente")
-	listSoli=[]
-	for i in solicPendientes:
-		listSoli.append([i.DNI, i.user_id])
-	listSoliAdmin=[]
-	for i in listSoli:
-		try:
-			tempAdmin=UsuarioAdministrador.objects.get(userAdminEgre_id=i[0])
-			tempUser=User.objects.get(id=i[1])
-			listSoliAdmin.append([tempUser, tempAdmin, i[0]])
-		except:
-			continue
-	context['listSolicitudes']=listSoliAdmin
+
+	context['listSolicitudes']=getPendientes()
 	return render(request,'sudo/solicitudes.html', context)
 	
 	

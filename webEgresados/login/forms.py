@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from usuarioAdminEgresado.models import UsuariosAdminEgresado
+from usuarioEgresado.models import ProgramaAcademico
 
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login
@@ -96,6 +97,7 @@ def verify_StateAccount(username):
 	else:
 		raise ValidationError('Cuenta no encontrada')
 
+
 		
 class registroAdministrador(forms.Form):
 	
@@ -126,7 +128,15 @@ class registroAdministrador(forms.Form):
 	"""
 
 def getProgramas():
-		return [("", "Seleccione programa"), ("ingenieria de sistemas", "Ingenieria de sistemas"), ("ingenieria industrial", "Ingenieria industrial"), ("ingenieria Mecanica", "Ingenieria Mecanica")]
+	programaslist=[]
+	try:
+		programas=ProgramaAcademico.objects.all()
+	except:
+		return [("ingenieria de sistemas", "Ingenieria de sistemas"), ("ingenieria industrial", "Ingenieria industrial"), ("ingenieria Mecanica", "Ingenieria Mecanica")]
+	for i in programas:
+		programaslist.append([i.nombre, i.nombre])
+	
+	return sorted(programaslist)
 	
 class registroEgresado(forms.Form):
 	DNI=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'DNI',

@@ -30,7 +30,7 @@
 			      <a class="dropdown-item" href="{% url 'usuario:sudoInteresesVer' %}" id="text-navbar-admin-dropdown">Ver intereses</a>
 			    </div>
 			  </li>
-			  <a class="navbar-brand" href="{% url 'usuario:sudoSolicitudes' %}" id="text-navbar-egresado">Solicitudes administradores</a>
+			  <a class="navbar-brand" href="{% url 'usuario:sudoSolicitudes' %}" id="text-navbar-egresado">Solicitudes administradores[{{listSolicitudes|length}}]</a>
 			  <a class="navbar-brand" href="{% url 'usuario:logout' %}" id="text-navbar-egresado">Logout</a>
 			  
 			</nav>
